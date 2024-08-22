@@ -1,0 +1,23 @@
+name: country_code_selector
+description: "The country_code_selector Flutter package offers a customizable and user-friendly country code picker with features like filtering, sorting, theme customization, and localization support."
+version: 1.0.0
+homepage: https://github.com/TheinvinciblePrints/country_code_selector
+issue_tracker: https://github.com/TheinvinciblePrints/country_code_selector/issues
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+
+flutter:
+
+ 
