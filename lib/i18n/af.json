@@ -223,7 +223,7 @@
     "TA": "Tristan da Cunha",
     "TC": "Turks- en Caicoseilande",
     "TD": "Tsjad",
-    "TF": "Franse Suidelike en Antarktiese Gebiede",
+    "TF": "Franse Suidelike Gebiede",
     "TG": "Togo",
     "TH": "Thailand",
     "TJ": "Tadjikistan",
@@ -253,12 +253,13 @@
     "VU": "Vanuatu",
     "WF": "Wallis en Futuna",
     "WS": "Samoa",
-    "XA": "Pseudos-Akzente",
-    "XB": "Pseudos-Bidi",
+    "XA": "Pseudoaksente",
+    "XB": "Pseudotweerigting",
     "XK": "Kosovo",
     "YE": "Jemen",
     "YT": "Mayotte",
     "ZA": "Suid-Afrika",
     "ZM": "Zambië",
-    "ZW": "Zimbabwe"
+    "ZW": "Zimbabwe",
+    "ZZ": "Onbekende gebied"
 }
