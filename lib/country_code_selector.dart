@@ -4,6 +4,7 @@
 /// to facilitate the selection and handling of country codes in your Flutter app.
 library country_code_selector;
 
+export 'src/config/config.dart';
 export 'src/constants/constants.dart';
 export 'src/models/models.dart';
 export 'src/services/services.dart';

@@ -1,4 +1,5 @@
 import 'package:dlibphonenumber/dlibphonenumber.dart';
+import 'package:flutter/foundation.dart';
 
 class PhoneNumberLengthService {
   final PhoneNumberUtil _phoneUtil = PhoneNumberUtil.instance;
@@ -10,7 +11,9 @@ class PhoneNumberLengthService {
         return phoneNumberMetadata.mobile.possibleLength;
       }
     } catch (e) {
-      print('Error getting phone number length: $e');
+      if (kDebugMode) {
+        print('Error getting phone number length: $e');
+      }
     }
     return null;
   }

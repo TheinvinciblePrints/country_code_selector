@@ -1,7 +1,7 @@
 import '../models/country_model.dart';
 import 'phone_number_length_service.dart';
 
-class CountryService {
+mixin CountryService {
   final PhoneNumberLengthService _phoneNumberLengthService = PhoneNumberLengthService();
 
   Future<Country> loadCountryWithPhoneNumberLength(Country country) async {

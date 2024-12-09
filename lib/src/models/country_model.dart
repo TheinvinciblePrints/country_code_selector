@@ -1,20 +1,24 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
 import '../utils/utils.dart';
 
-/// Represents a country with its associated details such as name, code, emoji, image, dial codes, and optional phone number length.
+/// Represents a country with various associated details such as name, code, emoji, flag image, dial codes, and optional phone number length.
 @immutable
 class Country {
   /// Creates a [Country] instance with the specified properties.
+  ///
+  /// [name] is the name of the country.
+  /// [code] is the ISO 3166-1 alpha-2 country code.
+  /// [emoji] is the emoji representing the country's flag.
+  /// [image] is the URL to the country's flag image.
+  /// [dialCodes] is the list of dial codes associated with the country.
+  /// [phoneNumberLength] is an optional list of possible lengths for phone numbers in the country.
   const Country({
     required this.name,
     required this.code,
     required this.emoji,
     required this.image,
     required this.dialCodes,
-    required this.slug,
     this.phoneNumberLength,
   });
 
@@ -28,33 +32,33 @@ class Country {
       emoji: json['emoji'] != null ? json['emoji'] as String : '',
       image: json['image'] != null ? json['image'] as String : '',
       dialCodes: json['dialCodes'] != null ? List<String>.from(json['dialCodes'] as List<String>) : <String>[],
-      slug: json['slug'] != null ? json['slug'] as String : '',
-      phoneNumberLength: json['phoneNumberLength'] != null ? List<int>.from(json['phoneNumberLength'] as List<String>) : null,
+      phoneNumberLength: json['phoneNumberLength'] != null ? List<int>.from(json['phoneNumberLength'] as List<int>) : null,
     );
   }
 
   /// The name of the country.
   final String name;
 
-  /// The ISO 3166-1 alpha-2 country code.
+  /// The ISO 3166-1 alpha-2 country code (e.g., "US" for United States).
   final String code;
 
-  /// The emoji representing the country's flag.
+  /// The emoji representing the country's flag (e.g., 🇺🇸 for the US).
   final String emoji;
 
-  /// The URL to the country's flag image.
+  /// The URL pointing to the country's flag image.
   final String image;
 
-  /// The list of dial codes associated with the country.
+  /// A list of dialing codes for the country (e.g., ["+1"] for the US).
   final List<String> dialCodes;
 
-  /// A slug identifier for the country, often used for URLs or identification.
-  final String slug;
-
-  /// The list of possible lengths for a phone number in the country.
+  /// A list of possible phone number lengths for the country.
+  ///
+  /// This is optional and can be `null` if no information is available.
   final List<int>? phoneNumberLength;
 
   /// Equality operator to compare two [Country] objects based on their name.
+  ///
+  /// Returns `true` if the [name] of both countries is the same.
   @override
   bool operator ==(Object other) => (other is Country) && other.name == name;
 
@@ -63,6 +67,8 @@ class Country {
   int get hashCode => name.hashCode;
 
   /// Converts the [Country] object into a map suitable for JSON encoding.
+  ///
+  /// The resulting map contains the country name, code, emoji, flag image URL, dial codes, and phone number length.
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
@@ -70,17 +76,19 @@ class Country {
       'emoji': emoji,
       'image': image,
       'dialCodes': dialCodes,
-      'slug': slug,
       'phoneNumberLength': phoneNumberLength,
     };
   }
 
   /// Converts the [Country] object into a JSON string.
+  ///
+  /// This is useful for serializing the country information to be stored or transmitted.
   String toJson() => json.encode(toMap());
 
   /// Localizes the country's name based on the current [BuildContext].
   ///
-  /// Uses the [CountrySelectorLocalizations] to translate the name if a translation is available.
+  /// This method uses [CountrySelectorLocalizations] to translate the country name
+  /// if a translation is available. Otherwise, it returns the original name.
   Country localize(BuildContext context) {
     return copyWith(
       name: CountrySelectorLocalizations.of(context)?.translate(code) ?? name,
@@ -89,14 +97,14 @@ class Country {
 
   /// Creates a copy of the current [Country] object with optional new values for any property.
   ///
-  /// If a property is not provided, the original value is used.
+  /// This method allows you to create a modified copy of the country object,
+  /// while keeping the original values for properties that are not explicitly provided.
   Country copyWith({
     String? name,
     String? code,
     String? emoji,
     String? image,
     List<String>? dialCodes,
-    String? slug,
     List<int>? phoneNumberLength,
   }) {
     return Country(
@@ -105,7 +113,6 @@ class Country {
       emoji: emoji ?? this.emoji,
       image: image ?? this.image,
       dialCodes: dialCodes ?? this.dialCodes,
-      slug: slug ?? this.slug,
       phoneNumberLength: phoneNumberLength ?? this.phoneNumberLength,
     );
   }

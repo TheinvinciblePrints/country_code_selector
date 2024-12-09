@@ -6,248 +6,217 @@ class StringConstants {
       'code': 'AF',
       'emoji': '🇦🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/af.svg',
-      'dialCodes': ['+93'],
-      'slug': 'afghanistan'
+      'dialCodes': ['+93']
     },
     {
       'name': 'Albania',
       'code': 'AL',
       'emoji': '🇦🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/al.svg',
-      'dialCodes': ['+355'],
-      'slug': 'albania'
+      'dialCodes': ['+355']
     },
     {
       'name': 'Andorra',
       'code': 'AD',
       'emoji': '🇦🇩',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ad.svg',
-      'dialCodes': ['+376'],
-      'slug': 'andorra'
+      'dialCodes': ['+376']
     },
     {
       'name': 'Angola',
       'code': 'AO',
       'emoji': '🇦🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ao.svg',
-      'dialCodes': ['+244'],
-      'slug': 'angola'
+      'dialCodes': ['+244']
     },
     {
       'name': 'Anguilla',
       'code': 'AI',
       'emoji': '🇦🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ai.svg',
-      'dialCodes': ['+1264'],
-      'slug': 'anguilla'
+      'dialCodes': ['+1264']
     },
     {
       'name': 'Antarctica',
       'code': 'AQ',
       'emoji': '🇦🇶',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/aq.svg',
-      'dialCodes': ['+672'],
-      'slug': 'antarctica'
+      'dialCodes': ['+672']
     },
     {
       'name': 'Antigua & Barbuda',
       'code': 'AG',
       'emoji': '🇦🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ag.svg',
-      'dialCodes': ['+1268'],
-      'slug': 'antigua-and-barbuda'
+      'dialCodes': ['+1268']
     },
     {
       'name': 'Argentina',
       'code': 'AR',
       'emoji': '🇦🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ar.svg',
-      'dialCodes': ['+54'],
-      'slug': 'argentina'
+      'dialCodes': ['+54']
     },
     {
       'name': 'Armenia',
       'code': 'AM',
       'emoji': '🇦🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/am.svg',
-      'dialCodes': ['+374'],
-      'slug': 'armenia'
+      'dialCodes': ['+374']
     },
     {
       'name': 'Aruba',
       'code': 'AW',
       'emoji': '🇦🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/aw.svg',
-      'dialCodes': ['+297'],
-      'slug': 'aruba'
+      'dialCodes': ['+297']
     },
     {
       'name': 'Ascension Island',
       'code': 'AC',
       'emoji': '🇦🇨',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ac.svg',
-      'dialCodes': ['+247'],
-      'slug': 'ascension-island'
+      'dialCodes': ['+247']
     },
     {
       'name': 'Australia',
       'code': 'AU',
       'emoji': '🇦🇺',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/au.svg',
-      'dialCodes': ['+61'],
-      'slug': 'australia'
+      'dialCodes': ['+61']
     },
     {
       'name': 'Austria',
       'code': 'AT',
       'emoji': '🇦🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/at.svg',
-      'dialCodes': ['+43'],
-      'slug': 'austria'
+      'dialCodes': ['+43']
     },
     {
       'name': 'Azerbaijan',
       'code': 'AZ',
       'emoji': '🇦🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/az.svg',
-      'dialCodes': ['+994'],
-      'slug': 'azerbaijan'
+      'dialCodes': ['+994']
     },
     {
       'name': 'Bahamas',
       'code': 'BS',
       'emoji': '🇧🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bs.svg',
-      'dialCodes': ['+1242'],
-      'slug': 'bahamas'
+      'dialCodes': ['+1242']
     },
     {
       'name': 'Bahrain',
       'code': 'BH',
       'emoji': '🇧🇭',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bh.svg',
-      'dialCodes': ['+973'],
-      'slug': 'bahrain'
+      'dialCodes': ['+973']
     },
     {
       'name': 'Bangladesh',
       'code': 'BD',
       'emoji': '🇧🇩',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bd.svg',
-      'dialCodes': ['+880'],
-      'slug': 'bangladesh'
+      'dialCodes': ['+880']
     },
     {
       'name': 'Barbados',
       'code': 'BB',
       'emoji': '🇧🇧',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bb.svg',
-      'dialCodes': ['+1246'],
-      'slug': 'barbados'
+      'dialCodes': ['+1246']
     },
     {
       'name': 'Belarus',
       'code': 'BY',
       'emoji': '🇧🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/by.svg',
-      'dialCodes': ['+375'],
-      'slug': 'belarus'
+      'dialCodes': ['+375']
     },
     {
       'name': 'Belgium',
       'code': 'BE',
       'emoji': '🇧🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/be.svg',
-      'dialCodes': ['+32'],
-      'slug': 'belgium'
+      'dialCodes': ['+32']
     },
     {
       'name': 'Belize',
       'code': 'BZ',
       'emoji': '🇧🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bz.svg',
-      'dialCodes': ['+501'],
-      'slug': 'belize'
+      'dialCodes': ['+501']
     },
     {
       'name': 'Benin',
       'code': 'BJ',
       'emoji': '🇧🇯',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bj.svg',
-      'dialCodes': ['+229'],
-      'slug': 'benin'
+      'dialCodes': ['+229']
     },
     {
       'name': 'Bermuda',
       'code': 'BM',
       'emoji': '🇧🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bm.svg',
-      'dialCodes': ['+1441'],
-      'slug': 'bermuda'
+      'dialCodes': ['+1441']
     },
     {
       'name': 'Bhutan',
       'code': 'BT',
       'emoji': '🇧🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bt.svg',
-      'dialCodes': ['+975'],
-      'slug': 'bhutan'
+      'dialCodes': ['+975']
     },
     {
       'name': 'Bolivia',
       'code': 'BO',
       'emoji': '🇧🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bo.svg',
-      'dialCodes': ['+591'],
-      'slug': 'bolivia'
+      'dialCodes': ['+591']
     },
     {
       'name': 'Bosnia & Herzegovina',
       'code': 'BA',
       'emoji': '🇧🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ba.svg',
-      'dialCodes': ['+387'],
-      'slug': 'bosnia-and-herzegovina'
+      'dialCodes': ['+387']
     },
     {
       'name': 'Botswana',
       'code': 'BW',
       'emoji': '🇧🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bw.svg',
-      'dialCodes': ['+267'],
-      'slug': 'botswana'
+      'dialCodes': ['+267']
     },
     {
       'name': 'Brazil',
       'code': 'BR',
       'emoji': '🇧🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/br.svg',
-      'dialCodes': ['+55'],
-      'slug': 'brazil'
+      'dialCodes': ['+55']
     },
     {
       'name': 'British Indian Ocean Territory',
       'code': 'IO',
       'emoji': '🇮🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/io.svg',
-      'dialCodes': ['+246'],
-      'slug': 'british-indian-ocean-territory'
+      'dialCodes': ['+246']
     },
     {
       'name': 'Brunei',
       'code': 'BN',
       'emoji': '🇧🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bn.svg',
-      'dialCodes': ['+673'],
-      'slug': 'brunei'
+      'dialCodes': ['+673']
     },
     {
       'name': 'Bulgaria',
       'code': 'BG',
       'emoji': '🇧🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bg.svg',
-      'dialCodes': ['+359'],
-      'slug': 'bulgaria'
+      'dialCodes': ['+359']
     },
     {
       'name': 'Burkina Faso',
@@ -255,7 +224,7 @@ class StringConstants {
       'emoji': '🇧🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bf.svg',
       'dialCodes': ['+226'],
-      'slug': 'burkina-faso'
+      
     },
     {
       'name': 'Burundi',
@@ -263,7 +232,7 @@ class StringConstants {
       'emoji': '🇧🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bi.svg',
       'dialCodes': ['+257'],
-      'slug': 'burundi'
+     
     },
     {
       'name': 'Cabo Verde',
@@ -271,7 +240,7 @@ class StringConstants {
       'emoji': '🇨🇻',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cv.svg',
       'dialCodes': ['+238'],
-      'slug': 'cabo-verde'
+      
     },
     {
       'name': 'Cambodia',
@@ -279,7 +248,7 @@ class StringConstants {
       'emoji': '🇰🇭',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/kh.svg',
       'dialCodes': ['+855'],
-      'slug': 'cambodia'
+     
     },
     {
       'name': 'Cameroon',
@@ -287,7 +256,7 @@ class StringConstants {
       'emoji': '🇨🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cm.svg',
       'dialCodes': ['+237'],
-      'slug': 'cameroon'
+      
     },
     {
       'name': 'Canada',
@@ -295,7 +264,7 @@ class StringConstants {
       'emoji': '🇨🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ca.svg',
       'dialCodes': ['+1'],
-      'slug': 'canada'
+      
     },
     {
       'name': 'Cayman Islands',
@@ -303,7 +272,7 @@ class StringConstants {
       'emoji': '🇰🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ky.svg',
       'dialCodes': ['+1345'],
-      'slug': 'cayman-islands'
+     
     },
     {
       'name': 'Central African Republic',
@@ -311,7 +280,7 @@ class StringConstants {
       'emoji': '🇨🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cf.svg',
       'dialCodes': ['+236'],
-      'slug': 'central-african-republic'
+      
     },
     {
       'name': 'Chad',
@@ -319,7 +288,7 @@ class StringConstants {
       'emoji': '🇹🇩',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/td.svg',
       'dialCodes': ['+235'],
-      'slug': 'chad'
+      
     },
     {
       'name': 'Chile',
@@ -327,7 +296,7 @@ class StringConstants {
       'emoji': '🇨🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cl.svg',
       'dialCodes': ['+56'],
-      'slug': 'chile'
+      
     },
     {
       'name': 'China',
@@ -335,7 +304,7 @@ class StringConstants {
       'emoji': '🇨🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cn.svg',
       'dialCodes': ['+86'],
-      'slug': 'china'
+     
     },
     {
       'name': 'Christmas Island',
@@ -343,7 +312,7 @@ class StringConstants {
       'emoji': '🇨🇽',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cx.svg',
       'dialCodes': ['+61'],
-      'slug': 'christmas-island'
+      
     },
     {
       'name': 'Cocos (Keeling) Islands',
@@ -351,7 +320,7 @@ class StringConstants {
       'emoji': '🇨🇨',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cc.svg',
       'dialCodes': ['+61'],
-      'slug': 'cocos-(keeling)-islands'
+     
     },
     {
       'name': 'Colombia',
@@ -359,7 +328,7 @@ class StringConstants {
       'emoji': '🇨🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/co.svg',
       'dialCodes': ['+57'],
-      'slug': 'colombia'
+      
     },
     {
       'name': 'Comoros',
@@ -367,7 +336,7 @@ class StringConstants {
       'emoji': '🇰🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/km.svg',
       'dialCodes': ['+269'],
-      'slug': 'comoros'
+      
     },
     {
       'name': 'Congo - Brazzaville',
@@ -375,7 +344,7 @@ class StringConstants {
       'emoji': '🇨🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cg.svg',
       'dialCodes': ['+242'],
-      'slug': 'congo-brazzaville'
+      
     },
     {
       'name': 'Congo - Kinshasa',
@@ -383,7 +352,7 @@ class StringConstants {
       'emoji': '🇨🇩',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cd.svg',
       'dialCodes': ['+243'],
-      'slug': 'congo-kinshasa'
+      
     },
     {
       'name': 'Cook Islands',
@@ -391,7 +360,7 @@ class StringConstants {
       'emoji': '🇨🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ck.svg',
       'dialCodes': ['+682'],
-      'slug': 'cook-islands'
+      
     },
     {
       'name': 'Costa Rica',
@@ -399,7 +368,7 @@ class StringConstants {
       'emoji': '🇨🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cr.svg',
       'dialCodes': ['+506'],
-      'slug': 'costa-rica'
+      
     },
     {
       'name': 'Croatia',
@@ -407,7 +376,7 @@ class StringConstants {
       'emoji': '🇭🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/hr.svg',
       'dialCodes': ['+385'],
-      'slug': 'croatia'
+     
     },
     {
       'name': 'Cuba',
@@ -415,7 +384,7 @@ class StringConstants {
       'emoji': '🇨🇺',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cu.svg',
       'dialCodes': ['+53'],
-      'slug': 'cuba'
+      
     },
     {
       'name': 'Curaçao',
@@ -423,7 +392,7 @@ class StringConstants {
       'emoji': '🇨🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cw.svg',
       'dialCodes': ['+599'],
-      'slug': 'curacao'
+      
     },
     {
       'name': 'Cyprus',
@@ -431,7 +400,7 @@ class StringConstants {
       'emoji': '🇨🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cy.svg',
       'dialCodes': ['+357'],
-      'slug': 'cyprus'
+      
     },
     {
       'name': 'Czechia',
@@ -439,7 +408,7 @@ class StringConstants {
       'emoji': '🇨🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cz.svg',
       'dialCodes': ['+420'],
-      'slug': 'czechia'
+     
     },
     {
       'name': 'Côte d’Ivoire',
@@ -447,7 +416,7 @@ class StringConstants {
       'emoji': '🇨🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ci.svg',
       'dialCodes': ['+225'],
-      'slug': "cote-d'ivoire"
+      
     },
     {
       'name': 'Denmark',
@@ -455,7 +424,7 @@ class StringConstants {
       'emoji': '🇩🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/dk.svg',
       'dialCodes': ['+45'],
-      'slug': 'denmark'
+     
     },
     {
       'name': 'Djibouti',
@@ -463,7 +432,7 @@ class StringConstants {
       'emoji': '🇩🇯',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/dj.svg',
       'dialCodes': ['+253'],
-      'slug': 'djibouti'
+      
     },
     {
       'name': 'Dominica',
@@ -471,7 +440,7 @@ class StringConstants {
       'emoji': '🇩🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/dm.svg',
       'dialCodes': ['+1767'],
-      'slug': 'dominica'
+     
     },
     {
       'name': 'Dominican Republic',
@@ -479,7 +448,7 @@ class StringConstants {
       'emoji': '🇩🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/do.svg',
       'dialCodes': ['+1 809', '+1 829', '+1 849'],
-      'slug': 'dominican-republic'
+      
     },
     {
       'name': 'Ecuador',
@@ -487,7 +456,7 @@ class StringConstants {
       'emoji': '🇪🇨',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ec.svg',
       'dialCodes': ['+593'],
-      'slug': 'ecuador'
+      
     },
     {
       'name': 'Egypt',
@@ -495,7 +464,7 @@ class StringConstants {
       'emoji': '🇪🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/eg.svg',
       'dialCodes': ['+20'],
-      'slug': 'egypt'
+      
     },
     {
       'name': 'El Salvador',
@@ -511,7 +480,7 @@ class StringConstants {
       'emoji': '🇬🇶',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gq.svg',
       'dialCodes': ['+240'],
-      'slug': 'equatorial-guinea'
+      
     },
     {
       'name': 'Eritrea',
@@ -519,7 +488,7 @@ class StringConstants {
       'emoji': '🇪🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/er.svg',
       'dialCodes': ['+291'],
-      'slug': 'eritrea'
+     
     },
     {
       'name': 'Estonia',
@@ -527,7 +496,7 @@ class StringConstants {
       'emoji': '🇪🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ee.svg',
       'dialCodes': ['+372'],
-      'slug': 'estonia'
+     
     },
     {
       'name': 'Eswatini',
@@ -535,7 +504,7 @@ class StringConstants {
       'emoji': '🇸🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sz.svg',
       'dialCodes': ['+268'],
-      'slug': 'eswatini'
+      
     },
     {
       'name': 'Ethiopia',
@@ -543,7 +512,7 @@ class StringConstants {
       'emoji': '🇪🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/et.svg',
       'dialCodes': ['+251'],
-      'slug': 'ethiopia'
+     
     },
     {
       'name': 'Falkland Islands',
@@ -551,7 +520,7 @@ class StringConstants {
       'emoji': '🇫🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/fk.svg',
       'dialCodes': ['+500'],
-      'slug': 'falkland-islands'
+      
     },
     {
       'name': 'Faroe Islands',
@@ -559,7 +528,7 @@ class StringConstants {
       'emoji': '🇫🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/fo.svg',
       'dialCodes': ['+298'],
-      'slug': 'faroe-islands'
+      
     },
     {
       'name': 'Fiji',
@@ -567,7 +536,7 @@ class StringConstants {
       'emoji': '🇫🇯',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/fj.svg',
       'dialCodes': ['+679'],
-      'slug': 'fiji'
+     
     },
     {
       'name': 'Finland',
@@ -575,7 +544,7 @@ class StringConstants {
       'emoji': '🇫🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/fi.svg',
       'dialCodes': ['+358'],
-      'slug': 'finland'
+      
     },
     {
       'name': 'France',
@@ -583,7 +552,7 @@ class StringConstants {
       'emoji': '🇫🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/fr.svg',
       'dialCodes': ['+33'],
-      'slug': 'france'
+      
     },
     {
       'name': 'French Guiana',
@@ -591,7 +560,7 @@ class StringConstants {
       'emoji': '🇬🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gf.svg',
       'dialCodes': ['+594'],
-      'slug': 'french-guiana'
+     
     },
     {
       'name': 'French Polynesia',
@@ -599,7 +568,7 @@ class StringConstants {
       'emoji': '🇵🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pf.svg',
       'dialCodes': ['+689'],
-      'slug': 'french-polynesia'
+      
     },
     {
       'name': 'French Southern Territories',
@@ -607,7 +576,7 @@ class StringConstants {
       'emoji': '🇹🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tf.svg',
       'dialCodes': ['+262'],
-      'slug': 'french-southern-territories'
+      
     },
     {
       'name': 'Gabon',
@@ -615,7 +584,7 @@ class StringConstants {
       'emoji': '🇬🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ga.svg',
       'dialCodes': ['+241'],
-      'slug': 'gabon'
+      
     },
     {
       'name': 'Gambia',
@@ -623,7 +592,7 @@ class StringConstants {
       'emoji': '🇬🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gm.svg',
       'dialCodes': ['+220'],
-      'slug': 'gambia'
+      
     },
     {
       'name': 'Georgia',
@@ -631,7 +600,7 @@ class StringConstants {
       'emoji': '🇬🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ge.svg',
       'dialCodes': ['+995'],
-      'slug': 'georgia'
+      
     },
     {
       'name': 'Germany',
@@ -639,7 +608,7 @@ class StringConstants {
       'emoji': '🇩🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/de.svg',
       'dialCodes': ['+49'],
-      'slug': 'germany'
+      
     },
     {
       'name': 'Ghana',
@@ -647,7 +616,7 @@ class StringConstants {
       'emoji': '🇬🇭',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gh.svg',
       'dialCodes': ['+233'],
-      'slug': 'ghana'
+      
     },
     {
       'name': 'Gibraltar',
@@ -655,7 +624,7 @@ class StringConstants {
       'emoji': '🇬🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gi.svg',
       'dialCodes': ['+350'],
-      'slug': 'gibraltar'
+      
     },
     {
       'name': 'Greece',
@@ -663,7 +632,6 @@ class StringConstants {
       'emoji': '🇬🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gr.svg',
       'dialCodes': ['+30'],
-      'slug': 'greece'
     },
     {
       'name': 'Greenland',
@@ -671,7 +639,7 @@ class StringConstants {
       'emoji': '🇬🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gl.svg',
       'dialCodes': ['+299'],
-      'slug': 'greenland'
+      
     },
     {
       'name': 'Grenada',
@@ -679,7 +647,7 @@ class StringConstants {
       'emoji': '🇬🇩',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gd.svg',
       'dialCodes': ['+1473'],
-      'slug': 'grenada'
+      
     },
     {
       'name': 'Guadeloupe',
@@ -687,7 +655,7 @@ class StringConstants {
       'emoji': '🇬🇵',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gp.svg',
       'dialCodes': ['+590'],
-      'slug': 'guadeloupe'
+      
     },
     {
       'name': 'Guam',
@@ -695,7 +663,7 @@ class StringConstants {
       'emoji': '🇬🇺',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gu.svg',
       'dialCodes': ['+1671'],
-      'slug': 'guam'
+      
     },
     {
       'name': 'Guatemala',
@@ -703,7 +671,7 @@ class StringConstants {
       'emoji': '🇬🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gt.svg',
       'dialCodes': ['+502'],
-      'slug': 'guatemala'
+      
     },
     {
       'name': 'Guernsey',
@@ -711,7 +679,7 @@ class StringConstants {
       'emoji': '🇬🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gg.svg',
       'dialCodes': ['+44'],
-      'slug': 'guernsey'
+     
     },
     {
       'name': 'Guinea',
@@ -719,7 +687,7 @@ class StringConstants {
       'emoji': '🇬🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gn.svg',
       'dialCodes': ['+224'],
-      'slug': 'guinea'
+      
     },
     {
       'name': 'Guinea-Bissau',
@@ -727,7 +695,7 @@ class StringConstants {
       'emoji': '🇬🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gw.svg',
       'dialCodes': ['+245'],
-      'slug': 'guinea-bissau'
+      
     },
     {
       'name': 'Guyana',
@@ -735,7 +703,7 @@ class StringConstants {
       'emoji': '🇬🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gy.svg',
       'dialCodes': ['+592'],
-      'slug': 'guyana'
+      
     },
     {
       'name': 'Haiti',
@@ -743,7 +711,7 @@ class StringConstants {
       'emoji': '🇭🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ht.svg',
       'dialCodes': ['+509'],
-      'slug': 'haiti'
+     
     },
     {
       'name': 'Heard & McDonald Islands',
@@ -751,7 +719,7 @@ class StringConstants {
       'emoji': '🇭🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/hm.svg',
       'dialCodes': ['+672'],
-      'slug': 'heard-and-mcdonald-islands'
+     
     },
     {
       'name': 'Honduras',
@@ -759,7 +727,7 @@ class StringConstants {
       'emoji': '🇭🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/hn.svg',
       'dialCodes': ['+504'],
-      'slug': 'honduras'
+      
     },
     {
       'name': 'Hong Kong SAR China',
@@ -767,7 +735,7 @@ class StringConstants {
       'emoji': '🇭🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/hk.svg',
       'dialCodes': ['+852'],
-      'slug': 'hong-kong-sar-china'
+      
     },
     {
       'name': 'Hungary',
@@ -775,7 +743,7 @@ class StringConstants {
       'emoji': '🇭🇺',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/hu.svg',
       'dialCodes': ['+36'],
-      'slug': 'hungary'
+      
     },
     {
       'name': 'Iceland',
@@ -783,7 +751,7 @@ class StringConstants {
       'emoji': '🇮🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/is.svg',
       'dialCodes': ['+354'],
-      'slug': 'iceland'
+     
     },
     {
       'name': 'India',
@@ -791,7 +759,7 @@ class StringConstants {
       'emoji': '🇮🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/in.svg',
       'dialCodes': ['+91'],
-      'slug': 'india'
+     
     },
     {
       'name': 'Indonesia',
@@ -799,7 +767,7 @@ class StringConstants {
       'emoji': '🇮🇩',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/id.svg',
       'dialCodes': ['+62'],
-      'slug': 'indonesia'
+     
     },
     {
       'name': 'Iran',
@@ -807,7 +775,7 @@ class StringConstants {
       'emoji': '🇮🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ir.svg',
       'dialCodes': ['+98'],
-      'slug': 'iran'
+      
     },
     {
       'name': 'Iraq',
@@ -815,7 +783,7 @@ class StringConstants {
       'emoji': '🇮🇶',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/iq.svg',
       'dialCodes': ['+964'],
-      'slug': 'iraq'
+      
     },
     {
       'name': 'Ireland',
@@ -823,7 +791,7 @@ class StringConstants {
       'emoji': '🇮🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ie.svg',
       'dialCodes': ['+353'],
-      'slug': 'ireland'
+      
     },
     {
       'name': 'Isle of Man',
@@ -831,7 +799,7 @@ class StringConstants {
       'emoji': '🇮🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/im.svg',
       'dialCodes': ['+44'],
-      'slug': 'isle-of-man'
+      
     },
     {
       'name': 'Israel',
@@ -839,7 +807,7 @@ class StringConstants {
       'emoji': '🇮🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/il.svg',
       'dialCodes': ['+972'],
-      'slug': 'israel'
+      
     },
     {
       'name': 'Italy',
@@ -847,7 +815,7 @@ class StringConstants {
       'emoji': '🇮🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/it.svg',
       'dialCodes': ['+39'],
-      'slug': 'italy'
+     
     },
     {
       'name': 'Jamaica',
@@ -855,7 +823,7 @@ class StringConstants {
       'emoji': '🇯🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/jm.svg',
       'dialCodes': ['+1 876'],
-      'slug': 'jamaica'
+      
     },
     {
       'name': 'Japan',
@@ -863,7 +831,7 @@ class StringConstants {
       'emoji': '🇯🇵',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/jp.svg',
       'dialCodes': ['+81'],
-      'slug': 'japan'
+      
     },
     {
       'name': 'Jersey',
@@ -871,7 +839,7 @@ class StringConstants {
       'emoji': '🇯🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/je.svg',
       'dialCodes': ['+44'],
-      'slug': 'jersey'
+      
     },
     {
       'name': 'Jordan',
@@ -879,7 +847,7 @@ class StringConstants {
       'emoji': '🇯🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/jo.svg',
       'dialCodes': ['+962'],
-      'slug': 'jordan'
+      
     },
     {
       'name': 'Kazakhstan',
@@ -887,7 +855,7 @@ class StringConstants {
       'emoji': '🇰🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/kz.svg',
       'dialCodes': ['+7'],
-      'slug': 'kazakhstan'
+      
     },
     {
       'name': 'Kenya',
@@ -895,7 +863,7 @@ class StringConstants {
       'emoji': '🇰🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ke.svg',
       'dialCodes': ['+254'],
-      'slug': 'kenya'
+      
     },
     {
       'name': 'Kiribati',
@@ -903,7 +871,7 @@ class StringConstants {
       'emoji': '🇰🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ki.svg',
       'dialCodes': ['+686'],
-      'slug': 'kiribati'
+     
     },
     {
       'name': 'Kosovo',
@@ -911,7 +879,7 @@ class StringConstants {
       'emoji': '🇽🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/xk.svg',
       'dialCodes': ['+383'],
-      'slug': 'kosovo'
+      
     },
     {
       'name': 'Kuwait',
@@ -919,7 +887,7 @@ class StringConstants {
       'emoji': '🇰🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/kw.svg',
       'dialCodes': ['+965'],
-      'slug': 'kuwait'
+      
     },
     {
       'name': 'Kyrgyzstan',
@@ -927,7 +895,7 @@ class StringConstants {
       'emoji': '🇰🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/kg.svg',
       'dialCodes': ['+996'],
-      'slug': 'kyrgyzstan'
+     
     },
     {
       'name': 'Laos',
@@ -935,7 +903,7 @@ class StringConstants {
       'emoji': '🇱🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/la.svg',
       'dialCodes': ['+856'],
-      'slug': 'laos'
+     
     },
     {
       'name': 'Latvia',
@@ -943,7 +911,7 @@ class StringConstants {
       'emoji': '🇱🇻',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/lv.svg',
       'dialCodes': ['+371'],
-      'slug': 'latvia'
+      
     },
     {
       'name': 'Lebanon',
@@ -951,7 +919,7 @@ class StringConstants {
       'emoji': '🇱🇧',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/lb.svg',
       'dialCodes': ['+961'],
-      'slug': 'lebanon'
+      
     },
     {
       'name': 'Lesotho',
@@ -959,7 +927,7 @@ class StringConstants {
       'emoji': '🇱🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ls.svg',
       'dialCodes': ['+266'],
-      'slug': 'lesotho'
+      
     },
     {
       'name': 'Liberia',
@@ -967,7 +935,7 @@ class StringConstants {
       'emoji': '🇱🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/lr.svg',
       'dialCodes': ['+231'],
-      'slug': 'liberia'
+      
     },
     {
       'name': 'Libya',
@@ -975,7 +943,7 @@ class StringConstants {
       'emoji': '🇱🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ly.svg',
       'dialCodes': ['+218'],
-      'slug': 'libya'
+      
     },
     {
       'name': 'Liechtenstein',
@@ -983,7 +951,7 @@ class StringConstants {
       'emoji': '🇱🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/li.svg',
       'dialCodes': ['+423'],
-      'slug': 'liechtenstein'
+      
     },
     {
       'name': 'Lithuania',
@@ -991,7 +959,7 @@ class StringConstants {
       'emoji': '🇱🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/lt.svg',
       'dialCodes': ['+370'],
-      'slug': 'lithuania'
+      
     },
     {
       'name': 'Luxembourg',
@@ -999,7 +967,7 @@ class StringConstants {
       'emoji': '🇱🇺',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/lu.svg',
       'dialCodes': ['+352'],
-      'slug': 'luxembourg'
+      
     },
     {
       'name': 'Macao SAR China',
@@ -1007,7 +975,7 @@ class StringConstants {
       'emoji': '🇲🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mo.svg',
       'dialCodes': ['+853'],
-      'slug': 'macao-sar-china'
+      
     },
     {
       'name': 'Madagascar',
@@ -1015,7 +983,7 @@ class StringConstants {
       'emoji': '🇲🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mg.svg',
       'dialCodes': ['+261'],
-      'slug': 'madagascar'
+      
     },
     {
       'name': 'Malawi',
@@ -1023,7 +991,7 @@ class StringConstants {
       'emoji': '🇲🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mw.svg',
       'dialCodes': ['+265'],
-      'slug': 'malawi'
+      
     },
     {
       'name': 'Malaysia',
@@ -1031,7 +999,7 @@ class StringConstants {
       'emoji': '🇲🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/my.svg',
       'dialCodes': ['+60'],
-      'slug': 'malaysia'
+      
     },
     {
       'name': 'Maldives',
@@ -1039,7 +1007,7 @@ class StringConstants {
       'emoji': '🇲🇻',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mv.svg',
       'dialCodes': ['+960'],
-      'slug': 'maldives'
+      
     },
     {
       'name': 'Mali',
@@ -1047,7 +1015,7 @@ class StringConstants {
       'emoji': '🇲🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ml.svg',
       'dialCodes': ['+223'],
-      'slug': 'mali'
+      
     },
     {
       'name': 'Malta',
@@ -1055,7 +1023,7 @@ class StringConstants {
       'emoji': '🇲🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mt.svg',
       'dialCodes': ['+356'],
-      'slug': 'malta'
+      
     },
     {
       'name': 'Marshall Islands',
@@ -1063,7 +1031,7 @@ class StringConstants {
       'emoji': '🇲🇭',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mh.svg',
       'dialCodes': ['+692'],
-      'slug': 'marshall-islands'
+      
     },
     {
       'name': 'Martinique',
@@ -1071,7 +1039,7 @@ class StringConstants {
       'emoji': '🇲🇶',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mq.svg',
       'dialCodes': ['+596'],
-      'slug': 'martinique'
+     
     },
     {
       'name': 'Mauritania',
@@ -1079,7 +1047,7 @@ class StringConstants {
       'emoji': '🇲🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mr.svg',
       'dialCodes': ['+222'],
-      'slug': 'mauritania'
+      
     },
     {
       'name': 'Mauritius',
@@ -1087,7 +1055,7 @@ class StringConstants {
       'emoji': '🇲🇺',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mu.svg',
       'dialCodes': ['+230'],
-      'slug': 'mauritius'
+      
     },
     {
       'name': 'Mayotte',
@@ -1095,7 +1063,7 @@ class StringConstants {
       'emoji': '🇾🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/yt.svg',
       'dialCodes': ['+262'],
-      'slug': 'mayotte'
+      
     },
     {
       'name': 'Mexico',
@@ -1103,7 +1071,7 @@ class StringConstants {
       'emoji': '🇲🇽',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mx.svg',
       'dialCodes': ['+52'],
-      'slug': 'mexico'
+      
     },
     {
       'name': 'Micronesia',
@@ -1111,7 +1079,7 @@ class StringConstants {
       'emoji': '🇫🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/fm.svg',
       'dialCodes': ['+691'],
-      'slug': 'micronesia'
+      
     },
     {
       'name': 'Moldova',
@@ -1119,7 +1087,7 @@ class StringConstants {
       'emoji': '🇲🇩',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/md.svg',
       'dialCodes': ['+373'],
-      'slug': 'moldova'
+      
     },
     {
       'name': 'Monaco',
@@ -1127,7 +1095,7 @@ class StringConstants {
       'emoji': '🇲🇨',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mc.svg',
       'dialCodes': ['+377'],
-      'slug': 'monaco'
+      
     },
     {
       'name': 'Mongolia',
@@ -1135,7 +1103,7 @@ class StringConstants {
       'emoji': '🇲🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mn.svg',
       'dialCodes': ['+976'],
-      'slug': 'mongolia'
+      
     },
     {
       'name': 'Montenegro',
@@ -1143,7 +1111,7 @@ class StringConstants {
       'emoji': '🇲🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/me.svg',
       'dialCodes': ['+382'],
-      'slug': 'montenegro'
+      
     },
     {
       'name': 'Montserrat',
@@ -1151,7 +1119,7 @@ class StringConstants {
       'emoji': '🇲🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ms.svg',
       'dialCodes': ['+1 664'],
-      'slug': 'montserrat'
+      
     },
     {
       'name': 'Morocco',
@@ -1159,7 +1127,7 @@ class StringConstants {
       'emoji': '🇲🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ma.svg',
       'dialCodes': ['+212'],
-      'slug': 'morocco'
+      
     },
     {
       'name': 'Mozambique',
@@ -1167,7 +1135,7 @@ class StringConstants {
       'emoji': '🇲🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mz.svg',
       'dialCodes': ['+258'],
-      'slug': 'mozambique'
+      
     },
     {
       'name': 'Myanmar (Burma)',
@@ -1175,7 +1143,7 @@ class StringConstants {
       'emoji': '🇲🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mm.svg',
       'dialCodes': ['+95'],
-      'slug': 'myanmar-(burma)'
+      
     },
     {
       'name': 'Namibia',
@@ -1183,7 +1151,7 @@ class StringConstants {
       'emoji': '🇳🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/na.svg',
       'dialCodes': ['+264'],
-      'slug': 'namibia'
+      
     },
     {
       'name': 'Nauru',
@@ -1191,7 +1159,7 @@ class StringConstants {
       'emoji': '🇳🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/nr.svg',
       'dialCodes': ['+674'],
-      'slug': 'nauru'
+      
     },
     {
       'name': 'Nepal',
@@ -1199,7 +1167,7 @@ class StringConstants {
       'emoji': '🇳🇵',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/np.svg',
       'dialCodes': ['+977'],
-      'slug': 'nepal'
+      
     },
     {
       'name': 'Netherlands',
@@ -1207,7 +1175,7 @@ class StringConstants {
       'emoji': '🇳🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/nl.svg',
       'dialCodes': ['+31'],
-      'slug': 'netherlands'
+      
     },
     {
       'name': 'New Caledonia',
@@ -1215,7 +1183,7 @@ class StringConstants {
       'emoji': '🇳🇨',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/nc.svg',
       'dialCodes': ['+687'],
-      'slug': 'new-caledonia'
+      
     },
     {
       'name': 'New Zealand',
@@ -1223,7 +1191,7 @@ class StringConstants {
       'emoji': '🇳🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/nz.svg',
       'dialCodes': ['+64'],
-      'slug': 'new-zealand'
+      
     },
     {
       'name': 'Nicaragua',
@@ -1231,7 +1199,7 @@ class StringConstants {
       'emoji': '🇳🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ni.svg',
       'dialCodes': ['+505'],
-      'slug': 'nicaragua'
+      
     },
     {
       'name': 'Niger',
@@ -1239,7 +1207,7 @@ class StringConstants {
       'emoji': '🇳🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ne.svg',
       'dialCodes': ['+227'],
-      'slug': 'niger'
+      
     },
     {
       'name': 'Nigeria',
@@ -1247,7 +1215,7 @@ class StringConstants {
       'emoji': '🇳🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ng.svg',
       'dialCodes': ['+234'],
-      'slug': 'nigeria'
+     
     },
     {
       'name': 'Niue',
@@ -1263,7 +1231,7 @@ class StringConstants {
       'emoji': '🇳🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/nf.svg',
       'dialCodes': ['+672'],
-      'slug': 'norfolk-island'
+      
     },
     {
       'name': 'North Korea',
@@ -1271,7 +1239,7 @@ class StringConstants {
       'emoji': '🇰🇵',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/kp.svg',
       'dialCodes': ['+850'],
-      'slug': 'north-korea'
+      
     },
     {
       'name': 'Northern Mariana Islands',
@@ -1279,7 +1247,7 @@ class StringConstants {
       'emoji': '🇲🇵',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mp.svg',
       'dialCodes': ['+1 670'],
-      'slug': 'northern-mariana-islands'
+      
     },
     {
       'name': 'Norway',
@@ -1287,7 +1255,7 @@ class StringConstants {
       'emoji': '🇳🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/no.svg',
       'dialCodes': ['+47'],
-      'slug': 'norway'
+      
     },
     {
       'name': 'Oman',
@@ -1295,7 +1263,7 @@ class StringConstants {
       'emoji': '🇴🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/om.svg',
       'dialCodes': ['+968'],
-      'slug': 'oman'
+      
     },
     {
       'name': 'Pakistan',
@@ -1303,7 +1271,7 @@ class StringConstants {
       'emoji': '🇵🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pk.svg',
       'dialCodes': ['+92'],
-      'slug': 'pakistan'
+     
     },
     {
       'name': 'Palau',
@@ -1311,7 +1279,7 @@ class StringConstants {
       'emoji': '🇵🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pw.svg',
       'dialCodes': ['+680'],
-      'slug': 'palau'
+      
     },
     {
       'name': 'Palestinian Territories',
@@ -1319,7 +1287,7 @@ class StringConstants {
       'emoji': '🇵🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ps.svg',
       'dialCodes': ['+970'],
-      'slug': 'palestinian-territories'
+      
     },
     {
       'name': 'Panama',
@@ -1327,7 +1295,7 @@ class StringConstants {
       'emoji': '🇵🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pa.svg',
       'dialCodes': ['+507'],
-      'slug': 'panama'
+      
     },
     {
       'name': 'Papua New Guinea',
@@ -1335,7 +1303,7 @@ class StringConstants {
       'emoji': '🇵🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pg.svg',
       'dialCodes': ['+675'],
-      'slug': 'papua-new-guinea'
+      
     },
     {
       'name': 'Paraguay',
@@ -1343,7 +1311,7 @@ class StringConstants {
       'emoji': '🇵🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/py.svg',
       'dialCodes': ['+595'],
-      'slug': 'paraguay'
+      
     },
     {
       'name': 'Peru',
@@ -1351,7 +1319,7 @@ class StringConstants {
       'emoji': '🇵🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pe.svg',
       'dialCodes': ['+51'],
-      'slug': 'peru'
+      
     },
     {
       'name': 'Philippines',
@@ -1359,7 +1327,7 @@ class StringConstants {
       'emoji': '🇵🇭',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ph.svg',
       'dialCodes': ['+63'],
-      'slug': 'philippines'
+      
     },
     {
       'name': 'Pitcairn Islands',
@@ -1367,7 +1335,7 @@ class StringConstants {
       'emoji': '🇵🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pn.svg',
       'dialCodes': ['+64'],
-      'slug': 'pitcairn-islands'
+      
     },
     {
       'name': 'Poland',
@@ -1375,7 +1343,7 @@ class StringConstants {
       'emoji': '🇵🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pl.svg',
       'dialCodes': ['+48'],
-      'slug': 'poland'
+      
     },
     {
       'name': 'Portugal',
@@ -1383,7 +1351,7 @@ class StringConstants {
       'emoji': '🇵🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pt.svg',
       'dialCodes': ['+351'],
-      'slug': 'portugal'
+      
     },
     {
       'name': 'Puerto Rico',
@@ -1391,7 +1359,7 @@ class StringConstants {
       'emoji': '🇵🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pr.svg',
       'dialCodes': ['+1 787'],
-      'slug': 'puerto-rico'
+      
     },
     {
       'name': 'Qatar',
@@ -1399,7 +1367,7 @@ class StringConstants {
       'emoji': '🇶🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/qa.svg',
       'dialCodes': ['+974'],
-      'slug': 'qatar'
+      
     },
     {
       'name': 'Réunion',
@@ -1407,7 +1375,7 @@ class StringConstants {
       'emoji': '🇷🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/re.svg',
       'dialCodes': ['+262'],
-      'slug': 'reunion'
+      
     },
     {
       'name': 'Romania',
@@ -1415,7 +1383,7 @@ class StringConstants {
       'emoji': '🇷🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ro.svg',
       'dialCodes': ['+40'],
-      'slug': 'romania'
+      
     },
     {
       'name': 'Russia',
@@ -1423,7 +1391,7 @@ class StringConstants {
       'emoji': '🇷🇺',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ru.svg',
       'dialCodes': ['+7'],
-      'slug': 'russia'
+      
     },
     {
       'name': 'Rwanda',
@@ -1431,7 +1399,7 @@ class StringConstants {
       'emoji': '🇷🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/rw.svg',
       'dialCodes': ['+250'],
-      'slug': 'rwanda'
+      
     },
     {
       'name': 'Saint Barthélemy',
@@ -1439,7 +1407,7 @@ class StringConstants {
       'emoji': '🇧🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/bl.svg',
       'dialCodes': ['+590'],
-      'slug': 'saint-barthelemy'
+      
     },
     {
       'name': 'Saint Helena',
@@ -1447,7 +1415,7 @@ class StringConstants {
       'emoji': '🇸🇭',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sh.svg',
       'dialCodes': ['+290'],
-      'slug': 'saint-helena'
+      
     },
     {
       'name': 'Saint Kitts & Nevis',
@@ -1455,7 +1423,7 @@ class StringConstants {
       'emoji': '🇰🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/kn.svg',
       'dialCodes': ['+1 869'],
-      'slug': 'saint-kitts-and-nevis'
+      
     },
     {
       'name': 'Saint Lucia',
@@ -1463,7 +1431,7 @@ class StringConstants {
       'emoji': '🇱🇨',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/lc.svg',
       'dialCodes': ['+1 758'],
-      'slug': 'saint-lucia'
+      
     },
     {
       'name': 'Saint Martin',
@@ -1471,7 +1439,7 @@ class StringConstants {
       'emoji': '🇲🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/mf.svg',
       'dialCodes': ['+590'],
-      'slug': 'saint-martin'
+     
     },
     {
       'name': 'Saint Pierre & Miquelon',
@@ -1479,7 +1447,7 @@ class StringConstants {
       'emoji': '🇵🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/pm.svg',
       'dialCodes': ['+508'],
-      'slug': 'saint-pierre-and-miquelon'
+      
     },
     {
       'name': 'Samoa',
@@ -1487,7 +1455,7 @@ class StringConstants {
       'emoji': '🇼🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ws.svg',
       'dialCodes': ['+685'],
-      'slug': 'samoa'
+      
     },
     {
       'name': 'San Marino',
@@ -1495,7 +1463,7 @@ class StringConstants {
       'emoji': '🇸🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sm.svg',
       'dialCodes': ['+378'],
-      'slug': 'san-marino'
+      
     },
     {
       'name': 'Sao Tome & Principe',
@@ -1503,7 +1471,7 @@ class StringConstants {
       'emoji': '🇸🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/st.svg',
       'dialCodes': ['+239'],
-      'slug': 'sao-tome-and-principe'
+      
     },
     {
       'name': 'Saudi Arabia',
@@ -1511,7 +1479,7 @@ class StringConstants {
       'emoji': '🇸🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sa.svg',
       'dialCodes': ['+966'],
-      'slug': 'saudi-arabia'
+      
     },
     {
       'name': 'Senegal',
@@ -1519,7 +1487,7 @@ class StringConstants {
       'emoji': '🇸🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sn.svg',
       'dialCodes': ['+221'],
-      'slug': 'senegal'
+      
     },
     {
       'name': 'Serbia',
@@ -1527,7 +1495,7 @@ class StringConstants {
       'emoji': '🇷🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/rs.svg',
       'dialCodes': ['+381'],
-      'slug': 'serbia'
+      
     },
     {
       'name': 'Seychelles',
@@ -1535,7 +1503,7 @@ class StringConstants {
       'emoji': '🇸🇨',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sc.svg',
       'dialCodes': ['+248'],
-      'slug': 'seychelles'
+      
     },
     {
       'name': 'Sierra Leone',
@@ -1543,7 +1511,7 @@ class StringConstants {
       'emoji': '🇸🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sl.svg',
       'dialCodes': ['+232'],
-      'slug': 'sierra-leone'
+      
     },
     {
       'name': 'Singapore',
@@ -1551,7 +1519,7 @@ class StringConstants {
       'emoji': '🇸🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sg.svg',
       'dialCodes': ['+65'],
-      'slug': 'singapore'
+      
     },
     {
       'name': 'Sint Maarten',
@@ -1559,7 +1527,7 @@ class StringConstants {
       'emoji': '🇸🇽',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sx.svg',
       'dialCodes': ['+1 721'],
-      'slug': 'sint-maarten'
+      
     },
     {
       'name': 'Slovakia',
@@ -1567,7 +1535,7 @@ class StringConstants {
       'emoji': '🇸🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sk.svg',
       'dialCodes': ['+421'],
-      'slug': 'slovakia'
+      
     },
     {
       'name': 'Slovenia',
@@ -1575,7 +1543,7 @@ class StringConstants {
       'emoji': '🇸🇮',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/si.svg',
       'dialCodes': ['+386'],
-      'slug': 'slovenia'
+      
     },
     {
       'name': 'Solomon Islands',
@@ -1583,7 +1551,7 @@ class StringConstants {
       'emoji': '🇸🇧',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sb.svg',
       'dialCodes': ['+677'],
-      'slug': 'solomon-islands'
+      
     },
     {
       'name': 'Somalia',
@@ -1591,7 +1559,7 @@ class StringConstants {
       'emoji': '🇸🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/so.svg',
       'dialCodes': ['+252'],
-      'slug': 'somalia'
+      
     },
     {
       'name': 'South Africa',
@@ -1599,7 +1567,7 @@ class StringConstants {
       'emoji': '🇿🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/za.svg',
       'dialCodes': ['+27'],
-      'slug': 'south-africa'
+      
     },
     {
       'name': 'South Georgia & South Sandwich Islands',
@@ -1607,7 +1575,7 @@ class StringConstants {
       'emoji': '🇬🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gs.svg',
       'dialCodes': ['+500'],
-      'slug': 'south-georgia-and-south-sandwich-islands'
+      
     },
     {
       'name': 'South Korea',
@@ -1615,7 +1583,7 @@ class StringConstants {
       'emoji': '🇰🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/kr.svg',
       'dialCodes': ['+82'],
-      'slug': 'south-korea'
+      
     },
     {
       'name': 'South Sudan',
@@ -1623,7 +1591,7 @@ class StringConstants {
       'emoji': '🇸🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ss.svg',
       'dialCodes': ['+211'],
-      'slug': 'south-sudan'
+      
     },
     {
       'name': 'Spain',
@@ -1631,7 +1599,7 @@ class StringConstants {
       'emoji': '🇪🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/es.svg',
       'dialCodes': ['+34'],
-      'slug': 'spain'
+      
     },
     {
       'name': 'Sri Lanka',
@@ -1639,7 +1607,7 @@ class StringConstants {
       'emoji': '🇱🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/lk.svg',
       'dialCodes': ['+94'],
-      'slug': 'sri-lanka'
+      
     },
     {
       'name': 'Sudan',
@@ -1647,7 +1615,7 @@ class StringConstants {
       'emoji': '🇸🇩',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sd.svg',
       'dialCodes': ['+249'],
-      'slug': 'sudan'
+      
     },
     {
       'name': 'Suriname',
@@ -1655,7 +1623,7 @@ class StringConstants {
       'emoji': '🇸🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sr.svg',
       'dialCodes': ['+597'],
-      'slug': 'suriname'
+      
     },
     {
       'name': 'Svalbard & Jan Mayen',
@@ -1663,7 +1631,7 @@ class StringConstants {
       'emoji': '🇸🇯',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sj.svg',
       'dialCodes': ['+47'],
-      'slug': 'svalbard-and-jan-mayen'
+      
     },
     {
       'name': 'Sweden',
@@ -1671,7 +1639,7 @@ class StringConstants {
       'emoji': '🇸🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/se.svg',
       'dialCodes': ['+46'],
-      'slug': 'sweden'
+      
     },
     {
       'name': 'Switzerland',
@@ -1679,7 +1647,7 @@ class StringConstants {
       'emoji': '🇨🇭',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ch.svg',
       'dialCodes': ['+41'],
-      'slug': 'switzerland'
+      
     },
     {
       'name': 'Syria',
@@ -1687,7 +1655,7 @@ class StringConstants {
       'emoji': '🇸🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/sy.svg',
       'dialCodes': ['+963'],
-      'slug': 'syria'
+      
     },
     {
       'name': 'Taiwan',
@@ -1695,7 +1663,7 @@ class StringConstants {
       'emoji': '🇹🇼',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tw.svg',
       'dialCodes': ['+886'],
-      'slug': 'taiwan'
+      
     },
     {
       'name': 'Tajikistan',
@@ -1703,7 +1671,7 @@ class StringConstants {
       'emoji': '🇹🇯',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tj.svg',
       'dialCodes': ['+992'],
-      'slug': 'tajikistan'
+      
     },
     {
       'name': 'Tanzania',
@@ -1711,7 +1679,7 @@ class StringConstants {
       'emoji': '🇹🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tz.svg',
       'dialCodes': ['+255'],
-      'slug': 'tanzania'
+      
     },
     {
       'name': 'Thailand',
@@ -1719,7 +1687,7 @@ class StringConstants {
       'emoji': '🇹🇭',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/th.svg',
       'dialCodes': ['+66'],
-      'slug': 'thailand'
+      
     },
     {
       'name': 'Timor-Leste',
@@ -1727,7 +1695,7 @@ class StringConstants {
       'emoji': '🇹🇱',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tl.svg',
       'dialCodes': ['+670'],
-      'slug': 'timor-leste'
+      
     },
     {
       'name': 'Togo',
@@ -1735,7 +1703,7 @@ class StringConstants {
       'emoji': '🇹🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tg.svg',
       'dialCodes': ['+228'],
-      'slug': 'togo'
+      
     },
     {
       'name': 'Tokelau',
@@ -1743,7 +1711,7 @@ class StringConstants {
       'emoji': '🇹🇰',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tk.svg',
       'dialCodes': ['+690'],
-      'slug': 'tokelau'
+      
     },
     {
       'name': 'Tonga',
@@ -1751,7 +1719,7 @@ class StringConstants {
       'emoji': '🇹🇴',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/to.svg',
       'dialCodes': ['+676'],
-      'slug': 'tonga'
+      
     },
     {
       'name': 'Trinidad & Tobago',
@@ -1759,7 +1727,7 @@ class StringConstants {
       'emoji': '🇹🇹',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tt.svg',
       'dialCodes': ['+1 868'],
-      'slug': 'trinidad-and-tobago'
+      
     },
     {
       'name': 'Tunisia',
@@ -1767,7 +1735,7 @@ class StringConstants {
       'emoji': '🇹🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tn.svg',
       'dialCodes': ['+216'],
-      'slug': 'tunisia'
+      
     },
     {
       'name': 'Turkey',
@@ -1775,7 +1743,7 @@ class StringConstants {
       'emoji': '🇹🇷',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tr.svg',
       'dialCodes': ['+90'],
-      'slug': 'turkey'
+      
     },
     {
       'name': 'Turkmenistan',
@@ -1783,7 +1751,7 @@ class StringConstants {
       'emoji': '🇹🇲',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tm.svg',
       'dialCodes': ['+993'],
-      'slug': 'turkmenistan'
+     
     },
     {
       'name': 'Turks & Caicos Islands',
@@ -1791,7 +1759,7 @@ class StringConstants {
       'emoji': '🇹🇨',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tc.svg',
       'dialCodes': ['+1 649'],
-      'slug': 'turks-and-caicos-islands'
+      
     },
     {
       'name': 'Tuvalu',
@@ -1799,7 +1767,7 @@ class StringConstants {
       'emoji': '🇹🇻',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/tv.svg',
       'dialCodes': ['+688'],
-      'slug': 'tuvalu'
+      
     },
     {
       'name': 'Uganda',
@@ -1807,7 +1775,7 @@ class StringConstants {
       'emoji': '🇺🇬',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ug.svg',
       'dialCodes': ['+256'],
-      'slug': 'uganda'
+      
     },
     {
       'name': 'Ukraine',
@@ -1815,7 +1783,7 @@ class StringConstants {
       'emoji': '🇺🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ua.svg',
       'dialCodes': ['+380'],
-      'slug': 'ukraine'
+     
     },
     {
       'name': 'United Arab Emirates',
@@ -1823,7 +1791,7 @@ class StringConstants {
       'emoji': '🇦🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ae.svg',
       'dialCodes': ['+971'],
-      'slug': 'united-arab-emirates'
+      
     },
     {
       'name': 'United Kingdom',
@@ -1831,7 +1799,7 @@ class StringConstants {
       'emoji': '🇬🇧',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gb.svg',
       'dialCodes': ['+44'],
-      'slug': 'united-kingdom'
+     
     },
     {
       'name': 'United States',
@@ -1839,7 +1807,7 @@ class StringConstants {
       'emoji': '🇺🇸',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/us.svg',
       'dialCodes': ['+1'],
-      'slug': 'united-states'
+      
     },
     {
       'name': 'Uruguay',
@@ -1847,7 +1815,7 @@ class StringConstants {
       'emoji': '🇺🇾',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/uy.svg',
       'dialCodes': ['+598'],
-      'slug': 'uruguay'
+      
     },
     {
       'name': 'Uzbekistan',
@@ -1855,7 +1823,7 @@ class StringConstants {
       'emoji': '🇺🇿',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/uz.svg',
       'dialCodes': ['+998'],
-      'slug': 'uzbekistan'
+      
     },
     {
       'name': 'Vanuatu',
@@ -1863,7 +1831,7 @@ class StringConstants {
       'emoji': '🇻🇺',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/vu.svg',
       'dialCodes': ['+678'],
-      'slug': 'vanuatu'
+      
     },
     {
       'name': 'Vatican City',
@@ -1871,7 +1839,7 @@ class StringConstants {
       'emoji': '🇻🇦',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/va.svg',
       'dialCodes': ['+379'],
-      'slug': 'vatican-city'
+      
     },
     {
       'name': 'Venezuela',
@@ -1879,7 +1847,7 @@ class StringConstants {
       'emoji': '🇻🇪',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ve.svg',
       'dialCodes': ['+58'],
-      'slug': 'venezuela'
+      
     },
     {
       'name': 'Vietnam',
@@ -1887,7 +1855,7 @@ class StringConstants {
       'emoji': '🇻🇳',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/vn.svg',
       'dialCodes': ['+84'],
-      'slug': 'vietnam'
+      
     },
     {
       'name': 'Wallis & Futuna',
@@ -1895,7 +1863,7 @@ class StringConstants {
       'emoji': '🇼🇫',
       'image': 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/wf.svg',
       'dialCodes': ['+681'],
-      'slug': 'wallis-and-futuna'
+      
     }
   ]
   ''';
