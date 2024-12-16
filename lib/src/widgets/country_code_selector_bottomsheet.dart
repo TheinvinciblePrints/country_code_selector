@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../country_code_selector.dart';
 
@@ -172,8 +171,8 @@ class _CountryCodeSelectorBottomsheetState
                         child: widget.searchStyle?.searchIcon ??
                             Image.asset(
                               color: Colors.grey.shade400,
-                              'lib/assets/icons/search.png',
-                              package: 'mi_country_picker',
+                              'assets/icons/search.png',
+                              package: 'country_code_selector',
                             ),
                       ),
                       hintText: widget.searchStyle?.hintText ?? 'Search',
@@ -263,12 +262,10 @@ class _CountryCodeSelectorBottomsheetState
                 clipBehavior: widget.layoutConfig?.flagDecoration == null
                     ? Clip.none
                     : Clip.hardEdge,
-                child: Image.asset(
-                  e.image,
-                  package: 'mi_country_picker',
-                  width: widget.layoutConfig?.flagWidth ?? 24,
-                  height: widget.layoutConfig?.flagHeight ?? 18,
-                  fit: BoxFit.cover,
+                child: CountryFlag(
+                  assetName: e.image,
+                  flagWidth: widget.layoutConfig?.flagWidth,
+                  flagHeight: widget.layoutConfig?.flagHeight,
                 ),
               ),
             ),
@@ -327,12 +324,10 @@ class _CountryCodeSelectorBottomsheetState
                 clipBehavior: widget.layoutConfig?.flagDecoration == null
                     ? Clip.none
                     : Clip.hardEdge,
-                child: SvgPicture.asset(
-                  e.image,
-                  package: 'country_code_selector',
-                  width: widget.layoutConfig?.flagWidth ?? 24,
-                  height: widget.layoutConfig?.flagHeight ?? 18,
-                  fit: BoxFit.cover,
+                child: CountryFlag(
+                  assetName: e.image,
+                  flagWidth: widget.layoutConfig?.flagWidth,
+                  flagHeight: widget.layoutConfig?.flagHeight,
                 ),
               ),
             ),
