@@ -6,6 +6,8 @@ library country_code_selector;
 
 export 'src/config/config.dart';
 export 'src/constants/constants.dart';
+export 'src/mixins/mixins.dart';
 export 'src/models/models.dart';
 export 'src/services/services.dart';
 export 'src/utils/utils.dart';
+export 'src/widgets/widgets.dart';

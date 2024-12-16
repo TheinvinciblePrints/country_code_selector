@@ -10,7 +10,7 @@ import '../../country_code_selector.dart';
 /// This class uses JSON data for countries, and provides methods to return
 /// country objects localized to the user's device locale. It also integrates
 /// additional features such as phone number length retrieval for each country.
-class CountrySelector with CountryService {
+class CountrySelector with CountryService, CountrySelectorMixin {
   // Private constructor to prevent instantiation
   CountrySelector._();
 
@@ -93,11 +93,7 @@ class CountrySelector with CountryService {
   /// Returns a [Future] that resolves to a [Country] object or `null` if not found.
   Future<Country?> getCountryByCountryCode({required BuildContext context, required String countryCode}) async {
     
-    // Retrieve the JSON data.
-    const String rawData = StringConstants.countryJson;
-
-    // Parse the JSON string into a list of dynamic objects.
-    final List<dynamic> countryList = json.decode(rawData) as List<dynamic>;
+    
 
     try {
       // Find the country that matches the given country code.

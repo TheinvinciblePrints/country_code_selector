@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
 import '../utils/utils.dart';
 
 /// Represents a country with various associated details such as name, code, emoji, flag image, dial codes, and optional phone number length.
@@ -30,9 +32,13 @@ class Country {
       name: json['name'] != null ? json['name'] as String : '',
       code: json['code'] != null ? json['code'] as String : '',
       emoji: json['emoji'] != null ? json['emoji'] as String : '',
-      image: json['image'] != null ? json['image'] as String : '',
-      dialCodes: json['dialCodes'] != null ? List<String>.from(json['dialCodes'] as List<String>) : <String>[],
-      phoneNumberLength: json['phoneNumberLength'] != null ? List<int>.from(json['phoneNumberLength'] as List<int>) : null,
+      image: 'assets/flags/${(json['code'] as String).toLowerCase()}.svg',
+      dialCodes: json['dialCodes'] != null
+          ? List<String>.from(json['dialCodes'] as List<String>)
+          : <String>[],
+      phoneNumberLength: json['phoneNumberLength'] != null
+          ? List<int>.from(json['phoneNumberLength'] as List<int>)
+          : null,
     );
   }
 
@@ -45,7 +51,7 @@ class Country {
   /// The emoji representing the country's flag (e.g., 🇺🇸 for the US).
   final String emoji;
 
-  /// The URL pointing to the country's flag image.
+  /// The country's flag image.
   final String image;
 
   /// A list of dialing codes for the country (e.g., ["+1"] for the US).
@@ -115,5 +121,13 @@ class Country {
       dialCodes: dialCodes ?? this.dialCodes,
       phoneNumberLength: phoneNumberLength ?? this.phoneNumberLength,
     );
+  }
+
+  String toCountryStringOnly() {
+    return '$_cleanName';
+  }
+
+  String? get _cleanName {
+    return name.replaceAll(RegExp(r'[[\]]'), '').split(',').first;
   }
 }

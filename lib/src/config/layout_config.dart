@@ -141,3 +141,20 @@ class CountrySelectorThemeData {
   /// The text color used for displaying the country name and code.
   final Color textColor;
 }
+
+class SearchStyle {
+  SearchStyle({
+    this.searchBoxMargin,
+    this.searchFieldInputDecoration,
+    this.searchTextStyle,
+    this.hintText,
+    this.searchBoxHeight,
+    this.searchIcon,
+  });
+  final InputDecoration? searchFieldInputDecoration;
+  final TextStyle? searchTextStyle;
+  final String? hintText;
+  final double? searchBoxHeight;
+  final Icon? searchIcon;
+  final EdgeInsetsGeometry? searchBoxMargin;
+}
