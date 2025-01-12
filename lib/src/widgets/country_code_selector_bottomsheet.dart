@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../country_code_selector.dart';
 
-class CountryCodeSelectorBottomsheet extends StatefulWidget {
-  const CountryCodeSelectorBottomsheet(
+class CountryCodeSelectorBottomSheet extends StatefulWidget {
+  const CountryCodeSelectorBottomSheet(
       {super.key,
       this.favouriteCountries,
       this.layoutConfig,
@@ -28,12 +28,12 @@ class CountryCodeSelectorBottomsheet extends StatefulWidget {
   final Widget? closeIconWidget;
 
   @override
-  State<CountryCodeSelectorBottomsheet> createState() =>
-      _CountryCodeSelectorBottomsheetState();
+  State<CountryCodeSelectorBottomSheet> createState() =>
+      _CountryCodeSelectorBottomSheetState();
 }
 
-class _CountryCodeSelectorBottomsheetState
-    extends State<CountryCodeSelectorBottomsheet> with CountrySelectorMixin {
+class _CountryCodeSelectorBottomSheetState
+    extends State<CountryCodeSelectorBottomSheet> {
   List<Country> countriesElements = <Country>[];
   Country? selectedItem;
   List<Country> favoriteCountries = <Country>[];
@@ -44,7 +44,7 @@ class _CountryCodeSelectorBottomsheetState
 
   @override
   void initState() {
-    countriesElements = countryList
+    countriesElements = CountryService.countryList
         .map((dynamic element) =>
             Country.fromJson(element as Map<String, dynamic>))
         .toList();
@@ -194,7 +194,7 @@ class _CountryCodeSelectorBottomsheetState
                       } else {
                         return InkWell(
                           onTap: () {
-                            _selectItem(favoriteCountries[index]);
+                            _selectItem(favoriteCountries[index], context);
                           },
                           child: Padding(
                             padding: widget.countryTilePadding ??
@@ -215,7 +215,7 @@ class _CountryCodeSelectorBottomsheetState
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
-                        _selectItem(filteredElements[index]);
+                        _selectItem(filteredElements[index], context);
                       },
                       child: Padding(
                         padding: widget.countryTilePadding ??
@@ -240,9 +240,9 @@ class _CountryCodeSelectorBottomsheetState
 
     return SliverFillRemaining(
       child: Center(
-        child: Text(
-            CountrySelectorLocalizations.of(context)?.translate('no_country') ??
-                'Not found'),
+        child: Text(CountryCodeSelectorLocalizations.of(context)
+                ?.translate('no_country') ??
+            'Not found'),
       ),
     );
   }
@@ -275,7 +275,7 @@ class _CountryCodeSelectorBottomsheetState
                   _defaultTextStyle.fontSize!),
               child: Text(
                 textAlign: TextAlign.start,
-                e.toString(),
+                e.code,
                 overflow: TextOverflow.fade,
                 style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
               ),
@@ -301,7 +301,7 @@ class _CountryCodeSelectorBottomsheetState
                   _defaultTextStyle.fontSize!),
               child: Text(
                 textAlign: TextAlign.start,
-                e.toString(),
+                e.code,
                 overflow: TextOverflow.fade,
                 style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
               ),
@@ -348,7 +348,11 @@ class _CountryCodeSelectorBottomsheetState
     });
   }
 
-  void _selectItem(Country e) {
-    Navigator.pop(context, e);
+  Future<void> _selectItem(Country e, BuildContext context) async {
+    final Country selectedCountry =
+        await CountryService.loadCountryWithPhoneNumberLength(e);
+    if (context.mounted) {
+      Navigator.pop(context, selectedCountry);
+    }
   }
 }

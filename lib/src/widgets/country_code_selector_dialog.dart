@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../country_code_selector.dart';
-import 'country_flag.dart';
 
 class CountryCodeSelectorDialog extends StatefulWidget {
   const CountryCodeSelectorDialog({
@@ -46,8 +45,7 @@ class CountryCodeSelectorDialog extends StatefulWidget {
       _CountryCodeSelectorDialogState();
 }
 
-class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog>
-    with CountrySelectorMixin {
+class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
   List<Country> countriesElements = <Country>[];
   List<Country> favoriteCountries = <Country>[];
   List<Country> filteredElements = <Country>[];
@@ -60,7 +58,7 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog>
 
     if (widget.listOfCountries == null ||
         (widget.listOfCountries?.isEmpty ?? false)) {
-      countriesElements = countryList
+      countriesElements = CountryService.countryList
           .map((dynamic json) => Country.fromJson(json as Map<String, dynamic>))
           .toList();
     } else {
@@ -200,7 +198,7 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog>
                             SvgPicture.asset(
                               color: Colors.grey.shade400,
                               'assets/icons/search.png',
-                              package: 'mi_country_picker',
+                              package: 'country_code_selector',
                             ),
                       ),
                       hintText: widget.searchStyle?.hintText ?? 'Search',
@@ -270,9 +268,9 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog>
     }
     return SliverFillRemaining(
       child: Center(
-        child: Text(
-            CountrySelectorLocalizations.of(context)?.translate('no_country') ??
-                'Not found'),
+        child: Text(CountryCodeSelectorLocalizations.of(context)
+                ?.translate('no_country') ??
+            'Not found'),
       ),
     );
   }
@@ -305,7 +303,7 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog>
                   widget.layoutConfig?.textStyle?.fontSize ??
                       _defaultTextStyle.fontSize!),
               child: Text(
-                e.toString(),
+                e.code,
                 style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.fade,
@@ -332,7 +330,7 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog>
                   widget.layoutConfig?.textStyle?.fontSize ??
                       _defaultTextStyle.fontSize!),
               child: Text(
-                e.toString(),
+                e.code,
                 style: widget.layoutConfig?.textStyle ?? _defaultTextStyle,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.fade,

@@ -1,11 +1,22 @@
+import 'dart:convert';
+
+import '../constants/constants.dart';
 import '../models/country_model.dart';
 import 'phone_number_length_service.dart';
 
-mixin CountryService {
-  final PhoneNumberLengthService _phoneNumberLengthService = PhoneNumberLengthService();
+class CountryService {
+  CountryService._();
 
-  Future<Country> loadCountryWithPhoneNumberLength(Country country) async {
-    final List<int>? phoneNumberLength = await _phoneNumberLengthService.getPhoneNumberLength(country.code);
+  static final PhoneNumberLengthService _phoneNumberLengthService =
+      PhoneNumberLengthService();
+
+  static Future<Country> loadCountryWithPhoneNumberLength(Country country) async {
+    final List<int>? phoneNumberLength =
+        await _phoneNumberLengthService.getPhoneNumberLength(regionCode:country.code);
     return country.copyWith(phoneNumberLength: phoneNumberLength);
   }
+
+  // Parse the JSON string into a list of dynamic objects.
+  static final List<dynamic> countryList =
+      json.decode(StringConstants.countryJson) as List<dynamic>;
 }

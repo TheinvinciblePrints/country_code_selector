@@ -34,11 +34,12 @@ class Country {
       emoji: json['emoji'] != null ? json['emoji'] as String : '',
       image: 'assets/flags/${(json['code'] as String).toLowerCase()}.svg',
       dialCodes: json['dialCodes'] != null
-          ? List<String>.from(json['dialCodes'] as List<String>)
+          ? List<String>.from((json['dialCodes'] as List<dynamic>)
+              .map((dynamic item) => item as String))
           : <String>[],
       phoneNumberLength: json['phoneNumberLength'] != null
           ? List<int>.from(json['phoneNumberLength'] as List<int>)
-          : null,
+          : <int>[],
     );
   }
 
@@ -93,11 +94,12 @@ class Country {
 
   /// Localizes the country's name based on the current [BuildContext].
   ///
-  /// This method uses [CountrySelectorLocalizations] to translate the country name
+  /// This method uses [CountryCodeSelectorLocalizations] to translate the country name
   /// if a translation is available. Otherwise, it returns the original name.
   Country localize(BuildContext context) {
     return copyWith(
-      name: CountrySelectorLocalizations.of(context)?.translate(code) ?? name,
+      name:
+          CountryCodeSelectorLocalizations.of(context)?.translate(code) ?? name,
     );
   }
 

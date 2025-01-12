@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CountryCodeSelector extends StatelessWidget {
-  const CountryCodeSelector({super.key});
+class CountryCodeSelectorWidget extends StatelessWidget {
+  const CountryCodeSelectorWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

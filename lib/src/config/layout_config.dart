@@ -105,6 +105,7 @@ enum DisplayOrder {
   flagCodeAndCountryName,
   codeFlagAndCountryName,
   nameCodeAndFlag,
+  codeCountryNameAndFlag
 }
 
 /// Enum to define the display mode of the flag (square or round).

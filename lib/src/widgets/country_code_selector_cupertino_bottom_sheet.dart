@@ -53,8 +53,7 @@ class CountryCodeSelectorCupertinoBottomSheet extends StatefulWidget {
 }
 
 class _CountryCodeSelectorCupertinoBottomSheetState
-    extends State<CountryCodeSelectorCupertinoBottomSheet>
-    with CountrySelectorMixin {
+    extends State<CountryCodeSelectorCupertinoBottomSheet> {
   Country? selectedItem;
   List<Country> countriesElements = <Country>[];
   int initialItem = 0;
@@ -70,7 +69,7 @@ class _CountryCodeSelectorCupertinoBottomSheetState
   void initState() {
     super.initState();
 
-    countriesElements = countryList
+    countriesElements = CountryService.countryList
         .map((dynamic json) => Country.fromJson(json as Map<String, dynamic>))
         .toList();
 
@@ -225,7 +224,7 @@ class _CountryCodeSelectorCupertinoBottomSheetState
                                     _defaultTextStyle.fontSize!),
                             child: Text(
                               textAlign: TextAlign.start,
-                              countriesElements[index].toString(),
+                              countriesElements[index].code,
                               overflow: TextOverflow.fade,
                               style: widget.layoutConfig?.textStyle ??
                                   _defaultTextStyle,

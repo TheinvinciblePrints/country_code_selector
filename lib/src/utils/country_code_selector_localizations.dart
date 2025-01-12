@@ -5,26 +5,29 @@ import 'package:flutter/services.dart';
 
 /// Handles localization for the CountrySelector, providing translated strings
 /// based on the current locale.
-class CountrySelectorLocalizations {
+class CountryCodeSelectorLocalizations {
   /// Creates a localization instance for the given locale.
-  CountrySelectorLocalizations(this.locale);
+  CountryCodeSelectorLocalizations(this.locale);
 
   /// The locale for which this localization instance is created.
   final Locale locale;
 
   /// Stores the localized values, where each locale maps to a dictionary of
   /// string key-value pairs.
-  final Map<String, Map<String, String>> _localizedValues = <String, Map<String, String>>{};
+  final Map<String, Map<String, String>> _localizedValues =
+      <String, Map<String, String>>{};
 
-  /// Retrieves the [CountrySelectorLocalizations] instance from the given
+  /// Retrieves the [CountryCodeSelectorLocalizations] instance from the given
   /// [BuildContext].
   ///
   /// This is used to access the localized strings throughout the app.
-  static CountrySelectorLocalizations? of(BuildContext context) {
-    return Localizations.of<CountrySelectorLocalizations>(context, CountrySelectorLocalizations);
+  static CountryCodeSelectorLocalizations? of(BuildContext context) {
+    return Localizations.of<CountryCodeSelectorLocalizations>(
+        context, CountryCodeSelectorLocalizations);
   }
 
-  static LocalizationsDelegate<CountrySelectorLocalizations> delegate = const CountrySelectorLocalizationsDelegate();
+  static LocalizationsDelegate<CountryCodeSelectorLocalizations> delegate =
+      const CountryCodeSelectorLocalizationsDelegate();
 
   /// Loads the localized strings from the JSON file corresponding to the given locale.
   ///
@@ -32,13 +35,16 @@ class CountrySelectorLocalizations {
   /// with the filename corresponding to the locale's language code.
   Future<bool> load(Locale locale) async {
     // Load the JSON file for the current locale
-    final String jsonString = await rootBundle.loadString('packages/country_code_selector/i18n/${locale.languageCode}.json');
+    final String jsonString = await rootBundle.loadString(
+        'packages/country_code_selector/i18n/${locale.languageCode}.json');
 
     // Decode the JSON file into a Map
-    final Map<String, dynamic> jsonMap = json.decode(jsonString) as Map<String, dynamic>;
+    final Map<String, dynamic> jsonMap =
+        json.decode(jsonString) as Map<String, dynamic>;
 
     // Populate _localizedValues with the key-value pairs for the current locale
-    _localizedValues[locale.languageCode] = jsonMap.map((String key, dynamic value) {
+    _localizedValues[locale.languageCode] =
+        jsonMap.map((String key, dynamic value) {
       return MapEntry<String, String>(key, value.toString());
     });
 
@@ -54,19 +60,20 @@ class CountrySelectorLocalizations {
   }
 }
 
-/// A delegate class that helps in loading the [CountrySelectorLocalizations]
+/// A delegate class that helps in loading the [CountryCodeSelectorLocalizations]
 /// for the app based on the current locale.
-class CountrySelectorLocalizationsDelegate extends LocalizationsDelegate<CountrySelectorLocalizations> {
-  /// Creates a constant [CountrySelectorLocalizationsDelegate] instance.
-  const CountrySelectorLocalizationsDelegate();
+class CountryCodeSelectorLocalizationsDelegate
+    extends LocalizationsDelegate<CountryCodeSelectorLocalizations> {
+  /// Creates a constant [CountryCodeSelectorLocalizationsDelegate] instance.
+  const CountryCodeSelectorLocalizationsDelegate();
 
   /// Determines whether the delegate supports the given locale.
   ///
   /// This checks if the locale's language code is supported.
   @override
   bool isSupported(Locale locale) => <String>[
-        'af',
         'am',
+        'af',
         'ar',
         'as',
         'az',
@@ -165,8 +172,9 @@ class CountrySelectorLocalizationsDelegate extends LocalizationsDelegate<Country
   ///
   /// This method is called to load the localized strings when the locale changes.
   @override
-  Future<CountrySelectorLocalizations> load(Locale locale) async {
-    final CountrySelectorLocalizations localizations = CountrySelectorLocalizations(locale);
+  Future<CountryCodeSelectorLocalizations> load(Locale locale) async {
+    final CountryCodeSelectorLocalizations localizations =
+        CountryCodeSelectorLocalizations(locale);
     await localizations.load(locale);
     return localizations;
   }
@@ -175,5 +183,5 @@ class CountrySelectorLocalizationsDelegate extends LocalizationsDelegate<Country
   ///
   /// Returning `false` as the localizations should not reload in this case.
   @override
-  bool shouldReload(CountrySelectorLocalizationsDelegate old) => false;
+  bool shouldReload(CountryCodeSelectorLocalizationsDelegate old) => false;
 }

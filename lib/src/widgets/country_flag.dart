@@ -12,7 +12,7 @@ class CountryFlag extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       assetName,
-      package: 'country_code_picker',
+      package: 'country_code_selector',
       width: flagWidth ?? 24,
       height: flagHeight ?? 18,
       fit: BoxFit.cover,

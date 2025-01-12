@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../country_code_selector.dart';
 
-class CountryCodeSelectorDropdown extends StatefulWidget {
-  const CountryCodeSelectorDropdown({
+class CountryCodeSelectorDropDown extends StatefulWidget {
+  const CountryCodeSelectorDropDown({
     super.key,
     this.iconSize = 24,
     this.onTap,
@@ -59,12 +59,11 @@ class CountryCodeSelectorDropdown extends StatefulWidget {
   final String? selectInitialCountry;
 
   @override
-  State<CountryCodeSelectorDropdown> createState() =>
+  State<CountryCodeSelectorDropDown> createState() =>
       _CountryCodeDropdownState();
 }
 
-class _CountryCodeDropdownState extends State<CountryCodeSelectorDropdown>
-    with CountrySelectorMixin {
+class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
   List<Country> countriesElements = <Country>[];
   List<Country> favoritesCountries = <Country>[];
   List<DropdownMenuItem<Country>> items = <DropdownMenuItem<Country>>[];
@@ -81,7 +80,7 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropdown>
 
   @override
   void initState() {
-    countriesElements = countryList
+    countriesElements = CountryService.countryList
         .map((dynamic json) => Country.fromJson(json as Map<String, dynamic>))
         .toList();
 
@@ -137,7 +136,7 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropdown>
   }
 
   @override
-  void didUpdateWidget(covariant CountryCodeSelectorDropdown oldWidget) {
+  void didUpdateWidget(covariant CountryCodeSelectorDropDown oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.selectInitialCountry != widget.selectInitialCountry) {
       if (widget.selectInitialCountry != null) {
@@ -196,7 +195,7 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropdown>
                                       ?.fontSize ??
                                   _defaultTextStyle.fontSize!),
                           child: Text(
-                            '$e(${e.code})',
+                            e.code,
                             style: widget.layoutConfig?.textStyle ??
                                 Theme.of(context).dropdownMenuTheme.textStyle ??
                                 _defaultTextStyle,
@@ -232,7 +231,7 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropdown>
                                       .textStyle
                                       ?.fontSize ??
                                   _defaultTextStyle.fontSize!),
-                          child: Text('$e(${e.code})',
+                          child: Text(e.code,
                               style: widget.layoutConfig?.textStyle ??
                                   Theme.of(context)
                                       .dropdownMenuTheme
