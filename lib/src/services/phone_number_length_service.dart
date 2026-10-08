@@ -6,7 +6,8 @@ class PhoneNumberLengthService {
 
   Future<List<int>?> getPhoneNumberLength({required String regionCode}) async {
     try {
-      final PhoneMetadata? phoneNumberMetadata = _phoneUtil.getMetadataForRegion(regionCode: regionCode);
+      final PhoneMetadata? phoneNumberMetadata =
+          _phoneUtil.getMetadataForRegion(regionCode: regionCode);
       if (phoneNumberMetadata != null) {
         return phoneNumberMetadata.mobile.possibleLength;
       }

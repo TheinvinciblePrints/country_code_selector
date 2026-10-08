@@ -2,7 +2,7 @@
 ///
 /// This library includes constants, models, services, and utilities
 /// to facilitate the selection and handling of country codes in your Flutter app.
-library country_code_selector;
+library;
 
 export 'src/config/config.dart';
 export 'src/constants/constants.dart';

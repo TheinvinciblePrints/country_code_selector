@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../country_code_selector.dart';
+import '../utils/country_list_builder.dart';
 
 class CountryCodeSelectorDropDown extends StatefulWidget {
   const CountryCodeSelectorDropDown({
@@ -65,7 +66,6 @@ class CountryCodeSelectorDropDown extends StatefulWidget {
 
 class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
   List<Country> countriesElements = <Country>[];
-  List<Country> favoritesCountries = <Country>[];
   List<DropdownMenuItem<Country>> items = <DropdownMenuItem<Country>>[];
   Country? selectedItem;
 
@@ -80,72 +80,34 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
 
   @override
   void initState() {
-    countriesElements = CountryService.countryList
-        .map((dynamic json) => Country.fromJson(json as Map<String, dynamic>))
-        .toList();
-
-    if (widget.countryListConfig?.comparator != null) {
-      countriesElements.sort(widget.countryListConfig?.comparator);
-    }
-
-    if (widget.countryListConfig?.countryFilter != null &&
-        widget.countryListConfig!.countryFilter!.isNotEmpty) {
-      final List<String>? uppercaseFilterElement = widget
-          .countryListConfig?.countryFilter
-          ?.map((String e) => e.toUpperCase())
-          .toList();
-      countriesElements = countriesElements
-          .where((Country element) =>
-              uppercaseFilterElement!.contains(element.code))
-          .toList();
-      if (countriesElements.isEmpty) {
-        throw Exception('Invalid country list');
-      }
-    }
-
     super.initState();
-    if (widget.selectInitialCountry != null) {
-      selectedItem = countriesElements.firstWhere(
-          (Country element) =>
-              element.code == widget.selectInitialCountry?.toUpperCase(),
-          orElse: () => countriesElements
-              .firstWhere((Country element) => element.code == 'IN'));
-    } else {
-      if (widget.countryListConfig?.countryFilter != null) {
-        selectedItem ??= countriesElements.first;
-      } else {
-        selectedItem = countriesElements
-            .firstWhere((Country element) => element.code == 'IN');
+    countriesElements = buildCountryList(widget.countryListConfig);
+    selectedItem = _findCountry(widget.selectInitialCountry);
+
+    // Report the initial selection after the first frame so a parent calling
+    // setState in onSelectValue doesn't trigger a setState-during-build error.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && selectedItem != null) {
+        widget.onSelectValue(selectedItem!);
       }
-    }
-    if (widget.countryListConfig?.excludeCountry != null &&
-        widget.countryListConfig!.excludeCountry!.isNotEmpty) {
-      for (int i = 0;
-          i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
-          i++) {
-        for (int j = 0; j < countriesElements.length; j++) {
-          if (widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
-              countriesElements[j].code) {
-            countriesElements.removeAt(j);
-            break;
-          }
-        }
-      }
-    }
-    widget.onSelectValue(selectedItem!);
+    });
+  }
+
+  /// Returns the country matching [code], or the first country in the list.
+  Country _findCountry(String? code) {
+    final String? upperCode = code?.toUpperCase();
+    return countriesElements.firstWhere(
+      (Country element) => element.code.toUpperCase() == upperCode,
+      orElse: () => countriesElements.first,
+    );
   }
 
   @override
   void didUpdateWidget(covariant CountryCodeSelectorDropDown oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.selectInitialCountry != widget.selectInitialCountry) {
-      if (widget.selectInitialCountry != null) {
-        selectedItem = countriesElements.firstWhere(
-          (Country element) =>
-              element.code == widget.selectInitialCountry?.toUpperCase(),
-          orElse: () => countriesElements[0],
-        );
-      }
+    if (oldWidget.selectInitialCountry != widget.selectInitialCountry &&
+        widget.selectInitialCountry != null) {
+      selectedItem = _findCountry(widget.selectInitialCountry);
     }
   }
 
@@ -154,6 +116,7 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
     super.didChangeDependencies();
     countriesElements =
         countriesElements.map((Country e) => e.localize(context)).toList();
+    selectedItem = selectedItem?.localize(context);
   }
 
   @override

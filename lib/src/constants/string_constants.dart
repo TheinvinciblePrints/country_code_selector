@@ -1196,12 +1196,6 @@ class StringConstants {
       "dialCodes": ["+252"]
     },
     {
-      "name": "Somalia",
-      "code": "SO",
-      "emoji": "🇸🇴",
-      "dialCodes": ["+252"]
-    },
-    {
       "name": "South Africa",
       "code": "ZA",
       "emoji": "🇿🇦",

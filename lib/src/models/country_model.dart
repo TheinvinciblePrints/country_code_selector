@@ -38,7 +38,9 @@ class Country {
               .map((dynamic item) => item as String))
           : <String>[],
       phoneNumberLength: json['phoneNumberLength'] != null
-          ? List<int>.from(json['phoneNumberLength'] as List<int>)
+          ? (json['phoneNumberLength'] as List<dynamic>)
+              .map((dynamic item) => item as int)
+              .toList()
           : <int>[],
     );
   }
@@ -63,15 +65,17 @@ class Country {
   /// This is optional and can be `null` if no information is available.
   final List<int>? phoneNumberLength;
 
-  /// Equality operator to compare two [Country] objects based on their name.
+  /// Equality operator to compare two [Country] objects based on their ISO code.
   ///
-  /// Returns `true` if the [name] of both countries is the same.
+  /// Returns `true` if the [code] of both countries is the same, so a country
+  /// is still equal to its localized copy.
   @override
-  bool operator ==(Object other) => (other is Country) && other.name == name;
+  bool operator ==(Object other) =>
+      (other is Country) && other.code.toUpperCase() == code.toUpperCase();
 
-  /// Returns a hash code based on the country's name.
+  /// Returns a hash code based on the country's ISO code.
   @override
-  int get hashCode => name.hashCode;
+  int get hashCode => code.toUpperCase().hashCode;
 
   /// Converts the [Country] object into a map suitable for JSON encoding.
   ///

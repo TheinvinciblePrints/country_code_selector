@@ -41,8 +41,8 @@ class CountryCodeSelector {
   /// the country name is localized using the app's localization system. It also includes
   /// the phone number length for the country by calling [loadCountryWithPhoneNumberLength].
   ///
-  /// If no matching country is found for the device's locale, the method throws an exception.
-  /// If the device does not have a country code, it defaults to 'US'.
+  /// If the locale has no country code, or it isn't in the dataset, it
+  /// defaults to 'US'.
   ///
   /// Example usage:
   /// ```dart
@@ -51,8 +51,6 @@ class CountryCodeSelector {
   /// ```
   ///
   /// Returns a [Future] that resolves to a [Country] object with localized name and phone number length.
-  ///
-  /// Throws an [Exception] if no country is found for the locale.
   static Future<Country> getDefaultCountry(
       {required BuildContext context}) async {
     // Read the predefined JSON data from constants.
@@ -67,16 +65,16 @@ class CountryCodeSelector {
     // Get the device's ISO country code or fallback to 'US' if not available.
     final String deviceIsoCode = deviceLocale.countryCode ?? 'US';
 
-    // Find the country that corresponds to the device's ISO code in the dataset.
-    final Map<String, dynamic> countryJson = countryList
-        .cast<Map<String, dynamic>>()
-        .firstWhere(
+    // Find the country that corresponds to the device's ISO code in the
+    // dataset, falling back to the US.
+    final List<Map<String, dynamic>> countries =
+        countryList.cast<Map<String, dynamic>>();
+    Map<String, dynamic> findByCode(String code) => countries.firstWhere(
           (Map<String, dynamic> country) =>
-              country['code'].toString().toUpperCase() ==
-              deviceIsoCode.toUpperCase(),
-          orElse: () =>
-              throw Exception('Country for locale $deviceIsoCode not found.'),
+              country['code'].toString().toUpperCase() == code.toUpperCase(),
+          orElse: () => findByCode('US'),
         );
+    final Map<String, dynamic> countryJson = findByCode(deviceIsoCode);
 
     // Create a Country object from the JSON data.
     final Country country = Country.fromJson(countryJson);
@@ -216,8 +214,8 @@ class CountryCodeSelector {
               closeIconWidget: closeIconWidget,
               layoutConfig: layoutConfig,
               borderRadius: borderRadius,
-              backGroundColor:
-                  backgroundColor ?? Theme.of(context).dialogBackgroundColor,
+              backGroundColor: backgroundColor ??
+                  Theme.of(context).dialogTheme.backgroundColor,
               countryTilePadding: countryTilePadding,
               emptySearchBuilder: emptySearchBuilder,
               showSearchBar: showSearchBar,

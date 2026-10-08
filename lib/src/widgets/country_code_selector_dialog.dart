@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../country_code_selector.dart';
+import '../utils/country_list_builder.dart';
 
 class CountryCodeSelectorDialog extends StatefulWidget {
   const CountryCodeSelectorDialog({
@@ -49,70 +49,28 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
   List<Country> countriesElements = <Country>[];
   List<Country> favoriteCountries = <Country>[];
   List<Country> filteredElements = <Country>[];
+  String _query = '';
 
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 14);
 
   @override
   void initState() {
     super.initState();
-
-    if (widget.listOfCountries == null ||
-        (widget.listOfCountries?.isEmpty ?? false)) {
-      countriesElements = CountryService.countryList
-          .map((dynamic json) => Country.fromJson(json as Map<String, dynamic>))
-          .toList();
-    } else {
-      countriesElements = widget.listOfCountries!
-          .map((Map<String, dynamic> element) => Country.fromJson(element))
-          .toList();
-    }
-
-    if (widget.countryListConfig?.comparator != null) {
-      countriesElements.sort(widget.countryListConfig?.comparator);
-    }
-
-    if (widget.countryListConfig?.countryFilter != null &&
-        widget.countryListConfig!.countryFilter!.isNotEmpty) {
-      final List<String>? uppercaseFilterElement = widget
-          .countryListConfig?.countryFilter
-          ?.map((String e) => e.toUpperCase())
-          .toList();
-      countriesElements = countriesElements
-          .where((Country element) =>
-              uppercaseFilterElement!.contains(element.code))
-          .toList();
-      if (countriesElements.isEmpty) {
-        throw Exception('Invalid country list');
-      }
-    }
-    filteredElements = countriesElements;
-    if (widget.countryListConfig?.excludeCountry != null &&
-        widget.countryListConfig!.excludeCountry!.isNotEmpty) {
-      for (int i = 0;
-          i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
-          i++) {
-        for (int j = 0; j < countriesElements.length; j++) {
-          if (widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
-              countriesElements[j].code) {
-            countriesElements.removeAt(j);
-            break;
-          }
-        }
-      }
-    }
-    if (widget.favouriteCountries != null) {
-      favoriteCountries = countriesElements
-          .where((Country element) =>
-              widget.favouriteCountries?.contains(element.code) ?? false)
-          .toList();
-    }
+    countriesElements = buildCountryList(
+      widget.countryListConfig,
+      source: widget.listOfCountries,
+    );
   }
 
   @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Localize first, then derive the visible lists from the localized data.
     countriesElements =
         countriesElements.map((Country e) => e.localize(context)).toList();
-    super.didChangeDependencies();
+    favoriteCountries =
+        favouritesOf(countriesElements, widget.favouriteCountries);
+    filteredElements = searchCountries(countriesElements, _query);
   }
 
   double calculateTextWidth(double size) {
@@ -126,8 +84,9 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
       width: widget.size?.width ?? MediaQuery.of(context).size.width * 0.8,
       height: widget.size?.height ?? MediaQuery.of(context).size.height * 0.72,
       decoration: BoxDecoration(
-        color:
-            widget.backGroundColor ?? Theme.of(context).dialogBackgroundColor,
+        color: widget.backGroundColor ??
+            Theme.of(context).dialogTheme.backgroundColor ??
+            Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: widget.borderRadius ??
             const BorderRadius.all(Radius.circular(16.0)),
       ),
@@ -195,7 +154,7 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
                       prefixIcon: Container(
                         padding: const EdgeInsets.all(9),
                         child: widget.searchStyle?.searchIcon ??
-                            SvgPicture.asset(
+                            Image.asset(
                               color: Colors.grey.shade400,
                               'assets/icons/search.png',
                               package: 'country_code_selector',
@@ -269,7 +228,7 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
     return SliverFillRemaining(
       child: Center(
         child: Text(CountryCodeSelectorLocalizations.of(context)
-                ?.translate('no_country') ??
+                ?.lookup('no_country') ??
             'Not found'),
       ),
     );
@@ -366,15 +325,10 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
     }
   }
 
-  void _filterElements(String s) {
-    s = s.toUpperCase();
+  void _filterElements(String query) {
     setState(() {
-      filteredElements = countriesElements
-          .where((Country e) =>
-              e.code.contains(s) ||
-              e.dialCodes.contains(s) ||
-              e.name.toUpperCase().contains(s))
-          .toList();
+      _query = query;
+      filteredElements = searchCountries(countriesElements, query);
     });
   }
 

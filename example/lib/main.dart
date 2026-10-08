@@ -13,18 +13,12 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    _getListOfCountries();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           dividerColor: Colors.transparent,
-          cardTheme: const CardTheme(color: Colors.white),
+          cardTheme: const CardThemeData(color: Colors.white),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                   textStyle: const TextStyle(color: Colors.black)))),
@@ -108,12 +102,6 @@ class MyAppState extends State<MyApp> {
       ],
       home: const HomePage(),
     );
-  }
-
-  void _getListOfCountries() async {
-    final ab = await CountryCodeSelector.getCountries();
-
-    debugPrint('CountryCodeSelector :: ${ab.length}');
   }
 }
 
@@ -226,12 +214,15 @@ class _HomePageState extends State<HomePage> {
                                       },
                                     );
                                   },
-                                  child: ButtonRowWidget(
-                                    dialCode: initialDialogDefaultValue
-                                        ?.dialCodes.first,
-                                    flagUri: initialDialogDefaultValue?.image,
-                                    name: initialDialogDefaultValue?.name,
-                                  ),
+                                  child: initialDialogCustomValue != null
+                                      ? ButtonRowWidget(
+                                          dialCode: initialDialogDefaultValue
+                                              ?.dialCodes.first,
+                                          flagUri:
+                                              initialDialogDefaultValue?.image,
+                                          name: initialDialogDefaultValue?.name,
+                                        )
+                                      : const SizedBox.shrink(),
                                 )
                               ],
                             ),
@@ -261,8 +252,7 @@ class _HomePageState extends State<HomePage> {
                                             flagHeight: 24,
                                             elementsOrder: DisplayOrder
                                                 .codeCountryNameAndFlag,
-                                            flagDecoration: BoxDecoration(
-                                                shape: BoxShape.circle)),
+                                            flagMode: FlagMode.round),
                                       ).then(
                                         (value) {
                                           if (value != null) {
@@ -274,12 +264,16 @@ class _HomePageState extends State<HomePage> {
                                         },
                                       );
                                     },
-                                    child: ButtonRowWidget(
-                                      dialCode: initialDialogCustomValue
-                                          ?.dialCodes.first,
-                                      flagUri: initialDialogCustomValue?.image,
-                                      name: initialDialogCustomValue?.name,
-                                    ),
+                                    child: initialDialogCustomValue != null
+                                        ? ButtonRowWidget(
+                                            dialCode: initialDialogCustomValue
+                                                ?.dialCodes.first,
+                                            flagUri:
+                                                initialDialogCustomValue?.image,
+                                            name:
+                                                initialDialogCustomValue?.name,
+                                          )
+                                        : const SizedBox.shrink(),
                                   )
                                 ],
                               ),
@@ -354,8 +348,7 @@ class _HomePageState extends State<HomePage> {
                                         flagHeight: 24,
                                         elementsOrder:
                                             DisplayOrder.codeCountryNameAndFlag,
-                                        flagDecoration: BoxDecoration(
-                                            shape: BoxShape.circle),
+                                        flagMode: FlagMode.round,
                                       ),
                                     ).then((value) {
                                       if (value != null) {
@@ -452,8 +445,7 @@ class _HomePageState extends State<HomePage> {
                                           flagHeight: 24,
                                           elementsOrder: DisplayOrder
                                               .codeCountryNameAndFlag,
-                                          flagDecoration: BoxDecoration(
-                                              shape: BoxShape.circle),
+                                          flagMode: FlagMode.round,
                                         ),
                                       ).then(
                                         (value) {
@@ -502,8 +494,7 @@ class _HomePageState extends State<HomePage> {
                             showCountryName: true,
                             showCountryCode: true,
                             showCountryFlag: true,
-                            flagDecoration:
-                                BoxDecoration(shape: BoxShape.circle),
+                            flagMode: FlagMode.round,
                             flagWidth: 18,
                             flagHeight: 18,
                             elementsOrder: DisplayOrder.flagCodeAndCountryName,

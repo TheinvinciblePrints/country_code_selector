@@ -8,18 +8,18 @@ issue_tracker: https://github.com/TheinvinciblePrints/country_code_selector/issu
 
 environment:
   sdk: ^3.5.0
-  flutter: ">=1.17.0"
+  flutter: ">=3.24.0"
 
 dependencies:
-  dlibphonenumber: ^1.1.28
+  dlibphonenumber: ^1.1.73
   flutter:
     sdk: flutter
-  flutter_svg: ^2.0.16
+  flutter_svg: ^2.3.0
   flutter_localizations:
     sdk: flutter
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
 
@@ -27,5 +27,4 @@ flutter:
   assets:
     - assets/icons/
     - assets/flags/
-    - packages/country_code_selector/i18n/af.json
-    - packages/country_code_selector/i18n/en.json
+    - assets/i18n/

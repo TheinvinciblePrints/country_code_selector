@@ -10,9 +10,10 @@ class CountryService {
   static final PhoneNumberLengthService _phoneNumberLengthService =
       PhoneNumberLengthService();
 
-  static Future<Country> loadCountryWithPhoneNumberLength(Country country) async {
-    final List<int>? phoneNumberLength =
-        await _phoneNumberLengthService.getPhoneNumberLength(regionCode:country.code);
+  static Future<Country> loadCountryWithPhoneNumberLength(
+      Country country) async {
+    final List<int>? phoneNumberLength = await _phoneNumberLengthService
+        .getPhoneNumberLength(regionCode: country.code);
     return country.copyWith(phoneNumberLength: phoneNumberLength);
   }
 

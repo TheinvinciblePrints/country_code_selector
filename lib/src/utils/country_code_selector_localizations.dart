@@ -26,17 +26,26 @@ class CountryCodeSelectorLocalizations {
         context, CountryCodeSelectorLocalizations);
   }
 
-  static LocalizationsDelegate<CountryCodeSelectorLocalizations> delegate =
-      const CountryCodeSelectorLocalizationsDelegate();
+  /// The delegate to add to your app's `localizationsDelegates`.
+  static const LocalizationsDelegate<CountryCodeSelectorLocalizations>
+      delegate = CountryCodeSelectorLocalizationsDelegate();
+
+  /// The language used when the requested one fails to load.
+  static const String fallbackLanguageCode = 'en';
 
   /// Loads the localized strings from the JSON file corresponding to the given locale.
   ///
-  /// The JSON file should be placed under `packages/country_code_selector/i18n/`
-  /// with the filename corresponding to the locale's language code.
+  /// The JSON files are bundled under `assets/i18n/` with the filename
+  /// corresponding to the locale's language code. If the file can't be loaded,
+  /// the English translations are used instead.
   Future<bool> load(Locale locale) async {
-    // Load the JSON file for the current locale
-    final String jsonString = await rootBundle.loadString(
-        'packages/country_code_selector/i18n/${locale.languageCode}.json');
+    String jsonString;
+    try {
+      jsonString = await rootBundle.loadString(_assetPath(locale.languageCode));
+    } catch (_) {
+      jsonString =
+          await rootBundle.loadString(_assetPath(fallbackLanguageCode));
+    }
 
     // Decode the JSON file into a Map
     final Map<String, dynamic> jsonMap =
@@ -51,13 +60,16 @@ class CountryCodeSelectorLocalizations {
     return true;
   }
 
+  static String _assetPath(String languageCode) =>
+      'packages/country_code_selector/assets/i18n/$languageCode.json';
+
+  /// Returns the translation for [key], or `null` if there is none.
+  String? lookup(String key) => _localizedValues[locale.languageCode]?[key];
+
   /// Translates the given [code] based on the current locale.
   ///
   /// If a translation is not available, it returns the original [code].
-  String translate(String code) {
-    // Safely access the locale map and return the translated string
-    return _localizedValues[locale.languageCode]?[code] ?? code;
-  }
+  String translate(String code) => lookup(code) ?? code;
 }
 
 /// A delegate class that helps in loading the [CountryCodeSelectorLocalizations]

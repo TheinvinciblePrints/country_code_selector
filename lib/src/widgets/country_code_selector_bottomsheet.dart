@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../country_code_selector.dart';
+import '../utils/country_list_builder.dart';
 
 class CountryCodeSelectorBottomSheet extends StatefulWidget {
   const CountryCodeSelectorBottomSheet(
@@ -35,69 +36,27 @@ class CountryCodeSelectorBottomSheet extends StatefulWidget {
 class _CountryCodeSelectorBottomSheetState
     extends State<CountryCodeSelectorBottomSheet> {
   List<Country> countriesElements = <Country>[];
-  Country? selectedItem;
   List<Country> favoriteCountries = <Country>[];
   List<Country> filteredElements = <Country>[];
-  double? setWidthOfDialog;
+  String _query = '';
 
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 14);
 
   @override
   void initState() {
-    countriesElements = CountryService.countryList
-        .map((dynamic element) =>
-            Country.fromJson(element as Map<String, dynamic>))
-        .toList();
-    if (widget.countryListConfig?.comparator != null) {
-      countriesElements.sort(widget.countryListConfig?.comparator);
-    }
-
-    if (widget.countryListConfig?.countryFilter != null &&
-        widget.countryListConfig!.countryFilter!.isNotEmpty) {
-      final List<String>? uppercaseFilterElement = widget
-          .countryListConfig?.countryFilter
-          ?.map((String e) => e.toUpperCase())
-          .toList();
-      countriesElements = countriesElements
-          .where((Country element) =>
-              uppercaseFilterElement!.contains(element.code))
-          .toList();
-      if (countriesElements.isEmpty) {
-        throw Exception('Invalid country list');
-      }
-    }
-
-    filteredElements = countriesElements;
-    if (widget.countryListConfig?.excludeCountry != null &&
-        widget.countryListConfig!.excludeCountry!.isNotEmpty) {
-      for (int i = 0;
-          i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
-          i++) {
-        for (int j = 0; j < countriesElements.length; j++) {
-          if (widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
-              countriesElements[j].code) {
-            countriesElements.removeAt(j);
-            break;
-          }
-        }
-      }
-    }
-
-    if (widget.favouriteCountries != null) {
-      favoriteCountries = countriesElements
-          .where((Country element) =>
-              widget.favouriteCountries?.contains(element.code) ?? false)
-          .toList();
-    }
-
     super.initState();
+    countriesElements = buildCountryList(widget.countryListConfig);
   }
 
   @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Localize first, then derive the visible lists from the localized data.
     countriesElements =
         countriesElements.map((Country e) => e.localize(context)).toList();
-    super.didChangeDependencies();
+    favoriteCountries =
+        favouritesOf(countriesElements, widget.favouriteCountries);
+    filteredElements = searchCountries(countriesElements, _query);
   }
 
   double calculateSize(double size) {
@@ -241,7 +200,7 @@ class _CountryCodeSelectorBottomSheetState
     return SliverFillRemaining(
       child: Center(
         child: Text(CountryCodeSelectorLocalizations.of(context)
-                ?.translate('no_country') ??
+                ?.lookup('no_country') ??
             'Not found'),
       ),
     );
@@ -336,15 +295,10 @@ class _CountryCodeSelectorBottomSheetState
     }
   }
 
-  void _filterElements(String s) {
-    s = s.toUpperCase();
+  void _filterElements(String query) {
     setState(() {
-      filteredElements = countriesElements
-          .where((Country e) =>
-              e.code.contains(s) ||
-              e.dialCodes.contains(s) ||
-              e.name.toUpperCase().contains(s))
-          .toList();
+      _query = query;
+      filteredElements = searchCountries(countriesElements, query);
     });
   }
 

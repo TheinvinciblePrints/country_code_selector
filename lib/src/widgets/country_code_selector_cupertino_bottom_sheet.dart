@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../country_code_selector.dart';
+import '../utils/country_list_builder.dart';
 
 class CountryCodeSelectorCupertinoBottomSheet extends StatefulWidget {
   const CountryCodeSelectorCupertinoBottomSheet({
@@ -54,9 +55,8 @@ class CountryCodeSelectorCupertinoBottomSheet extends StatefulWidget {
 
 class _CountryCodeSelectorCupertinoBottomSheetState
     extends State<CountryCodeSelectorCupertinoBottomSheet> {
-  Country? selectedItem;
   List<Country> countriesElements = <Country>[];
-  int initialItem = 0;
+  FixedExtentScrollController? _scrollController;
 
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 14);
 
@@ -68,44 +68,7 @@ class _CountryCodeSelectorCupertinoBottomSheetState
   @override
   void initState() {
     super.initState();
-
-    countriesElements = CountryService.countryList
-        .map((dynamic json) => Country.fromJson(json as Map<String, dynamic>))
-        .toList();
-
-    if (widget.countryListConfig?.comparator != null) {
-      countriesElements.sort(widget.countryListConfig?.comparator);
-    }
-
-    if (widget.countryListConfig?.countryFilter != null &&
-        widget.countryListConfig!.countryFilter!.isNotEmpty) {
-      final List<String>? uppercaseFilterElement = widget
-          .countryListConfig?.countryFilter
-          ?.map((String e) => e.toUpperCase())
-          .toList();
-      countriesElements = countriesElements
-          .where((Country element) =>
-              uppercaseFilterElement!.contains(element.code))
-          .toList();
-      if (countriesElements.isEmpty) {
-        throw Exception('Invalid country list');
-      }
-    }
-
-    if ((widget.countryListConfig?.excludeCountry?.isNotEmpty ?? false) &&
-        widget.countryListConfig?.excludeCountry != null) {
-      for (int i = 0;
-          i < (widget.countryListConfig?.excludeCountry?.length ?? 0);
-          i++) {
-        for (int j = 0; j < countriesElements.length; j++) {
-          if (widget.countryListConfig?.excludeCountry?[i].toUpperCase() ==
-              countriesElements[j].code) {
-            countriesElements.removeAt(j);
-            break;
-          }
-        }
-      }
-    }
+    countriesElements = buildCountryList(widget.countryListConfig);
   }
 
   @override
@@ -114,15 +77,28 @@ class _CountryCodeSelectorCupertinoBottomSheetState
     countriesElements = countriesElements
         .map((Country element) => element.localize(context))
         .toList();
-    if (widget.setInitialValue != null) {
-      for (int i = 0; i < countriesElements.length; i++) {
-        if (widget.setInitialValue?.name == countriesElements[i].name) {
-          initialItem = i;
+
+    if (_scrollController == null) {
+      final int initialIndex = widget.setInitialValue == null
+          ? 0
+          : countriesElements.indexOf(widget.setInitialValue!);
+      final int initialItem = initialIndex < 0 ? 0 : initialIndex;
+      _scrollController = FixedExtentScrollController(initialItem: initialItem);
+
+      // Report the item shown on open, so closing without scrolling still
+      // returns a country.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          widget.onChanged(countriesElements[initialItem]);
         }
-      }
-    } else {
-      initialItem = 0;
+      });
     }
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -141,7 +117,7 @@ class _CountryCodeSelectorCupertinoBottomSheetState
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.grey.withValues(alpha: 0.2),
                   ),
                 ),
             magnification: widget.magnification,
@@ -151,13 +127,10 @@ class _CountryCodeSelectorCupertinoBottomSheetState
             itemExtent: widget.itemExtent ?? 32,
             backgroundColor: widget.backgroundColor,
             onSelectedItemChanged: (int value) {
-              setState(() {
-                HapticFeedback.heavyImpact();
-                widget.onChanged(countriesElements[value]);
-              });
+              HapticFeedback.heavyImpact();
+              widget.onChanged(countriesElements[value]);
             },
-            scrollController:
-                FixedExtentScrollController(initialItem: initialItem),
+            scrollController: _scrollController,
             children: List<Widget>.generate(
               countriesElements.length,
               (int index) {
@@ -192,7 +165,7 @@ class _CountryCodeSelectorCupertinoBottomSheetState
                                     _defaultTextStyle.fontSize!),
                             child: Text(
                               textAlign: TextAlign.start,
-                              countriesElements[index].toString(),
+                              countriesElements[index].code,
                               overflow: TextOverflow.fade,
                               style: widget.layoutConfig?.textStyle ??
                                   _defaultTextStyle,
