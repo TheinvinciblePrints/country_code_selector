@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../country_code_selector.dart';
-import '../utils/country_list_builder.dart';
 
 class CountryCodeSelectorCupertinoBottomSheet extends StatefulWidget {
   const CountryCodeSelectorCupertinoBottomSheet({
@@ -57,6 +56,7 @@ class _CountryCodeSelectorCupertinoBottomSheetState
     extends State<CountryCodeSelectorCupertinoBottomSheet> {
   List<Country> countriesElements = <Country>[];
   FixedExtentScrollController? _scrollController;
+  Country? _current;
 
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 14);
 
@@ -66,33 +66,40 @@ class _CountryCodeSelectorCupertinoBottomSheetState
   }
 
   @override
-  void initState() {
-    super.initState();
-    countriesElements = buildCountryList(widget.countryListConfig);
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    countriesElements = countriesElements
-        .map((Country element) => element.localize(context))
-        .toList();
+    // Re-resolve on locale changes so names and alphabetical order follow it.
+    countriesElements = CountryRepository.resolve(
+      widget.countryListConfig,
+      context: context,
+    );
+    final int index = _current == null && widget.setInitialValue == null
+        ? 0
+        : countriesElements.indexOf((_current ?? widget.setInitialValue)!);
+    final int item = index < 0 ? 0 : index;
 
     if (_scrollController == null) {
-      final int initialIndex = widget.setInitialValue == null
-          ? 0
-          : countriesElements.indexOf(widget.setInitialValue!);
-      final int initialItem = initialIndex < 0 ? 0 : initialIndex;
-      _scrollController = FixedExtentScrollController(initialItem: initialItem);
-
+      _scrollController = FixedExtentScrollController(initialItem: item);
       // Report the item shown on open, so closing without scrolling still
       // returns a country.
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          widget.onChanged(countriesElements[initialItem]);
+          _select(item);
+        }
+      });
+    } else {
+      // The order may have changed; keep the same country selected.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _scrollController!.hasClients) {
+          _scrollController!.jumpToItem(item);
         }
       });
     }
+  }
+
+  void _select(int index) {
+    _current = countriesElements[index];
+    widget.onChanged(_current!);
   }
 
   @override
@@ -128,7 +135,7 @@ class _CountryCodeSelectorCupertinoBottomSheetState
             backgroundColor: widget.backgroundColor,
             onSelectedItemChanged: (int value) {
               HapticFeedback.heavyImpact();
-              widget.onChanged(countriesElements[value]);
+              _select(value);
             },
             scrollController: _scrollController,
             children: List<Widget>.generate(

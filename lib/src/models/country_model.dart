@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../utils/utils.dart';
+import '../services/phone_number_length_service.dart';
+import '../utils/country_code_selector_localizations.dart';
 
 /// Represents a country with various associated details such as name, code, emoji, flag image, dial codes, and optional phone number length.
 @immutable
@@ -12,36 +13,38 @@ class Country {
   /// [name] is the name of the country.
   /// [code] is the ISO 3166-1 alpha-2 country code.
   /// [emoji] is the emoji representing the country's flag.
-  /// [image] is the URL to the country's flag image.
+  /// [image] is the asset path of the country's flag image.
   /// [dialCodes] is the list of dial codes associated with the country.
-  /// [phoneNumberLength] is an optional list of possible lengths for phone numbers in the country.
+  /// [phoneNumberLength] overrides the possible phone number lengths. When
+  /// omitted, they are looked up from the phone number metadata on first use.
   const Country({
     required this.name,
     required this.code,
     required this.emoji,
     required this.image,
     required this.dialCodes,
-    this.phoneNumberLength,
-  });
+    List<int>? phoneNumberLength,
+  }) : _phoneNumberLength = phoneNumberLength;
 
-  /// Creates a [Country] instance from a JSON map.
+  /// Creates a [Country] instance from a JSON map, as produced by [toMap].
   ///
-  /// If any required property is not present in the JSON, it defaults to an empty value or `null`.
+  /// Missing values default to empty, and [image] defaults to the bundled
+  /// flag for [code].
   factory Country.fromJson(Map<String, dynamic> json) {
+    final String code = json['code'] as String? ?? '';
     return Country(
-      name: json['name'] != null ? json['name'] as String : '',
-      code: json['code'] != null ? json['code'] as String : '',
-      emoji: json['emoji'] != null ? json['emoji'] as String : '',
-      image: 'assets/flags/${(json['code'] as String).toLowerCase()}.svg',
-      dialCodes: json['dialCodes'] != null
-          ? List<String>.from((json['dialCodes'] as List<dynamic>)
-              .map((dynamic item) => item as String))
-          : <String>[],
-      phoneNumberLength: json['phoneNumberLength'] != null
-          ? (json['phoneNumberLength'] as List<dynamic>)
-              .map((dynamic item) => item as int)
-              .toList()
-          : <int>[],
+      name: json['name'] as String? ?? '',
+      code: code,
+      emoji: json['emoji'] as String? ?? '',
+      image:
+          json['image'] as String? ?? 'assets/flags/${code.toLowerCase()}.svg',
+      dialCodes: (json['dialCodes'] as List<dynamic>?)
+              ?.map((dynamic item) => item as String)
+              .toList() ??
+          <String>[],
+      phoneNumberLength: (json['phoneNumberLength'] as List<dynamic>?)
+          ?.map((dynamic item) => item as int)
+          .toList(),
     );
   }
 
@@ -54,16 +57,24 @@ class Country {
   /// The emoji representing the country's flag (e.g., 🇺🇸 for the US).
   final String emoji;
 
-  /// The country's flag image.
+  /// The asset path of the country's flag image.
   final String image;
 
   /// A list of dialing codes for the country (e.g., ["+1"] for the US).
   final List<String> dialCodes;
 
-  /// A list of possible phone number lengths for the country.
+  /// The main dialing code (e.g., "+1"), or an empty string if there is none.
+  String get dialCode => dialCodes.isEmpty ? '' : dialCodes.first;
+
+  final List<int>? _phoneNumberLength;
+
+  /// The possible lengths of a mobile phone number in the country, without
+  /// the dial code.
   ///
-  /// This is optional and can be `null` if no information is available.
-  final List<int>? phoneNumberLength;
+  /// Uses the value passed to the constructor if any, otherwise it is looked
+  /// up from the phone number metadata. `null` if no information is available.
+  List<int>? get phoneNumberLength =>
+      _phoneNumberLength ?? PhoneNumberLengthService.lengthsFor(code);
 
   /// Equality operator to compare two [Country] objects based on their ISO code.
   ///
@@ -101,10 +112,9 @@ class Country {
   /// This method uses [CountryCodeSelectorLocalizations] to translate the country name
   /// if a translation is available. Otherwise, it returns the original name.
   Country localize(BuildContext context) {
-    return copyWith(
-      name:
-          CountryCodeSelectorLocalizations.of(context)?.translate(code) ?? name,
-    );
+    final String? translated =
+        CountryCodeSelectorLocalizations.of(context)?.lookup(code);
+    return translated == null ? this : copyWith(name: translated);
   }
 
   /// Creates a copy of the current [Country] object with optional new values for any property.
@@ -125,15 +135,15 @@ class Country {
       emoji: emoji ?? this.emoji,
       image: image ?? this.image,
       dialCodes: dialCodes ?? this.dialCodes,
-      phoneNumberLength: phoneNumberLength ?? this.phoneNumberLength,
+      phoneNumberLength: phoneNumberLength ?? _phoneNumberLength,
     );
   }
 
+  /// The country name without bracketed or comma-separated qualifiers.
   String toCountryStringOnly() {
-    return '$_cleanName';
-  }
-
-  String? get _cleanName {
     return name.replaceAll(RegExp(r'[[\]]'), '').split(',').first;
   }
+
+  @override
+  String toString() => 'Country($code, $name, $dialCode)';
 }

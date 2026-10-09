@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../country_code_selector.dart';
-import '../utils/country_list_builder.dart';
 
 class CountryCodeSelectorDialog extends StatefulWidget {
   const CountryCodeSelectorDialog({
@@ -13,7 +12,6 @@ class CountryCodeSelectorDialog extends StatefulWidget {
     this.header,
     this.backGroundColor,
     this.borderRadius,
-    this.listOfCountries,
     this.layoutConfig = const LayoutConfig(),
     this.countryListConfig,
     this.favouriteCountries,
@@ -21,8 +19,6 @@ class CountryCodeSelectorDialog extends StatefulWidget {
     this.closeIconWidget,
   });
 
-  /// it is optional argument to set your own custom country list
-  final List<Map<String, dynamic>>? listOfCountries;
   final SearchStyle? searchStyle;
   final LayoutConfig? layoutConfig;
   final CountryListConfig? countryListConfig;
@@ -54,23 +50,16 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 14);
 
   @override
-  void initState() {
-    super.initState();
-    countriesElements = buildCountryList(
-      widget.countryListConfig,
-      source: widget.listOfCountries,
-    );
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Localize first, then derive the visible lists from the localized data.
-    countriesElements =
-        countriesElements.map((Country e) => e.localize(context)).toList();
-    favoriteCountries =
-        favouritesOf(countriesElements, widget.favouriteCountries);
-    filteredElements = searchCountries(countriesElements, _query);
+    // Re-resolve on locale changes so names and alphabetical order follow it.
+    countriesElements = CountryRepository.resolve(
+      widget.countryListConfig,
+      context: context,
+    );
+    favoriteCountries = CountryRepository.favourites(
+        countriesElements, widget.favouriteCountries);
+    filteredElements = CountryRepository.search(countriesElements, _query);
   }
 
   double calculateTextWidth(double size) {
@@ -328,7 +317,7 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
   void _filterElements(String query) {
     setState(() {
       _query = query;
-      filteredElements = searchCountries(countriesElements, query);
+      filteredElements = CountryRepository.search(countriesElements, query);
     });
   }
 

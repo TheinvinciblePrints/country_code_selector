@@ -134,28 +134,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void didChangeDependencies() {
-    Future.wait([
-      CountryCodeSelector.getCountryByCountryCode(
-          context: context, countryCode: "IN"),
-      CountryCodeSelector.getCountryByCountryCode(
-          context: context, countryCode: "ID"),
-      CountryCodeSelector.getCountryByCountryCode(
-          context: context, countryCode: "IN"),
-      CountryCodeSelector.getCountryByCountryCode(
-          context: context, countryCode: "IS"),
-      CountryCodeSelector.getCountryByCountryCode(
-          context: context, countryCode: "IN"),
-      CountryCodeSelector.getCountryByCountryCode(
-          context: context, countryCode: "UY"),
-    ]).then((values) {
-      initialDialogDefaultValue = values[0];
-      initialDialogCustomValue = values[1];
-      initialBottomDefaultValue = values[2];
-      initialBottomCustomValue = values[3];
-      initialCupertinoBottomDefaultValue = values[4];
-      initialCupertinoBottomCustomValue = values[5];
-      setState(() {});
-    });
+    Country byCode(String code) => CountryCodeSelector.getCountryByCountryCode(
+        context: context, countryCode: code);
+    initialDialogDefaultValue = byCode("IN");
+    initialDialogCustomValue = byCode("ID");
+    initialBottomDefaultValue = byCode("IN");
+    initialBottomCustomValue = byCode("IS");
+    initialCupertinoBottomDefaultValue = byCode("IN");
+    initialCupertinoBottomCustomValue = byCode("UY");
     super.didChangeDependencies();
   }
 

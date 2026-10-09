@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../country_code_selector.dart';
-import '../utils/country_list_builder.dart';
 
 class CountryCodeSelectorDropDown extends StatefulWidget {
   const CountryCodeSelectorDropDown({
@@ -81,8 +80,6 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
   @override
   void initState() {
     super.initState();
-    countriesElements = buildCountryList(widget.countryListConfig);
-    selectedItem = _findCountry(widget.selectInitialCountry);
 
     // Report the initial selection after the first frame so a parent calling
     // setState in onSelectValue doesn't trigger a setState-during-build error.
@@ -114,9 +111,13 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    countriesElements =
-        countriesElements.map((Country e) => e.localize(context)).toList();
-    selectedItem = selectedItem?.localize(context);
+    // Re-resolve on locale changes so names and alphabetical order follow it.
+    countriesElements = CountryRepository.resolve(
+      widget.countryListConfig,
+      context: context,
+    );
+    selectedItem =
+        _findCountry(selectedItem?.code ?? widget.selectInitialCountry);
   }
 
   @override

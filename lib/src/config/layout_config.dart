@@ -15,7 +15,6 @@ class LayoutConfig {
   /// [showCountryFlag], [showCountryName], and [showCountryCode] control the visibility of the corresponding elements.
   /// [flagMode] allows switching between round and square flags.
   /// [enableLocalization] enables localization support for country names.
-  /// [sortingBehavior] allows customization of sorting for the country list.
   /// [themeMode] defines whether to use system-based theming, light mode, or dark mode.
   /// [lightTheme] and [darkTheme] provide theme configurations for light and dark modes.
   const LayoutConfig({
@@ -29,7 +28,6 @@ class LayoutConfig {
     this.showCountryCode = true,
     this.flagMode = FlagMode.round, // Default flag mode to round
     this.enableLocalization = true,
-    this.sortingBehavior = SortingBehavior.alphabetical,
     this.themeMode = ThemeMode.system, // Default theme based on system setting
     this.lightTheme,
     this.darkTheme,
@@ -75,12 +73,6 @@ class LayoutConfig {
   /// based on the user's locale.
   final bool enableLocalization;
 
-  /// Controls the sorting behavior for the country list.
-  ///
-  /// The [SortingBehavior] enum provides different options such as
-  /// alphabetical sorting or sorting by country code.
-  final SortingBehavior sortingBehavior;
-
   /// Controls the theming of the widget.
   ///
   /// This allows the widget to switch between light and dark mode, or to follow the system's theme setting.
@@ -114,16 +106,6 @@ enum DisplayOrder {
 enum FlagMode {
   round,
   square,
-}
-
-/// Enum to define the sorting behavior of the country list.
-///
-/// This allows the list to be sorted alphabetically, by country code, or
-/// using a custom sorting method.
-enum SortingBehavior {
-  alphabetical,
-  byCode,
-  custom,
 }
 
 /// Theme data for customizing the appearance of the country selector widget.

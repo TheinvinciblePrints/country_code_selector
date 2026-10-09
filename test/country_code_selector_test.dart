@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:country_code_selector/country_code_selector.dart';
-import 'package:country_code_selector/src/utils/country_list_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -34,23 +34,41 @@ Future<void> _pumpApp(WidgetTester tester, Widget widget) async {
 
 void main() {
   group('country data', () {
+    final List<String> codes =
+        CountryRepository.all.map((Country c) => c.code).toList();
+
     test('has no duplicate codes', () {
-      final List<String> codes =
-          buildCountryList(null).map((Country c) => c.code).toList();
       expect(codes.toSet().length, codes.length);
+    });
+
+    test('every country has a flag and an English name', () {
+      final Map<String, dynamic> en =
+          jsonDecode(File('assets/i18n/en.json').readAsStringSync())
+              as Map<String, dynamic>;
+      for (final Country c in CountryRepository.all) {
+        expect(File(c.image).existsSync(), isTrue, reason: c.image);
+        expect(en.containsKey(c.code), isTrue, reason: c.code);
+        expect(c.dialCodes, isNotEmpty, reason: c.code);
+      }
+    });
+
+    test('byCode is case-insensitive', () {
+      expect(CountryRepository.byCode('ng')?.name, 'Nigeria');
+      expect(CountryRepository.byCode('zz'), isNull);
     });
   });
 
   group('Country', () {
+    const Country germany = Country(
+        name: 'Germany',
+        code: 'DE',
+        emoji: '',
+        image: '',
+        dialCodes: <String>['+49']);
+
     test('equality is by code, so localized copies are equal', () {
-      const Country a = Country(
-          name: 'Germany',
-          code: 'DE',
-          emoji: '',
-          image: '',
-          dialCodes: <String>['+49']);
-      expect(a.copyWith(name: 'Allemagne'), a);
-      expect(a.copyWith(name: 'Allemagne').hashCode, a.hashCode);
+      expect(germany.copyWith(name: 'Allemagne'), germany);
+      expect(germany.copyWith(name: 'Allemagne').hashCode, germany.hashCode);
     });
 
     test('fromJson accepts decoded phoneNumberLength', () {
@@ -59,35 +77,112 @@ void main() {
           as Map<String, dynamic>;
       expect(Country.fromJson(json).phoneNumberLength, <int>[10]);
     });
+
+    test('toJson and fromJson round-trip', () {
+      final Country ng = CountryRepository.byCode('NG')!;
+      final Country copy =
+          Country.fromJson(jsonDecode(ng.toJson()) as Map<String, dynamic>);
+      expect(copy.toMap(), ng.toMap());
+    });
+
+    test('phoneNumberLength is looked up lazily', () {
+      expect(CountryRepository.byCode('NG')!.phoneNumberLength, contains(10));
+      expect(germany.copyWith(phoneNumberLength: <int>[1]).phoneNumberLength,
+          <int>[1]);
+    });
+
+    test('dialCode is the first dial code', () {
+      expect(germany.dialCode, '+49');
+      expect(germany.copyWith(dialCodes: <String>[]).dialCode, '');
+    });
   });
 
-  group('buildCountryList', () {
+  group('CountryRepository.resolve', () {
+    List<String> codesOf(List<Country> list) =>
+        list.map((Country c) => c.code).toList();
+
     test('filters case-insensitively', () {
-      final List<Country> list = buildCountryList(
-          CountryListConfig(countryFilter: <String>['ng', 'GB']));
-      expect(list.map((Country c) => c.code),
+      expect(
+          codesOf(CountryRepository.resolve(
+              const CountryListConfig(countryFilter: <String>['ng', 'GB']))),
           unorderedEquals(<String>['NG', 'GB']));
     });
 
-    test('excludes before anything else uses the list', () {
-      final List<Country> list =
-          buildCountryList(CountryListConfig(excludeCountry: <String>['in']));
-      expect(list.any((Country c) => c.code == 'IN'), isFalse);
+    test('excludes case-insensitively', () {
+      expect(
+          codesOf(CountryRepository.resolve(
+              const CountryListConfig(excludeCountry: <String>['in']))),
+          isNot(contains('IN')));
+    });
+
+    test('throws when the filter matches nothing', () {
+      expect(
+          () => CountryRepository.resolve(
+              const CountryListConfig(countryFilter: <String>['ZZ'])),
+          throwsArgumentError);
+    });
+
+    test('adds and replaces custom entries', () {
+      const Country custom = Country(
+          name: 'Customland',
+          code: 'XX',
+          emoji: '',
+          image: '',
+          dialCodes: <String>['+999']);
+      final List<Country> list = CountryRepository.resolve(
+          CountryListConfig(customCountryEntries: <Country>[
+        custom,
+        CountryRepository.byCode('NG')!.copyWith(name: 'Naija'),
+      ]));
+      expect(list, contains(custom));
+      expect(list.where((Country c) => c.code == 'NG').single.name, 'Naija');
+    });
+
+    test('sorts alphabetically by default', () {
+      final List<String> names = CountryRepository.resolve(null)
+          .map((Country c) => c.name.toLowerCase())
+          .toList();
+      expect(names, List<String>.of(names)..sort());
+    });
+
+    test('sorts by dial code', () {
+      final List<Country> list = CountryRepository.resolve(
+          const CountryListConfig(sortingBehavior: SortingBehavior.byDialCode));
+      expect(list.first.dialCode, '+1');
+      expect(
+          codesOf(list).indexOf('EG'), lessThan(codesOf(list).indexOf('ZA')));
+    });
+
+    test('comparator takes precedence', () {
+      final List<Country> list = CountryRepository.resolve(CountryListConfig(
+          comparator: (Country a, Country b) => b.code.compareTo(a.code)));
+      expect(list.first.code, 'ZW');
     });
   });
 
-  group('searchCountries', () {
-    final List<Country> all = buildCountryList(null);
+  group('CountryRepository.favourites', () {
+    test('keeps the given order and ignores unknown codes', () {
+      expect(
+          CountryRepository.favourites(
+                  CountryRepository.all, <String>['gb', 'ZZ', 'NG'])
+              .map((Country c) => c.code),
+          <String>['GB', 'NG']);
+    });
+  });
+
+  group('CountryRepository.search', () {
+    const List<Country> all = CountryRepository.all;
 
     test('matches dial codes with or without +', () {
-      expect(searchCountries(all, '234').map((Country c) => c.code),
+      expect(CountryRepository.search(all, '234').map((Country c) => c.code),
           contains('NG'));
-      expect(searchCountries(all, '+234').map((Country c) => c.code),
+      expect(CountryRepository.search(all, '+234').map((Country c) => c.code),
           contains('NG'));
     });
 
     test('does not match dial codes for text queries', () {
-      expect(searchCountries(all, 'nigeria').map((Country c) => c.code),
+      expect(
+          CountryRepository.search(all, 'nigeria').map((Country c) => c.code),
           <String>['NG']);
     });
   });
@@ -199,6 +294,52 @@ void main() {
       await tester.tapAt(const Offset(10, 10)); // dismiss via the barrier
       await tester.pumpAndSettle();
       expect(result?.code, 'NG');
+    });
+  });
+
+  group('CountryCodeSelector lookups', () {
+    Future<BuildContext> contextFor(WidgetTester tester, Locale locale) async {
+      late BuildContext captured;
+      await _pumpApp(
+          tester,
+          _app(Builder(builder: (BuildContext context) {
+            captured = context;
+            return const SizedBox();
+          }), locale: locale));
+      return captured;
+    }
+
+    testWidgets('getDefaultCountry uses the device region',
+        (WidgetTester tester) async {
+      tester.platformDispatcher.localeTestValue = const Locale('fr', 'FR');
+      addTearDown(tester.platformDispatcher.clearLocaleTestValue);
+      final BuildContext context = await contextFor(tester, const Locale('fr'));
+      expect(CountryCodeSelector.getDefaultCountry(context: context).name,
+          'France');
+    });
+
+    testWidgets('getDefaultCountry falls back to the US',
+        (WidgetTester tester) async {
+      tester.platformDispatcher.localeTestValue = const Locale('en');
+      addTearDown(tester.platformDispatcher.clearLocaleTestValue);
+      final BuildContext context = await contextFor(tester, const Locale('en'));
+      expect(
+          CountryCodeSelector.getDefaultCountry(context: context).code, 'US');
+    });
+
+    testWidgets('getCountryByCountryCode localizes and falls back',
+        (WidgetTester tester) async {
+      final BuildContext context = await contextFor(tester, const Locale('fr'));
+      expect(
+          CountryCodeSelector.getCountryByCountryCode(
+                  context: context, countryCode: 'de')
+              .name,
+          'Allemagne');
+      expect(
+          CountryCodeSelector.getCountryByCountryCode(
+                  context: context, countryCode: 'ZZ')
+              .code,
+          'US');
     });
   });
 }

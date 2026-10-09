@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../country_code_selector.dart';
-import '../utils/country_list_builder.dart';
 
 class CountryCodeSelectorBottomSheet extends StatefulWidget {
   const CountryCodeSelectorBottomSheet(
@@ -43,20 +42,16 @@ class _CountryCodeSelectorBottomSheetState
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 14);
 
   @override
-  void initState() {
-    super.initState();
-    countriesElements = buildCountryList(widget.countryListConfig);
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Localize first, then derive the visible lists from the localized data.
-    countriesElements =
-        countriesElements.map((Country e) => e.localize(context)).toList();
-    favoriteCountries =
-        favouritesOf(countriesElements, widget.favouriteCountries);
-    filteredElements = searchCountries(countriesElements, _query);
+    // Re-resolve on locale changes so names and alphabetical order follow it.
+    countriesElements = CountryRepository.resolve(
+      widget.countryListConfig,
+      context: context,
+    );
+    favoriteCountries = CountryRepository.favourites(
+        countriesElements, widget.favouriteCountries);
+    filteredElements = CountryRepository.search(countriesElements, _query);
   }
 
   double calculateSize(double size) {
@@ -298,15 +293,11 @@ class _CountryCodeSelectorBottomSheetState
   void _filterElements(String query) {
     setState(() {
       _query = query;
-      filteredElements = searchCountries(countriesElements, query);
+      filteredElements = CountryRepository.search(countriesElements, query);
     });
   }
 
-  Future<void> _selectItem(Country e, BuildContext context) async {
-    final Country selectedCountry =
-        await CountryService.loadCountryWithPhoneNumberLength(e);
-    if (context.mounted) {
-      Navigator.pop(context, selectedCountry);
-    }
+  void _selectItem(Country e, BuildContext context) {
+    Navigator.pop(context, e);
   }
 }
