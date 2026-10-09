@@ -131,6 +131,7 @@ class _HomePageState extends State<HomePage> {
   Country? initialBottomCustomValue;
   Country? initialCupertinoBottomDefaultValue;
   Country? initialCupertinoBottomCustomValue;
+  Country? customBuilderValue;
 
   @override
   void didChangeDependencies() {
@@ -142,6 +143,7 @@ class _HomePageState extends State<HomePage> {
     initialBottomCustomValue = byCode("IS");
     initialCupertinoBottomDefaultValue = byCode("IN");
     initialCupertinoBottomCustomValue = byCode("UY");
+    customBuilderValue ??= byCode("NG");
     super.didChangeDependencies();
   }
 
@@ -466,6 +468,35 @@ class _HomePageState extends State<HomePage> {
               ),
               Card(
                 child: ExpansionTile(
+                  title: Text('Custom bottom sheet (customBuilder)',
+                      style: _defaultTextStyle),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5, bottom: 15),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final Country? value = await CountryCodeSelector
+                              .showCountryCodeSelectorBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            initialCountry: customBuilderValue,
+                            favouriteCountries: const ['NG', 'GH', 'KE'],
+                            customBuilder: (context, data) =>
+                                CustomCountrySheet(data: data),
+                          );
+                          if (value != null) {
+                            setState(() => customBuilderValue = value);
+                          }
+                        },
+                        child: ButtonRowWidget(country: customBuilderValue),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                child: ExpansionTile(
                   title: Text('Phone number field', style: _defaultTextStyle),
                   children: [
                     Padding(
@@ -522,6 +553,123 @@ class ButtonRowWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// A bottom sheet designed entirely by the app, using the data from
+/// `customBuilder`: the filtered countries, the selection and its phone
+/// number length, and the search/select/confirm/cancel callbacks.
+class CustomCountrySheet extends StatelessWidget {
+  const CustomCountrySheet({super.key, required this.data});
+
+  final CountrySelectorData data;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colors = Theme.of(context).colorScheme;
+    final Country? selected = data.selected;
+    final List<int>? lengths = data.selectedPhoneNumberLength;
+    final bool searching = data.query.isNotEmpty;
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 8, 8),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Where are you calling from?',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              IconButton(
+                onPressed: data.cancel,
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: TextField(
+            onChanged: data.search,
+            decoration: InputDecoration(
+              hintText: 'Country, code or +dial code',
+              prefixIcon: const Icon(Icons.search),
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            children: [
+              if (!searching && data.favourites.isNotEmpty) ...[
+                _sectionLabel(context, 'Suggested'),
+                for (final Country c in data.favourites) _tile(context, c),
+                _sectionLabel(context, 'All countries'),
+              ],
+              for (final Country c in data.countries) _tile(context, c),
+            ],
+          ),
+        ),
+        SafeArea(
+          top: false,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: colors.outlineVariant)),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    selected == null
+                        ? 'Pick a country'
+                        : '${selected.name} (${selected.dialCode})'
+                            '${lengths == null ? '' : ' · ${lengths.join(' or ')} digits'}',
+                  ),
+                ),
+                FilledButton(
+                  onPressed: selected == null ? null : data.confirm,
+                  child: const Text('Use this'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _sectionLabel(BuildContext context, String text) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+      child: Text(
+        text.toUpperCase(),
+        style: Theme.of(context).textTheme.labelSmall,
+      ),
+    );
+  }
+
+  Widget _tile(BuildContext context, Country country) {
+    final bool isSelected = country == data.selected;
+    return ListTile(
+      leading: CountryFlag(country: country, mode: FlagMode.round, height: 28),
+      title: Text(country.name),
+      subtitle: Text(country.dialCode),
+      trailing: isSelected
+          ? Icon(Icons.check_circle,
+              color: Theme.of(context).colorScheme.primary)
+          : null,
+      selected: isSelected,
+      onTap: () => data.select(country),
     );
   }
 }

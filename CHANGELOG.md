@@ -5,6 +5,10 @@ First release.
 * Country pickers: searchable dialog, searchable bottom sheet, Cupertino
   wheel, dropdown, and `CountryCodeSelectorWidget`, a flag and dial code
   button for phone number fields.
+* Design your own picker: `customBuilder` on
+  `showCountryCodeSelectorBottomSheet` (or the `CountrySelectorBuilder`
+  widget) provides the filtered countries, search, selection, and the
+  selected country's phone number lengths.
 * 250 countries and territories with flags, dial codes, and mobile number
   lengths from libphonenumber.
 * Country names in 202 languages, plus regional variants such as Traditional

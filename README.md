@@ -13,12 +13,15 @@ languages.
   <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/bottom_sheet.png" width="200" alt="Bottom sheet with round flags">
   <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/cupertino.png" width="200" alt="Cupertino wheel">
   <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/phone_field.png" width="200" alt="Phone number field">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/custom_builder.png" width="200" alt="Custom bottom sheet built with customBuilder">
 </p>
 
 ## Features
 
 - Five pickers: dialog, bottom sheet, Cupertino wheel, dropdown, and a
   flag + dial code button for phone fields.
+- Or design your own picker: a builder gives you the countries, search,
+  selection and phone number lengths, and you build the UI.
 - 250 countries and territories with SVG flags, dial codes and mobile number
   lengths.
 - Country names in 202 languages from [Unicode CLDR](https://cldr.unicode.org),
@@ -108,6 +111,68 @@ final Country? country = await CountryCodeSelector
 ```
 
 Returns the country confirmed with the OK button, or `null` when dismissed.
+
+### Your own bottom sheet design
+
+Pass `customBuilder` to build the sheet's UI yourself. It receives a
+`CountrySelectorData` with everything you need:
+
+| | |
+|---|---|
+| `countries` | The list to show: filtered, sorted, localized and matching the search |
+| `allCountries`, `favourites` | Every country, and the favourites in the order given |
+| `selected`, `selectedPhoneNumberLength` | The current selection and its mobile number lengths, e.g. `[10]` |
+| `query`, `search(text)` | The search text, and a function to update it |
+| `select(country)` | Select without closing, e.g. to highlight before confirming |
+| `confirm([country])` | Close the sheet and return `country`, or the selection |
+| `cancel()` | Close the sheet and return `null` |
+
+```dart
+final Country? country =
+    await CountryCodeSelector.showCountryCodeSelectorBottomSheet(
+  context: context,
+  isScrollControlled: true,
+  initialCountry: _country, // shown as selected
+  favouriteCountries: ['NG', 'GH', 'KE'],
+  customBuilder: (BuildContext context, CountrySelectorData data) {
+    return Column(
+      children: [
+        TextField(onChanged: data.search),
+        Expanded(
+          child: ListView(
+            children: [
+              for (final Country c in data.countries)
+                ListTile(
+                  leading: CountryFlag(country: c, mode: FlagMode.round),
+                  title: Text(c.name),
+                  subtitle: Text(c.dialCode),
+                  selected: c == data.selected,
+                  onTap: () => data.select(c),
+                ),
+            ],
+          ),
+        ),
+        if (data.selected != null)
+          FilledButton(
+            onPressed: data.confirm,
+            child: Text(
+              'Use ${data.selected!.dialCode} '
+              '(${data.selectedPhoneNumberLength?.join(' or ')} digits)',
+            ),
+          ),
+      ],
+    );
+  },
+);
+```
+
+Filtering, sorting and localization still follow `countryListConfig` and
+`layoutConfig.enableLocalization`. The example app has a complete custom
+sheet in `CustomCountrySheet`.
+
+To use the same kind of custom UI somewhere else, such as inline on a page or
+in a dialog, use the `CountrySelectorBuilder` widget with `onConfirm` and
+`onCancel`.
 
 ### Dropdown
 

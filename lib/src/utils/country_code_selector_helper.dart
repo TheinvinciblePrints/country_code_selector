@@ -157,6 +157,34 @@ class CountryCodeSelector {
   /// parameters are passed to [showModalBottomSheet]. For a full-height sheet
   /// pass `isScrollControlled: true` and `useSafeArea: true`.
   ///
+  /// To design the sheet yourself, pass [customBuilder]: it receives a
+  /// [CountrySelectorData] with the filtered countries, the selection (start
+  /// it with [initialCountry]), its phone number lengths, and callbacks to
+  /// search, select, confirm and cancel. The list styling parameters
+  /// ([layoutConfig] apart from `enableLocalization`, [searchStyle],
+  /// [header], [closeIconWidget], [countryTilePadding], [showSearchBar] and
+  /// [emptySearchBuilder]) don't apply then.
+  ///
+  /// ```dart
+  /// final Country? country =
+  ///     await CountryCodeSelector.showCountryCodeSelectorBottomSheet(
+  ///   context: context,
+  ///   initialCountry: CountryRepository.byCode('NG'),
+  ///   customBuilder: (BuildContext context, CountrySelectorData data) {
+  ///     return ListView(
+  ///       children: <Widget>[
+  ///         for (final Country c in data.countries)
+  ///           ListTile(
+  ///             title: Text(c.name),
+  ///             selected: c == data.selected,
+  ///             onTap: () => data.confirm(c),
+  ///           ),
+  ///       ],
+  ///     );
+  ///   },
+  /// );
+  /// ```
+  ///
   /// ```dart
   /// final Country? country =
   ///     await CountryCodeSelector.showCountryCodeSelectorBottomSheet(
@@ -191,7 +219,9 @@ class CountryCodeSelector {
       double? scrollControlDisabledMaxHeightRatio,
       bool? showDragHandle,
       AnimationController? transitionAnimationController,
-      bool? useRootNavigator}) async {
+      bool? useRootNavigator,
+      Country? initialCountry,
+      CountrySelectorWidgetBuilder? customBuilder}) async {
     return showModalBottomSheet(
       backgroundColor:
           backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor,
@@ -216,6 +246,15 @@ class CountryCodeSelector {
       useRootNavigator: useRootNavigator ?? false,
       context: context,
       builder: (_) {
+        if (customBuilder != null) {
+          return CountrySelectorBuilder(
+            builder: customBuilder,
+            countryListConfig: countryListConfig,
+            favouriteCountries: favouriteCountries,
+            initialCountry: initialCountry,
+            enableLocalization: layoutConfig?.enableLocalization ?? true,
+          );
+        }
         return CountryCodeSelectorBottomSheet(
           favouriteCountries: favouriteCountries,
           searchStyle: searchStyle,

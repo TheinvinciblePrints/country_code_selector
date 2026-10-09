@@ -696,4 +696,150 @@ void main() {
       expect(find.text('+355'), findsOneWidget);
     });
   });
+
+  group('custom builder', () {
+    /// A minimal custom UI: a search field, one button per country, and
+    /// texts showing the data the builder receives.
+    Widget customUi(BuildContext context, CountrySelectorData data) {
+      return Material(
+        child: Column(
+          children: <Widget>[
+            TextField(onChanged: data.search),
+            Text('selected: ${data.selected?.name}'),
+            Text('length: ${data.selectedPhoneNumberLength}'),
+            Text(
+                'favourites: ${data.favourites.map((Country c) => c.code).join(',')}'),
+            Text('count: ${data.countries.length}/${data.allCountries.length}'),
+            TextButton(onPressed: data.confirm, child: const Text('confirm')),
+            TextButton(onPressed: data.cancel, child: const Text('cancel')),
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  for (final Country c in data.countries)
+                    TextButton(
+                      key: ValueKey<String>(c.code),
+                      onPressed: () => data.select(c),
+                      child: Text(c.name),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    /// Opens the custom sheet and returns a getter for its result.
+    Future<Future<Country?> Function()> openSheet(
+      WidgetTester tester, {
+      Country? initialCountry,
+      Locale locale = const Locale('en'),
+    }) async {
+      Country? result;
+      bool done = false;
+      await _pumpApp(
+          tester,
+          _app(
+            Builder(
+              builder: (BuildContext context) => TextButton(
+                onPressed: () async {
+                  result = await CountryCodeSelector
+                      .showCountryCodeSelectorBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    initialCountry: initialCountry,
+                    favouriteCountries: const <String>['NG', 'GH'],
+                    customBuilder: customUi,
+                  );
+                  done = true;
+                },
+                child: const Text('open'),
+              ),
+            ),
+            locale: locale,
+          ));
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+      return () async => done ? result : throw StateError('still open');
+    }
+
+    testWidgets('gets the countries, favourites and search',
+        (WidgetTester tester) async {
+      await openSheet(tester);
+
+      final int total = CountryRepository.all.length;
+      expect(find.text('count: $total/$total'), findsOneWidget);
+      expect(find.text('favourites: NG,GH'), findsOneWidget);
+      expect(find.text('selected: null'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextField), '+234');
+      await tester.pumpAndSettle();
+      expect(find.text('count: 1/$total'), findsOneWidget);
+      expect(find.byKey(const ValueKey<String>('NG')), findsOneWidget);
+    });
+
+    testWidgets(
+        'select updates the selection and phone length; confirm '
+        'returns it', (WidgetTester tester) async {
+      final Future<Country?> Function() result = await openSheet(tester);
+
+      // Without a selection, confirm does nothing.
+      await tester.tap(find.text('confirm'));
+      await tester.pumpAndSettle();
+      expect(find.text('selected: null'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextField), 'nigeria');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey<String>('NG')));
+      await tester.pumpAndSettle();
+      expect(find.text('selected: Nigeria'), findsOneWidget);
+      expect(find.textContaining('length: ['), findsOneWidget);
+      expect(find.textContaining('10'), findsWidgets);
+
+      await tester.tap(find.text('confirm'));
+      await tester.pumpAndSettle();
+      final Country? picked = await result();
+      expect(picked?.code, 'NG');
+      expect(picked?.phoneNumberLength, contains(10));
+    });
+
+    testWidgets('starts at initialCountry, localized; cancel returns null',
+        (WidgetTester tester) async {
+      final Future<Country?> Function() result = await openSheet(
+        tester,
+        initialCountry: CountryRepository.byCode('DE'),
+        locale: const Locale('fr'),
+      );
+      expect(find.text('selected: Allemagne'), findsOneWidget);
+
+      await tester.tap(find.text('cancel'));
+      await tester.pumpAndSettle();
+      expect(await result(), isNull);
+    });
+
+    testWidgets('works inline with onConfirm', (WidgetTester tester) async {
+      Country? confirmed;
+      await _pumpApp(
+          tester,
+          _app(CountrySelectorBuilder(
+            countryListConfig:
+                const CountryListConfig(countryFilter: <String>['GB', 'FR']),
+            onConfirm: (Country c) => confirmed = c,
+            builder: (BuildContext context, CountrySelectorData data) => Column(
+              children: <Widget>[
+                for (final Country c in data.countries)
+                  TextButton(
+                    onPressed: () => data.confirm(c),
+                    child: Text(c.name),
+                  ),
+              ],
+            ),
+          )));
+      expect(find.byType(TextButton), findsNWidgets(2));
+      await tester.tap(find.text('France'));
+      await tester.pumpAndSettle();
+      expect(confirmed?.code, 'FR');
+      expect(find.text('France'), findsOneWidget); // nothing was popped
+    });
+  });
 }
