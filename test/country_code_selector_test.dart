@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:country_code_selector/country_code_selector.dart';
+import 'package:country_code_selector/src/data/translation_locales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -188,6 +189,78 @@ void main() {
   });
 
   group('localization', () {
+    String fileFor(Locale l) =>
+        CountryCodeSelectorLocalizations.translationFileFor(l);
+
+    test('picks the most specific bundled translation', () {
+      expect(fileFor(const Locale('fr')), 'fr');
+      expect(fileFor(const Locale('fr', 'CA')), 'fr_CA');
+      expect(fileFor(const Locale('fr', 'BE')), 'fr');
+      expect(fileFor(const Locale('zh')), 'zh');
+      expect(fileFor(const Locale('zh', 'TW')), 'zh_Hant');
+      expect(fileFor(const Locale('zh', 'HK')), 'zh_Hant_HK');
+      expect(
+          fileFor(const Locale.fromSubtags(
+              languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW')),
+          'zh_Hant');
+      expect(
+          fileFor(
+              const Locale.fromSubtags(languageCode: 'sr', scriptCode: 'Latn')),
+          'sr_Latn');
+      expect(fileFor(const Locale('pt', 'BR')), 'pt');
+      expect(fileFor(const Locale('pt', 'PT')), 'pt_PT');
+      expect(fileFor(const Locale('pt', 'AO')), 'pt_PT');
+      expect(fileFor(const Locale('es', 'ES')), 'es');
+      expect(fileFor(const Locale('es', 'MX')), 'es_419');
+      expect(fileFor(const Locale('en', 'US')), 'en');
+      expect(fileFor(const Locale('en', 'GB')), 'en_001');
+      expect(fileFor(const Locale('en', 'AU')), 'en_AU');
+      expect(fileFor(const Locale('tl')), 'fil');
+      expect(fileFor(const Locale('xx')), 'en');
+    });
+
+    test('supports every bundled language and its aliases', () {
+      const CountryCodeSelectorLocalizationsDelegate delegate =
+          CountryCodeSelectorLocalizationsDelegate();
+      for (final String l in <String>['en', 'yo', 'ha', 'ig', 'fil', 'tl']) {
+        expect(delegate.isSupported(Locale(l)), isTrue, reason: l);
+      }
+      expect(delegate.isSupported(const Locale('xx')), isFalse);
+    });
+
+    test('every generated translation file is bundled and complete enough',
+        () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      final Set<String> files = Directory('assets/i18n')
+          .listSync()
+          .map((FileSystemEntity f) => f.uri.pathSegments.last)
+          .where((String name) => name.endsWith('.json'))
+          .map((String name) => name.substring(0, name.length - 5))
+          .toSet();
+      expect(files, kTranslationLocales);
+
+      for (final String id in kTranslationLocales) {
+        final Map<String, dynamic> names =
+            jsonDecode(File('assets/i18n/$id.json').readAsStringSync())
+                as Map<String, dynamic>;
+        final int named = CountryRepository.all
+            .where((Country c) => names.containsKey(c.code))
+            .length;
+        expect(named, greaterThanOrEqualTo(CountryRepository.all.length * 0.75),
+            reason: id);
+      }
+    });
+
+    test('loads regional translations', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      Future<String> nameOf(Locale l, String code) async =>
+          (await CountryCodeSelectorLocalizations.delegate.load(l))
+              .translate(code);
+      expect(await nameOf(const Locale('zh'), 'TW'), '台湾');
+      expect(await nameOf(const Locale('zh', 'TW'), 'TW'), '台灣');
+      expect(await nameOf(const Locale('yo'), 'NG'), isNot('Nigeria'));
+    });
+
     test('every language file is bundled', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
       final CountryCodeSelectorLocalizations l10n =

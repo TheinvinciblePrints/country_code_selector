@@ -21,3 +21,4 @@ example/build/
 example/.dart_tool/
 example/pubspec.lock
 .github/
+tool/

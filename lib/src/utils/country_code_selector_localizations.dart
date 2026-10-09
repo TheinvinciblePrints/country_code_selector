@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../data/translation_locales.dart';
+
 /// Handles localization for the CountrySelector, providing translated strings
 /// based on the current locale.
 class CountryCodeSelectorLocalizations {
@@ -12,10 +14,8 @@ class CountryCodeSelectorLocalizations {
   /// The locale for which this localization instance is created.
   final Locale locale;
 
-  /// Stores the localized values, where each locale maps to a dictionary of
-  /// string key-value pairs.
-  final Map<String, Map<String, String>> _localizedValues =
-      <String, Map<String, String>>{};
+  /// The country names for [locale], keyed by ISO code.
+  Map<String, String> _values = <String, String>{};
 
   /// Retrieves the [CountryCodeSelectorLocalizations] instance from the given
   /// [BuildContext].
@@ -30,41 +30,95 @@ class CountryCodeSelectorLocalizations {
   static const LocalizationsDelegate<CountryCodeSelectorLocalizations>
       delegate = CountryCodeSelectorLocalizationsDelegate();
 
-  /// The language used when the requested one fails to load.
+  /// The translation used when no better match is bundled.
   static const String fallbackLanguageCode = 'en';
 
-  /// Loads the localized strings from the JSON file corresponding to the given locale.
+  /// Loads the country names that best match [locale].
   ///
-  /// The JSON files are bundled under `assets/i18n/` with the filename
-  /// corresponding to the locale's language code. If the file can't be loaded,
-  /// the English translations are used instead.
+  /// Picks the most specific file bundled under `assets/i18n/` (see
+  /// [translationFileFor]). If that file can't be loaded, the English
+  /// translations are used instead.
   Future<bool> load(Locale locale) async {
     String jsonString;
     try {
-      jsonString = await rootBundle.loadString(_assetPath(locale.languageCode));
+      jsonString =
+          await rootBundle.loadString(_assetPath(translationFileFor(locale)));
     } catch (_) {
       jsonString =
           await rootBundle.loadString(_assetPath(fallbackLanguageCode));
     }
 
-    // Decode the JSON file into a Map
     final Map<String, dynamic> jsonMap =
         json.decode(jsonString) as Map<String, dynamic>;
-
-    // Populate _localizedValues with the key-value pairs for the current locale
-    _localizedValues[locale.languageCode] =
-        jsonMap.map((String key, dynamic value) {
-      return MapEntry<String, String>(key, value.toString());
-    });
-
+    _values = jsonMap.map(
+      (String key, dynamic value) =>
+          MapEntry<String, String>(key, value.toString()),
+    );
     return true;
   }
 
-  static String _assetPath(String languageCode) =>
-      'packages/country_code_selector/assets/i18n/$languageCode.json';
+  static String _assetPath(String id) =>
+      'packages/country_code_selector/assets/i18n/$id.json';
+
+  /// Language codes that devices still report under an older or alternate
+  /// name.
+  static const Map<String, String> _languageAliases = <String, String>{
+    'tl': 'fil',
+    'iw': 'he',
+    'in': 'id',
+    'ji': 'yi',
+    'jw': 'jv',
+  };
+
+  /// Regions whose Spanish, Portuguese or English names follow a regional
+  /// standard rather than the base language, as CLDR defines them.
+  static const Set<String> _spainSpanish = <String>{
+    'ES', 'EA', 'IC', 'GQ', 'PH', //
+  };
+  static const Set<String> _usEnglish = <String>{
+    'US', 'AS', 'GU', 'MH', 'MP', 'PR', 'UM', 'VI', //
+  };
+  static const Set<String> _traditionalChinese = <String>{'TW', 'HK', 'MO'};
+
+  /// Returns the id of the bundled translation file that best matches
+  /// [locale], e.g. `zh_Hant` for `zh_TW`, `pt_PT` for `pt_AO`, `es_419` for
+  /// `es_MX`, or [fallbackLanguageCode] if the language isn't bundled.
+  static String translationFileFor(Locale locale) {
+    final String language =
+        _languageAliases[locale.languageCode] ?? locale.languageCode;
+    final String? country = locale.countryCode;
+    String? script = locale.scriptCode;
+    if (script == null &&
+        language == 'zh' &&
+        _traditionalChinese.contains(country)) {
+      script = 'Hant';
+    }
+
+    final List<String> candidates = <String>[
+      if (script != null && country != null) '${language}_${script}_$country',
+      if (script != null) '${language}_$script',
+      if (country != null) '${language}_$country',
+      if (country != null)
+        ...switch (language) {
+          'es' when !_spainSpanish.contains(country) => <String>['es_419'],
+          'pt' when country != 'BR' => <String>['pt_PT'],
+          'en' when !_usEnglish.contains(country) => <String>['en_001'],
+          _ => <String>[],
+        },
+      language,
+    ];
+    return candidates.firstWhere(
+      kTranslationLocales.contains,
+      orElse: () => fallbackLanguageCode,
+    );
+  }
+
+  /// Whether a translation is bundled for [locale]'s language.
+  static bool isLanguageSupported(Locale locale) => kTranslationLocales
+      .contains(_languageAliases[locale.languageCode] ?? locale.languageCode);
 
   /// Returns the translation for [key], or `null` if there is none.
-  String? lookup(String key) => _localizedValues[locale.languageCode]?[key];
+  String? lookup(String key) => _values[key];
 
   /// Translates the given [code] based on the current locale.
   ///
@@ -81,104 +135,10 @@ class CountryCodeSelectorLocalizationsDelegate
 
   /// Determines whether the delegate supports the given locale.
   ///
-  /// This checks if the locale's language code is supported.
+  /// This checks if a translation is bundled for the locale's language.
   @override
-  bool isSupported(Locale locale) => <String>[
-        'am',
-        'af',
-        'ar',
-        'as',
-        'az',
-        'be',
-        'bg',
-        'bn',
-        'bs',
-        'ca',
-        'cs',
-        'cy',
-        'da',
-        'de',
-        'el',
-        'en',
-        'es',
-        'et',
-        'eu',
-        'fa',
-        'fi',
-        'fo',
-        'fr',
-        'ga',
-        'gd',
-        'gl',
-        'gu',
-        'ha',
-        'he',
-        'hi',
-        'hr',
-        'hu',
-        'hy',
-        'ia',
-        'id',
-        'ig',
-        'is',
-        'it',
-        'ja',
-        'jv',
-        'ka',
-        'kk',
-        'km',
-        'kn',
-        'ko',
-        'ku',
-        'ky',
-        'lo',
-        'lt',
-        'lv',
-        'mi',
-        'mk',
-        'ml',
-        'mn',
-        'mr',
-        'ms',
-        'my',
-        'nb',
-        'ne',
-        'nl',
-        'nn',
-        'no',
-        'or',
-        'pa',
-        'pl',
-        'ps',
-        'pt',
-        'qu',
-        'ro',
-        'ru',
-        'sc',
-        'sd',
-        'si',
-        'sk',
-        'sl',
-        'so',
-        'sq',
-        'sr',
-        'sv',
-        'sw',
-        'ta',
-        'te',
-        'th',
-        'ti',
-        'tk',
-        'to',
-        'tr',
-        'uk',
-        'ur',
-        'uz',
-        'vi',
-        'yo',
-        'zh',
-        'zu'
-      ].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      CountryCodeSelectorLocalizations.isLanguageSupported(locale);
 
   /// Loads the localization for the given [locale].
   ///
