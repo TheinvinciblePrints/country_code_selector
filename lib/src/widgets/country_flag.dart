@@ -42,8 +42,14 @@ class CountryFlag extends StatelessWidget {
     final double w = mode == FlagMode.square ? width : height;
     final Widget flag = switch (mode) {
       FlagMode.emoji => _emoji(),
-      FlagMode.round => ClipOval(child: _image(w)),
-      FlagMode.square => _image(w),
+      // Images keep their own aspect ratio unless the size is forced; clip
+      // so BoxFit.cover crops them to the requested shape.
+      FlagMode.round => ClipOval(
+          child: SizedBox(width: w, height: height, child: _image(w)),
+        ),
+      FlagMode.square => ClipRect(
+          child: SizedBox(width: w, height: height, child: _image(w)),
+        ),
     };
     return ExcludeSemantics(
       child: decoration == null

@@ -443,7 +443,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 5, bottom: 15),
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.32,
+                        width: MediaQuery.of(context).size.width * 0.75,
                         child: CountryCodeSelectorDropDown(
                           underline: const SizedBox.shrink(),
                           layoutConfig: const LayoutConfig(
@@ -458,6 +458,31 @@ class _HomePageState extends State<HomePage> {
                           onSelectValue: (Country value) {
                             debugPrint('CountryPickerDropDown ::${value.name}');
                           },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                child: ExpansionTile(
+                  title: Text('Phone number field', style: _defaultTextStyle),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 5, 16, 15),
+                      child: TextField(
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: 'Phone number',
+                          prefixIcon: CountryCodeSelectorWidget(
+                            initialCountryCode: 'NG',
+                            favouriteCountries: const ['NG', 'GH', 'KE'],
+                            onChanged: (Country value) {
+                              debugPrint(
+                                  'CountryCodeSelectorWidget ::${value.name}');
+                            },
+                          ),
                         ),
                       ),
                     ),

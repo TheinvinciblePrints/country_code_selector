@@ -535,6 +535,18 @@ void main() {
       expect(find.byType(ClipOval), findsOneWidget);
     });
 
+    testWidgets('sizes flags exactly as configured',
+        (WidgetTester tester) async {
+      await pumpTile(
+          tester,
+          const LayoutConfig(
+              flagMode: FlagMode.round, flagWidth: 30, flagHeight: 24));
+      expect(tester.getSize(find.byType(CountryFlag)), const Size(24, 24));
+
+      await pumpTile(tester, const LayoutConfig(flagWidth: 30, flagHeight: 18));
+      expect(tester.getSize(find.byType(CountryFlag)), const Size(30, 18));
+    });
+
     testWidgets('falls back to the emoji without an image',
         (WidgetTester tester) async {
       await _pumpApp(
