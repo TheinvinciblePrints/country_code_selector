@@ -137,8 +137,7 @@ class CountryCodeSelector {
               closeIconWidget: closeIconWidget,
               layoutConfig: layoutConfig,
               borderRadius: borderRadius,
-              backGroundColor: backgroundColor ??
-                  Theme.of(context).dialogTheme.backgroundColor,
+              backgroundColor: backgroundColor,
               countryTilePadding: countryTilePadding,
               emptySearchBuilder: emptySearchBuilder,
               showSearchBar: showSearchBar,
@@ -168,7 +167,7 @@ class CountryCodeSelector {
       bool? showSearchBar,
       BoxConstraints? constraints,
       bool? isScrollControlled,
-      Text? header,
+      Widget? header,
       String? barrierLabel,
       WidgetBuilder? emptySearchBuilder,
       double? elevation,
@@ -243,9 +242,10 @@ class CountryCodeSelector {
       LayoutConfig? layoutConfig,
       CountryListConfig? countryListConfig,
       double? diameterRatio,
-      EdgeInsets? countryTilePadding}) async {
+      EdgeInsets? countryTilePadding,
+      bool showDoneButton = true}) async {
     Country? countryData;
-    await showModalBottomSheet<Country>(
+    final Country? done = await showModalBottomSheet<Country>(
       isScrollControlled: isScrollControlled ?? false,
       constraints: constraints,
       context: context,
@@ -280,9 +280,12 @@ class CountryCodeSelector {
               Theme.of(context).bottomSheetTheme.modalBackgroundColor,
           layoutConfig: layoutConfig,
           countryListConfig: countryListConfig,
+          showDoneButton: showDoneButton,
         );
       },
     );
-    return countryData;
+    // Closing the sheet without the confirm button returns the country
+    // under the selection overlay.
+    return done ?? countryData;
   }
 }

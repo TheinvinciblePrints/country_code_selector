@@ -349,7 +349,7 @@ void main() {
 
       await tester.enterText(find.byType(TextField), '234');
       await tester.pumpAndSettle();
-      expect(find.text(' Nigeria'), findsOneWidget);
+      expect(find.text('Nigeria'), findsOneWidget);
     });
 
     testWidgets('translates its own text', (WidgetTester tester) async {
@@ -377,7 +377,7 @@ void main() {
             ),
             locale: const Locale('fr'),
           ));
-      expect(find.text(' Albania'), findsOneWidget);
+      expect(find.text('Albania'), findsOneWidget);
       expect(find.text('Sélectionnez un pays'), findsOneWidget);
     });
 
@@ -390,8 +390,8 @@ void main() {
             locale: const Locale('fr'),
           ));
       // Albania is near the top of the list, so it's built without scrolling.
-      expect(find.text(' Albanie'), findsOneWidget);
-      expect(find.text(' Albania'), findsNothing);
+      expect(find.text('Albanie'), findsOneWidget);
+      expect(find.text('Albania'), findsNothing);
     });
   });
 
@@ -420,7 +420,7 @@ void main() {
           )));
       await tester.tap(find.text('open'));
       await tester.pumpAndSettle();
-      expect(find.text('NG'), findsOneWidget);
+      expect(find.text('+234'), findsOneWidget);
       expect(find.textContaining('Instance of'), findsNothing);
 
       await tester.tapAt(const Offset(10, 10)); // dismiss via the barrier
@@ -472,6 +472,191 @@ void main() {
                   context: context, countryCode: 'ZZ')
               .code,
           'US');
+    });
+  });
+
+  group('CountryTile', () {
+    final Country ng = CountryRepository.byCode('NG')!;
+
+    Future<void> pumpTile(WidgetTester tester, LayoutConfig config,
+        {TextDirection direction = TextDirection.ltr}) {
+      return _pumpApp(
+          tester,
+          _app(Directionality(
+            textDirection: direction,
+            child: CountryTile(country: ng, layoutConfig: config),
+          )));
+    }
+
+    double x(WidgetTester tester, Finder f) => tester.getCenter(f).dx;
+
+    testWidgets('shows the dial code, not the ISO code',
+        (WidgetTester tester) async {
+      await pumpTile(tester, const LayoutConfig());
+      expect(find.text('+234'), findsOneWidget);
+      expect(find.text('NG'), findsNothing);
+    });
+
+    for (final (DisplayOrder order, List<String> expected)
+        in <(DisplayOrder, List<String>)>[
+      (DisplayOrder.flagCodeAndCountryName, <String>['flag', 'code', 'name']),
+      (DisplayOrder.codeFlagAndCountryName, <String>['code', 'flag', 'name']),
+      (DisplayOrder.nameCodeAndFlag, <String>['name', 'code', 'flag']),
+      (DisplayOrder.codeCountryNameAndFlag, <String>['code', 'name', 'flag']),
+    ]) {
+      testWidgets('lays out $order', (WidgetTester tester) async {
+        await pumpTile(tester, LayoutConfig(elementsOrder: order));
+        final Map<String, double> pos = <String, double>{
+          'flag': x(tester, find.byType(CountryFlag)),
+          'code': x(tester, find.text('+234')),
+          'name': x(tester, find.text('Nigeria')),
+        };
+        final List<String> actual = pos.keys.toList()
+          ..sort((String a, String b) => pos[a]!.compareTo(pos[b]!));
+        expect(actual, expected);
+      });
+    }
+
+    testWidgets('follows right-to-left reading order',
+        (WidgetTester tester) async {
+      await pumpTile(tester, const LayoutConfig(),
+          direction: TextDirection.rtl);
+      expect(x(tester, find.byType(CountryFlag)),
+          greaterThan(x(tester, find.text('Nigeria'))));
+      expect(tester.widget<Text>(find.text('+234')).textDirection,
+          TextDirection.ltr);
+    });
+
+    testWidgets('draws emoji and round flags', (WidgetTester tester) async {
+      await pumpTile(tester, const LayoutConfig(flagMode: FlagMode.emoji));
+      expect(find.text(ng.emoji), findsOneWidget);
+
+      await pumpTile(tester, const LayoutConfig(flagMode: FlagMode.round));
+      expect(find.byType(ClipOval), findsOneWidget);
+    });
+
+    testWidgets('falls back to the emoji without an image',
+        (WidgetTester tester) async {
+      await _pumpApp(
+          tester,
+          _app(CountryTile(
+            country: const Country(
+                name: 'Customland',
+                code: 'XX',
+                emoji: '🏳️',
+                image: '',
+                dialCodes: <String>['+999']),
+          )));
+      expect(tester.takeException(), isNull);
+      expect(find.text('🏳️'), findsOneWidget);
+    });
+
+    testWidgets('uses the theme extension', (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(extensions: const <ThemeExtension<dynamic>>[
+          CountrySelectorThemeData(
+            countryNameTextStyle: TextStyle(color: Color(0xFF00AA00)),
+          ),
+        ]),
+        home: Scaffold(body: CountryTile(country: ng)),
+      ));
+      expect(tester.widget<Text>(find.text('Nigeria')).style?.color,
+          const Color(0xFF00AA00));
+    });
+  });
+
+  group('search list', () {
+    testWidgets('accepts a plain widget from emptySearchBuilder',
+        (WidgetTester tester) async {
+      await _pumpApp(
+          tester,
+          _app(CountryCodeSelectorDialog(
+            emptySearchBuilder: (BuildContext context) =>
+                const Text('nothing here'),
+          )));
+      await tester.enterText(find.byType(TextField), 'zzzz');
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.text('nothing here'), findsOneWidget);
+    });
+
+    testWidgets('hides favourites while searching',
+        (WidgetTester tester) async {
+      await _pumpApp(
+          tester,
+          _app(const CountryCodeSelectorDialog(
+            favouriteCountries: <String>['NG'],
+          )));
+      expect(find.text('Nigeria'), findsOneWidget);
+      await tester.enterText(find.byType(TextField), 'alb');
+      await tester.pumpAndSettle();
+      expect(find.text('Nigeria'), findsNothing);
+      expect(find.text('Albania'), findsOneWidget);
+    });
+  });
+
+  group('controlled dropdown', () {
+    testWidgets('shows value and does not report it on start',
+        (WidgetTester tester) async {
+      final List<Country> reported = <Country>[];
+      await _pumpApp(
+          tester,
+          _app(CountryCodeSelectorDropDown(
+            value: CountryRepository.byCode('DE'),
+            onSelectValue: reported.add,
+          )));
+      expect(find.text('Germany'), findsOneWidget);
+      expect(reported, isEmpty);
+    });
+  });
+
+  testWidgets('cupertino confirm button returns the selection',
+      (WidgetTester tester) async {
+    Country? result;
+    await _pumpApp(
+        tester,
+        _app(Builder(
+          builder: (BuildContext context) => TextButton(
+            onPressed: () async {
+              result = await CountryCodeSelector
+                  .showCountryCodeSelectorCupertinoBottomSheet(
+                context: context,
+                setInitialValue: CountryRepository.byCode('GB'),
+              );
+            },
+            child: const Text('open'),
+          ),
+        )));
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    expect(result?.code, 'GB');
+  });
+
+  group('CountryCodeSelectorWidget', () {
+    testWidgets('shows the initial country and updates from the picker',
+        (WidgetTester tester) async {
+      Country? changed;
+      await _pumpApp(
+          tester,
+          _app(Center(
+            child: CountryCodeSelectorWidget(
+              initialCountryCode: 'NG',
+              onChanged: (Country c) => changed = c,
+            ),
+          )));
+      expect(find.text('+234'), findsOneWidget);
+
+      await tester.tap(find.byType(CountryCodeSelectorWidget));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), 'albania');
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Albania'));
+      await tester.pumpAndSettle();
+
+      expect(changed?.code, 'AL');
+      expect(find.text('+355'), findsOneWidget);
     });
   });
 }

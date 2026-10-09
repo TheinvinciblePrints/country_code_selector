@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../country_code_selector.dart';
+import '../config/config.dart';
+import '../models/models.dart';
+import '../services/country_repository.dart';
+import 'country_tile.dart';
 
+/// A [DropdownButton] of countries.
+///
+/// Pass [value] to control the selection from outside (update it in
+/// [onSelectValue]); otherwise the dropdown keeps its own selection, starting
+/// at [selectInitialCountry].
 class CountryCodeSelectorDropDown extends StatefulWidget {
+  /// Creates a country dropdown.
   const CountryCodeSelectorDropDown({
     super.key,
+    this.value,
     this.iconSize = 24,
     this.onTap,
     this.borderRadius,
@@ -16,7 +26,7 @@ class CountryCodeSelectorDropDown extends StatefulWidget {
     this.icon,
     this.itemHeight = kMinInteractiveDimension,
     this.onTapDropdownMenuButton,
-    this.backGroundColor,
+    this.backgroundColor,
     this.selectedItemBuilder,
     this.layoutConfig = const LayoutConfig(),
     this.countryListConfig,
@@ -24,23 +34,46 @@ class CountryCodeSelectorDropDown extends StatefulWidget {
     this.selectInitialCountry,
   });
 
-  final Color? backGroundColor;
+  /// The selected country, when the parent controls the selection.
+  final Country? value;
+
+  /// The background of the menu. Defaults to
+  /// [CountrySelectorThemeData.backgroundColor].
+  final Color? backgroundColor;
+
+  /// How each country row looks.
   final LayoutConfig? layoutConfig;
+
+  /// Which countries to show, and in which order.
   final CountryListConfig? countryListConfig;
+
+  /// See [DropdownButton.iconSize].
   final double iconSize;
+
+  /// See [DropdownButton.borderRadius].
   final BorderRadius? borderRadius;
+
+  /// See [DropdownButton.padding].
   final EdgeInsetsGeometry? padding;
+
+  /// See [DropdownButton.menuMaxHeight].
   final double? menuMaxHeight;
+
+  /// See [DropdownButton.iconDisabledColor].
   final Color? iconDisabledColor;
+
+  /// See [DropdownButton.iconEnabledColor].
   final Color? iconEnabledColor;
 
-  /// Selected country widget builder to display. See [selectedItemBuilder] of [DropdownButton]
+  /// Builds the closed dropdown's display of the selected country. Defaults
+  /// to the same row as the menu.
   final Widget Function(Country)? selectedItemBuilder;
 
-  ///here this [onSelectValue] get the selected country value.
+  /// Called when the user selects a country, and once after the first frame
+  /// with the initial country when [value] is null.
   final ValueChanged<Country> onSelectValue;
 
-  /// See [itemHeight] of [DropdownButton], by default its accept from [kMinInteractiveDimension]
+  /// See [DropdownButton.itemHeight].
   final double? itemHeight;
 
   /// Defaults to an [Icon] with the [Icons.arrow_drop_down].
@@ -49,13 +82,14 @@ class CountryCodeSelectorDropDown extends StatefulWidget {
   /// Defaults to a 0.0 width bottom border with color 0xFFBDBDBD.
   final Widget? underline;
 
-  /// See [onTap] of [DropdownButton]
+  /// See [DropdownButton.onTap].
   final VoidCallback? onTap;
 
-  /// See [onTap] of [DropdownMenuItemButton]
+  /// See [DropdownMenuItem.onTap].
   final VoidCallback? onTapDropdownMenuButton;
 
-  /// set your initial Country
+  /// ISO code of the initially selected country when [value] is null.
+  /// Defaults to the first country in the list.
   final String? selectInitialCountry;
 
   @override
@@ -64,47 +98,46 @@ class CountryCodeSelectorDropDown extends StatefulWidget {
 }
 
 class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
-  List<Country> countriesElements = <Country>[];
-  List<DropdownMenuItem<Country>> items = <DropdownMenuItem<Country>>[];
-  Country? selectedItem;
+  List<Country> _countries = <Country>[];
+  Country? _selected;
 
-  TextStyle get _defaultTextStyle => const TextStyle(
-        fontSize: 14,
-      );
-
-  double calculateSize(double size) {
-    const int defaultSize = 80;
-    return size * defaultSize / _defaultTextStyle.fontSize!;
-  }
+  LayoutConfig get _layout => widget.layoutConfig ?? const LayoutConfig();
 
   @override
   void initState() {
     super.initState();
-
-    // Report the initial selection after the first frame so a parent calling
-    // setState in onSelectValue doesn't trigger a setState-during-build error.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && selectedItem != null) {
-        widget.onSelectValue(selectedItem!);
-      }
-    });
+    if (widget.value == null) {
+      // Report the initial selection after the first frame so a parent
+      // calling setState in onSelectValue doesn't trigger a
+      // setState-during-build error.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _selected != null) {
+          widget.onSelectValue(_selected!);
+        }
+      });
+    }
   }
 
   /// Returns the country matching [code], or the first country in the list.
   Country _findCountry(String? code) {
     final String? upperCode = code?.toUpperCase();
-    return countriesElements.firstWhere(
+    return _countries.firstWhere(
       (Country element) => element.code.toUpperCase() == upperCode,
-      orElse: () => countriesElements.first,
+      orElse: () => _countries.first,
     );
   }
+
+  /// The entry in the list for the selected country, so the dropdown can
+  /// find it among its items and show it localized.
+  Country get _shown => _findCountry(
+      widget.value?.code ?? _selected?.code ?? widget.selectInitialCountry);
 
   @override
   void didUpdateWidget(covariant CountryCodeSelectorDropDown oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.selectInitialCountry != widget.selectInitialCountry &&
         widget.selectInitialCountry != null) {
-      selectedItem = _findCountry(widget.selectInitialCountry);
+      _selected = _findCountry(widget.selectInitialCountry);
     }
   }
 
@@ -112,160 +145,50 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Re-resolve on locale changes so names and alphabetical order follow it.
-    countriesElements = CountryRepository.resolve(
+    _countries = CountryRepository.resolve(
       widget.countryListConfig,
-      context: widget.layoutConfig?.enableLocalization ?? true ? context : null,
+      context: _layout.enableLocalization ? context : null,
     );
-    selectedItem =
-        _findCountry(selectedItem?.code ?? widget.selectInitialCountry);
+    _selected = _shown;
   }
 
   @override
   Widget build(BuildContext context) {
-    items = countriesElements.map<DropdownMenuItem<Country>>((Country e) {
-      return DropdownMenuItem<Country>(
-          alignment: Alignment.center,
-          onTap: widget.onTapDropdownMenuButton,
-          value: e,
-          child: (widget.layoutConfig?.elementsOrder ==
-                  DisplayOrder.flagCodeAndCountryName)
-              ? Row(
-                  children: <Widget>[
-                    if (widget.layoutConfig!.showCountryFlag)
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 14),
-                          decoration: widget.layoutConfig?.flagDecoration,
-                          clipBehavior:
-                              widget.layoutConfig?.flagDecoration == null
-                                  ? Clip.none
-                                  : Clip.hardEdge,
-                          child: CountryFlag(
-                            assetName: e.image,
-                            flagWidth: widget.layoutConfig?.flagWidth,
-                            flagHeight: widget.layoutConfig?.flagHeight,
-                          ),
-                        ),
-                      ),
-                    if (widget.layoutConfig!.showCountryCode)
-                      Flexible(
-                        child: SizedBox(
-                          width: calculateSize(
-                              widget.layoutConfig?.textStyle?.fontSize ??
-                                  Theme.of(context)
-                                      .dropdownMenuTheme
-                                      .textStyle
-                                      ?.fontSize ??
-                                  _defaultTextStyle.fontSize!),
-                          child: Text(
-                            e.code,
-                            style: widget.layoutConfig?.textStyle ??
-                                Theme.of(context).dropdownMenuTheme.textStyle ??
-                                _defaultTextStyle,
-                          ),
-                        ),
-                      ),
-                    if (widget.layoutConfig!.showCountryName)
-                      Expanded(
-                        child: Text(
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.left,
-                          e.toCountryStringOnly(),
-                          style: widget.layoutConfig?.textStyle ??
-                              Theme.of(context).dropdownMenuTheme.textStyle ??
-                              _defaultTextStyle,
-                        ),
-                      ),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment:
-                      (widget.layoutConfig?.showCountryName == false)
-                          ? MainAxisAlignment.spaceBetween
-                          : MainAxisAlignment.start,
-                  children: <Widget>[
-                    if (widget.layoutConfig!.showCountryCode)
-                      Flexible(
-                        child: SizedBox(
-                          width: calculateSize(
-                              widget.layoutConfig?.textStyle?.fontSize ??
-                                  Theme.of(context)
-                                      .dropdownMenuTheme
-                                      .textStyle
-                                      ?.fontSize ??
-                                  _defaultTextStyle.fontSize!),
-                          child: Text(e.code,
-                              style: widget.layoutConfig?.textStyle ??
-                                  Theme.of(context)
-                                      .dropdownMenuTheme
-                                      .textStyle ??
-                                  _defaultTextStyle),
-                        ),
-                      ),
-                    if (widget.layoutConfig!.showCountryName)
-                      Expanded(
-                        child: Text(
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.left,
-                          e.toCountryStringOnly(),
-                          overflow: TextOverflow.fade,
-                          style: widget.layoutConfig?.textStyle ??
-                              Theme.of(context).dropdownMenuTheme.textStyle ??
-                              _defaultTextStyle,
-                        ),
-                      ),
-                    if (widget.layoutConfig!.showCountryFlag)
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 14.0),
-                          decoration: widget.layoutConfig?.flagDecoration,
-                          clipBehavior:
-                              widget.layoutConfig?.flagDecoration == null
-                                  ? Clip.none
-                                  : Clip.hardEdge,
-                          child: CountryFlag(
-                            assetName: e.image,
-                            flagWidth: widget.layoutConfig?.flagWidth,
-                            flagHeight: widget.layoutConfig?.flagHeight,
-                          ),
-                        ),
-                      ),
-                  ],
-                ));
-    }).toList();
+    final CountrySelectorThemeData theme = CountrySelectorThemeData.of(context);
     return DropdownButton<Country>(
-      selectedItemBuilder: widget.selectedItemBuilder != null
-          ? (BuildContext context) {
-              return countriesElements
-                  .map((Country c) => widget.selectedItemBuilder!(c))
-                  .toList();
-            }
-          : null,
-      dropdownColor: widget.backGroundColor,
-      alignment: Alignment.bottomRight,
+      selectedItemBuilder: (BuildContext context) => <Widget>[
+        for (final Country c in _countries)
+          widget.selectedItemBuilder?.call(c) ??
+              CountryTile(country: c, layoutConfig: _layout),
+      ],
+      dropdownColor: widget.backgroundColor ?? theme.backgroundColor,
       iconSize: widget.iconSize,
       onTap: widget.onTap,
       borderRadius: widget.borderRadius,
       padding: widget.padding,
       menuMaxHeight: widget.menuMaxHeight,
       underline: widget.underline,
-      style: widget.layoutConfig?.textStyle,
+      style: _layout.textStyle,
       iconDisabledColor: widget.iconDisabledColor,
       iconEnabledColor: widget.iconEnabledColor,
       icon: widget.icon,
       itemHeight: widget.itemHeight,
       isExpanded: true,
-      value: selectedItem,
-      items: items,
+      value: _shown,
+      items: <DropdownMenuItem<Country>>[
+        for (final Country c in _countries)
+          DropdownMenuItem<Country>(
+            onTap: widget.onTapDropdownMenuButton,
+            value: c,
+            child: CountryTile(country: c, layoutConfig: _layout),
+          ),
+      ],
       onChanged: (Country? value) {
-        setState(
-          () {
-            selectedItem = value;
-            widget.onSelectValue(selectedItem!);
-          },
-        );
+        if (value == null) {
+          return;
+        }
+        setState(() => _selected = value);
+        widget.onSelectValue(value);
       },
     );
   }

@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 /// Configuration class for customizing the layout of the country selector widget.
 ///
 /// This class provides various options for displaying country information
-/// such as the flag, country name, and dialing code, as well as allowing
-/// customization of styles and theming.
+/// such as the flag, country name, and dialing code. Colors and text styles
+/// for the whole app are set with [CountrySelectorThemeData].
+@immutable
 class LayoutConfig {
   /// Creates a layout configuration for the country selector widget.
   ///
   /// [flagHeight] and [flagWidth] define the dimensions of the country flag.
   /// [flagDecoration] allows applying decorations to the flag.
-  /// [textStyle] defines the style for displaying text elements like the country name and code.
-  /// [elementsOrder] controls the display order of the flag, country code, and name.
+  /// [textStyle] overrides the style of the country name and dial code.
+  /// [elementsOrder] controls the display order of the flag, dial code, and name.
   /// [showCountryFlag], [showCountryName], and [showCountryCode] control the visibility of the corresponding elements.
-  /// [flagMode] allows switching between round and square flags.
+  /// [flagMode] switches between square, round and emoji flags.
   /// [enableLocalization] enables localization support for country names.
-  /// [themeMode] defines whether to use system-based theming, light mode, or dark mode.
-  /// [lightTheme] and [darkTheme] provide theme configurations for light and dark modes.
   const LayoutConfig({
     this.flagHeight = 18,
     this.flagWidth = 24,
@@ -26,17 +25,15 @@ class LayoutConfig {
     this.showCountryFlag = true,
     this.showCountryName = true,
     this.showCountryCode = true,
-    this.flagMode = FlagMode.round, // Default flag mode to round
+    this.flagMode = FlagMode.square,
     this.enableLocalization = true,
-    this.themeMode = ThemeMode.system, // Default theme based on system setting
-    this.lightTheme,
-    this.darkTheme,
   }) : assert(showCountryFlag || showCountryCode || showCountryName,
             'At least one element must be shown in the country list.');
 
-  /// Defines the text style for displaying elements such as the country name and code.
+  /// Overrides the style of the country name and dial code.
   ///
-  /// If null, the default style will be [TextStyle(fontSize: 14)].
+  /// It is merged over [CountrySelectorThemeData.countryNameTextStyle] and
+  /// [CountrySelectorThemeData.dialCodeTextStyle].
   final TextStyle? textStyle;
 
   /// Defines the order in which the flag, dialing code, and country name are displayed.
@@ -44,13 +41,14 @@ class LayoutConfig {
   /// Possible orders are controlled by the [DisplayOrder] enum.
   final DisplayOrder elementsOrder;
 
-  /// Specifies the width of the country flag.
+  /// Specifies the width of the country flag. Round and emoji flags use
+  /// [flagHeight] for both dimensions.
   final double flagWidth;
 
   /// Specifies the height of the country flag.
   final double flagHeight;
 
-  /// Allows applying decorations to the flag, such as border or shape customization.
+  /// Allows applying decorations to the flag, such as a border.
   final Decoration? flagDecoration;
 
   /// Determines whether to show the country name in the list.
@@ -59,12 +57,10 @@ class LayoutConfig {
   /// Determines whether to show the country flag in the list.
   final bool showCountryFlag;
 
-  /// Determines whether to show the country dialing code in the list.
+  /// Determines whether to show the country dialing code (e.g. +234) in the list.
   final bool showCountryCode;
 
-  /// Defines the display mode of the flag, either round or square.
-  ///
-  /// This is controlled by the [FlagMode] enum.
+  /// How the flag is drawn. Defaults to [FlagMode.square].
   final FlagMode flagMode;
 
   /// Enables localization support for country names.
@@ -73,61 +69,44 @@ class LayoutConfig {
   /// of the app's locale. When disabled, they stay in English. The selector's
   /// own text, like the header, is translated either way.
   final bool enableLocalization;
-
-  /// Controls the theming of the widget.
-  ///
-  /// This allows the widget to switch between light and dark mode, or to follow the system's theme setting.
-  final ThemeMode themeMode;
-
-  /// Provides the theme configuration for light mode.
-  ///
-  /// If null, the default light theme will be used.
-  final CountrySelectorThemeData? lightTheme;
-
-  /// Provides the theme configuration for dark mode.
-  ///
-  /// If null, the default dark theme will be used.
-  final CountrySelectorThemeData? darkTheme;
 }
 
-/// Enum to define the order in which elements (flag, code, name) are displayed.
+/// The order in which the flag, dial code and country name are displayed.
 ///
-/// It controls the sequence in which the country flag, dialing code, and
-/// country name appear in the list.
+/// The order follows the reading direction, so in right-to-left languages the
+/// first element is on the right.
 enum DisplayOrder {
+  /// Flag, dial code, name.
   flagCodeAndCountryName,
+
+  /// Dial code, flag, name.
   codeFlagAndCountryName,
+
+  /// Name, dial code, flag.
   nameCodeAndFlag,
-  codeCountryNameAndFlag
+
+  /// Dial code, name, flag.
+  codeCountryNameAndFlag,
 }
 
-/// Enum to define the display mode of the flag (square or round).
-///
-/// This controls whether the country flag is displayed in a round or square format.
+/// How a country flag is drawn.
 enum FlagMode {
+  /// A circle with the diameter of [LayoutConfig.flagHeight].
   round,
+
+  /// A rectangle of [LayoutConfig.flagWidth] by [LayoutConfig.flagHeight].
   square,
+
+  /// The flag emoji, sized to [LayoutConfig.flagHeight]. Needs no image
+  /// assets, but its look depends on the platform's emoji font.
+  emoji,
 }
 
-/// Theme data for customizing the appearance of the country selector widget.
-///
-/// This includes defining the background color and text color for both light
-/// and dark themes.
-class CountrySelectorThemeData {
-  const CountrySelectorThemeData({
-    required this.backgroundColor,
-    required this.textColor,
-  });
-
-  /// The background color of the country selector widget.
-  final Color backgroundColor;
-
-  /// The text color used for displaying the country name and code.
-  final Color textColor;
-}
-
+/// Customizes the search field of the dialog and bottom sheet.
+@immutable
 class SearchStyle {
-  SearchStyle({
+  /// Creates a search field style.
+  const SearchStyle({
     this.searchBoxMargin,
     this.searchFieldInputDecoration,
     this.searchTextStyle,
@@ -135,10 +114,24 @@ class SearchStyle {
     this.searchBoxHeight,
     this.searchIcon,
   });
+
+  /// Replaces the default decoration of the search field entirely.
   final InputDecoration? searchFieldInputDecoration;
+
+  /// The style of the typed text. Overrides
+  /// [CountrySelectorThemeData.searchTextStyle].
   final TextStyle? searchTextStyle;
+
+  /// The hint shown in the empty search field. Defaults to the localized
+  /// "Search".
   final String? hintText;
+
+  /// The height of the search field. Defaults to 40.
   final double? searchBoxHeight;
-  final Icon? searchIcon;
+
+  /// The icon at the start of the search field. Defaults to a search icon.
+  final Widget? searchIcon;
+
+  /// The margin around the search field.
   final EdgeInsetsGeometry? searchBoxMargin;
 }

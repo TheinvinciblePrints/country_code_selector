@@ -202,12 +202,7 @@ class _HomePageState extends State<HomePage> {
                                   },
                                   child: initialDialogCustomValue != null
                                       ? ButtonRowWidget(
-                                          dialCode: initialDialogDefaultValue
-                                              ?.dialCodes.first,
-                                          flagUri:
-                                              initialDialogDefaultValue?.image,
-                                          name: initialDialogDefaultValue?.name,
-                                        )
+                                          country: initialDialogDefaultValue)
                                       : const SizedBox.shrink(),
                                 )
                               ],
@@ -252,13 +247,7 @@ class _HomePageState extends State<HomePage> {
                                     },
                                     child: initialDialogCustomValue != null
                                         ? ButtonRowWidget(
-                                            dialCode: initialDialogCustomValue
-                                                ?.dialCodes.first,
-                                            flagUri:
-                                                initialDialogCustomValue?.image,
-                                            name:
-                                                initialDialogCustomValue?.name,
-                                          )
+                                            country: initialDialogCustomValue)
                                         : const SizedBox.shrink(),
                                   )
                                 ],
@@ -303,11 +292,7 @@ class _HomePageState extends State<HomePage> {
                                     }
                                   }),
                                   child: ButtonRowWidget(
-                                    dialCode: initialBottomDefaultValue
-                                        ?.dialCodes.first,
-                                    flagUri: initialBottomDefaultValue?.image,
-                                    name: initialBottomDefaultValue?.name,
-                                  ),
+                                      country: initialBottomDefaultValue),
                                 )
                               ],
                             ),
@@ -345,11 +330,7 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     }),
                                     child: ButtonRowWidget(
-                                      name: initialBottomCustomValue?.name,
-                                      flagUri: initialBottomCustomValue?.image,
-                                      dialCode: initialBottomCustomValue
-                                          ?.dialCodes.first,
-                                    ),
+                                        country: initialBottomCustomValue),
                                   )
                                 ],
                               ),
@@ -396,13 +377,8 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   },
                                   child: ButtonRowWidget(
-                                    dialCode: initialCupertinoBottomDefaultValue
-                                        ?.dialCodes.first,
-                                    flagUri: initialCupertinoBottomDefaultValue
-                                        ?.image,
-                                    name: initialCupertinoBottomDefaultValue
-                                        ?.name,
-                                  ),
+                                      country:
+                                          initialCupertinoBottomDefaultValue),
                                 )
                               ],
                             ),
@@ -446,14 +422,8 @@ class _HomePageState extends State<HomePage> {
                                       );
                                     },
                                     child: ButtonRowWidget(
-                                      dialCode:
-                                          initialCupertinoBottomCustomValue
-                                              ?.dialCodes.first,
-                                      flagUri: initialCupertinoBottomCustomValue
-                                          ?.image,
-                                      name: initialCupertinoBottomCustomValue
-                                          ?.name,
-                                    ),
+                                        country:
+                                            initialCupertinoBottomCustomValue),
                                   ),
                                 ],
                               ),
@@ -504,36 +474,26 @@ class _HomePageState extends State<HomePage> {
 
 // common elevated child widget...
 class ButtonRowWidget extends StatelessWidget {
-  const ButtonRowWidget({
-    super.key,
-    this.flagUri,
-    this.dialCode,
-    this.name,
-  });
+  const ButtonRowWidget({super.key, this.country});
 
-  final String? flagUri;
-  final String? dialCode;
-  final String? name;
+  final Country? country;
 
   @override
   Widget build(BuildContext context) {
+    final Country? country = this.country;
+    if (country == null) {
+      return const SizedBox.shrink();
+    }
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CountryFlag(
-          assetName: flagUri != null ? flagUri! : '',
-          flagWidth: 24,
-          flagHeight: 18,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
+        CountryFlag(country: country),
+        const SizedBox(width: 10),
         Flexible(
           child: Text(
-            "${dialCode ?? ""} ${name ?? ""}",
+            "${country.dialCode} ${country.name}",
             overflow: TextOverflow.visible,
-            style: const TextStyle(color: Colors.black),
           ),
         ),
       ],
