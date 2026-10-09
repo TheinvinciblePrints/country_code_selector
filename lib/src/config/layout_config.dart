@@ -69,8 +69,9 @@ class LayoutConfig {
 
   /// Enables localization support for country names.
   ///
-  /// When enabled, country names are displayed in the appropriate language
-  /// based on the user's locale.
+  /// When enabled (the default), country names are displayed in the language
+  /// of the app's locale. When disabled, they stay in English. The selector's
+  /// own text, like the header, is translated either way.
   final bool enableLocalization;
 
   /// Controls the theming of the widget.

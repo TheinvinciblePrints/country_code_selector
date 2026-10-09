@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../data/translation_locales.dart';
+import '../data/ui_strings.dart';
 
 /// Handles localization for the CountrySelector, providing translated strings
 /// based on the current locale.
@@ -117,8 +118,29 @@ class CountryCodeSelectorLocalizations {
   static bool isLanguageSupported(Locale locale) => kTranslationLocales
       .contains(_languageAliases[locale.languageCode] ?? locale.languageCode);
 
-  /// Returns the translation for [key], or `null` if there is none.
+  /// Returns the translated country name for [key], or `null` if there is
+  /// none.
   String? lookup(String key) => _values[key];
+
+  /// The default header of the dialog and bottom sheet, e.g. "Select country".
+  String get selectCountry => uiString(locale, kSelectCountryKey);
+
+  /// The default text shown when a search has no results, e.g.
+  /// "No country found".
+  String get noCountryFound => uiString(locale, kNoCountryFoundKey);
+
+  /// Returns the selector UI string [key] for [locale], falling back to the
+  /// language and then to English.
+  static String uiString(Locale locale, String key) {
+    final List<String> parts = translationFileFor(locale).split('_');
+    for (int i = parts.length; i > 0; i--) {
+      final String? value = kUiStrings[parts.take(i).join('_')]?[key];
+      if (value != null) {
+        return value;
+      }
+    }
+    return kUiStrings[fallbackLanguageCode]![key]!;
+  }
 
   /// Translates the given [code] based on the current locale.
   ///

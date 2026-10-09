@@ -114,7 +114,7 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
     // Re-resolve on locale changes so names and alphabetical order follow it.
     countriesElements = CountryRepository.resolve(
       widget.countryListConfig,
-      context: context,
+      context: widget.layoutConfig?.enableLocalization ?? true ? context : null,
     );
     selectedItem =
         _findCountry(selectedItem?.code ?? widget.selectInitialCountry);

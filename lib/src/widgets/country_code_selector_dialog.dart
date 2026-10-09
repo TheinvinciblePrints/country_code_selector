@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../country_code_selector.dart';
+import '../data/ui_strings.dart';
 
 class CountryCodeSelectorDialog extends StatefulWidget {
   const CountryCodeSelectorDialog({
@@ -49,13 +50,20 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
 
   TextStyle get _defaultTextStyle => const TextStyle(fontSize: 14);
 
+  bool get _localizeNames => widget.layoutConfig?.enableLocalization ?? true;
+
+  String _uiString(String key) => CountryCodeSelectorLocalizations.uiString(
+        Localizations.maybeLocaleOf(context) ?? const Locale('en'),
+        key,
+      );
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Re-resolve on locale changes so names and alphabetical order follow it.
     countriesElements = CountryRepository.resolve(
       widget.countryListConfig,
-      context: context,
+      context: _localizeNames ? context : null,
     );
     favoriteCountries = CountryRepository.favourites(
         countriesElements, widget.favouriteCountries);
@@ -88,8 +96,8 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: widget.header ??
-                    const Text(
-                      'Select Country',
+                    Text(
+                      _uiString(kSelectCountryKey),
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                     ),
@@ -149,7 +157,8 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
                               package: 'country_code_selector',
                             ),
                       ),
-                      hintText: widget.searchStyle?.hintText ?? 'Search',
+                      hintText: widget.searchStyle?.hintText ??
+                          MaterialLocalizations.of(context).searchFieldLabel,
                       hintStyle:
                           TextStyle(fontSize: 14, color: Colors.grey.shade400),
                     ),
@@ -216,9 +225,7 @@ class _CountryCodeSelectorDialogState extends State<CountryCodeSelectorDialog> {
     }
     return SliverFillRemaining(
       child: Center(
-        child: Text(CountryCodeSelectorLocalizations.of(context)
-                ?.lookup('no_country') ??
-            'Not found'),
+        child: Text(_uiString(kNoCountryFoundKey)),
       ),
     );
   }

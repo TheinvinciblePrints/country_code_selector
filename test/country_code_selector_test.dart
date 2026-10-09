@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:country_code_selector/country_code_selector.dart';
 import 'package:country_code_selector/src/data/translation_locales.dart';
+import 'package:country_code_selector/src/data/ui_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -311,6 +312,35 @@ void main() {
     });
   });
 
+  group('UI strings', () {
+    String select(Locale l) =>
+        CountryCodeSelectorLocalizations.uiString(l, kSelectCountryKey);
+
+    test('fall back to the language, then English', () {
+      expect(select(const Locale('fr')), 'Sélectionnez un pays');
+      expect(select(const Locale('fr', 'CA')), 'Sélectionnez un pays');
+      expect(select(const Locale('pt', 'PT')), 'Selecione um país');
+      expect(select(const Locale('zh', 'TW')), '選擇國家/地區');
+      expect(select(const Locale('zh', 'HK')), '選擇國家/地區');
+      expect(
+          select(
+              const Locale.fromSubtags(languageCode: 'sr', scriptCode: 'Latn')),
+          'Izaberite zemlju');
+      expect(select(const Locale('yo')), 'Select country');
+      expect(select(const Locale('xx')), 'Select country');
+    });
+
+    test('every entry is complete and matches a bundled translation', () {
+      for (final MapEntry<String, Map<String, String>> e
+          in kUiStrings.entries) {
+        expect(e.value.keys,
+            unorderedEquals(<String>[kSelectCountryKey, kNoCountryFoundKey]),
+            reason: e.key);
+        expect(kTranslationLocales, contains(e.key), reason: e.key);
+      }
+    });
+  });
+
   group('dialog', () {
     testWidgets('renders the default search icon and finds by dial code',
         (WidgetTester tester) async {
@@ -320,6 +350,35 @@ void main() {
       await tester.enterText(find.byType(TextField), '234');
       await tester.pumpAndSettle();
       expect(find.text(' Nigeria'), findsOneWidget);
+    });
+
+    testWidgets('translates its own text', (WidgetTester tester) async {
+      await _pumpApp(
+          tester,
+          _app(
+            const CountryCodeSelectorDialog(),
+            locale: const Locale('fr'),
+          ));
+      expect(find.text('Sélectionnez un pays'), findsOneWidget);
+      expect(find.text('Rechercher'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextField), 'zzzz');
+      await tester.pumpAndSettle();
+      expect(find.text('Aucun pays trouvé'), findsOneWidget);
+    });
+
+    testWidgets('keeps English names when enableLocalization is false',
+        (WidgetTester tester) async {
+      await _pumpApp(
+          tester,
+          _app(
+            const CountryCodeSelectorDialog(
+              layoutConfig: LayoutConfig(enableLocalization: false),
+            ),
+            locale: const Locale('fr'),
+          ));
+      expect(find.text(' Albania'), findsOneWidget);
+      expect(find.text('Sélectionnez un pays'), findsOneWidget);
     });
 
     testWidgets('shows localized names before searching',
