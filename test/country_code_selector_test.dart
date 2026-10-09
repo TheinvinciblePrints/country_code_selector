@@ -396,7 +396,7 @@ void main() {
   });
 
   group('cupertino bottom sheet', () {
-    testWidgets('returns the initial country without scrolling',
+    testWidgets('without a confirm button, returns the shown country',
         (WidgetTester tester) async {
       Country? result;
       await _pumpApp(
@@ -407,6 +407,7 @@ void main() {
                 result = await CountryCodeSelector
                     .showCountryCodeSelectorCupertinoBottomSheet(
                   context: context,
+                  showDoneButton: false,
                   setInitialValue: const Country(
                       name: 'Nigeria',
                       code: 'NG',
@@ -644,6 +645,30 @@ void main() {
     await tester.tap(find.text('OK'));
     await tester.pumpAndSettle();
     expect(result?.code, 'GB');
+  });
+
+  testWidgets('cupertino sheet with a confirm button cancels on dismiss',
+      (WidgetTester tester) async {
+    Country? result = CountryRepository.byCode('NG');
+    await _pumpApp(
+        tester,
+        _app(Builder(
+          builder: (BuildContext context) => TextButton(
+            onPressed: () async {
+              result = await CountryCodeSelector
+                  .showCountryCodeSelectorCupertinoBottomSheet(
+                context: context,
+                setInitialValue: CountryRepository.byCode('GB'),
+              );
+            },
+            child: const Text('open'),
+          ),
+        )));
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    expect(result, isNull);
   });
 
   group('CountryCodeSelectorWidget', () {

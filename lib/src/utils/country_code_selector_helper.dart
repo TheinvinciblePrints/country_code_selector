@@ -150,6 +150,20 @@ class CountryCodeSelector {
     );
   }
 
+  /// Shows a searchable country list in a modal bottom sheet and returns the
+  /// selected country, or `null` if the sheet is dismissed.
+  ///
+  /// The list options match [showCountryCodeSelectorDialog]; the remaining
+  /// parameters are passed to [showModalBottomSheet]. For a full-height sheet
+  /// pass `isScrollControlled: true` and `useSafeArea: true`.
+  ///
+  /// ```dart
+  /// final Country? country =
+  ///     await CountryCodeSelector.showCountryCodeSelectorBottomSheet(
+  ///   context: context,
+  ///   favouriteCountries: <String>['NG', 'GH'],
+  /// );
+  /// ```
   static Future<Country?> showCountryCodeSelectorBottomSheet(
       {required BuildContext context,
       Color? backgroundColor,
@@ -217,6 +231,21 @@ class CountryCodeSelector {
     );
   }
 
+  /// Shows an iOS-style wheel of countries in a modal bottom sheet.
+  ///
+  /// Returns the country confirmed with the OK button, or `null` if the sheet
+  /// is dismissed. With `showDoneButton: false` there is no button, so
+  /// dismissing returns the country under the selection. [setInitialValue] is selected
+  /// when the sheet opens; the picker parameters are passed to
+  /// `CupertinoPicker` and the rest to [showModalBottomSheet].
+  ///
+  /// ```dart
+  /// final Country? country = await CountryCodeSelector
+  ///     .showCountryCodeSelectorCupertinoBottomSheet(
+  ///   context: context,
+  ///   setInitialValue: CountryRepository.byCode('NG'),
+  /// );
+  /// ```
   static Future<Country?> showCountryCodeSelectorCupertinoBottomSheet(
       {required BuildContext context,
       Country? setInitialValue,
@@ -284,8 +313,7 @@ class CountryCodeSelector {
         );
       },
     );
-    // Closing the sheet without the confirm button returns the country
-    // under the selection overlay.
-    return done ?? countryData;
+    // Without a confirm button, closing the sheet is how the user confirms.
+    return done ?? (showDoneButton ? null : countryData);
   }
 }
