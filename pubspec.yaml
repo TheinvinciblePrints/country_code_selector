@@ -1,10 +1,25 @@
 name: country_code_selector
-description: "The country_code_selector Flutter package offers a customizable
-  and user-friendly country code picker with features like filtering, sorting,
-  theme customization, and localization support."
-version: 1.0.0
-homepage: https://github.com/TheinvinciblePrints/country_code_selector
+description: >-
+  Country code picker with searchable dialog, bottom sheet, Cupertino wheel, dropdown and phone field button. Flags, dial codes and country names in 200+ languages.
+version: 0.1.0
+repository: https://github.com/TheinvinciblePrints/country_code_selector
 issue_tracker: https://github.com/TheinvinciblePrints/country_code_selector/issues
+topics:
+  - country-picker
+  - phone
+  - flags
+  - localization
+  - picker
+
+screenshots:
+  - description: Searchable country dialog with favourites.
+    path: doc/screenshots/dialog.png
+  - description: Bottom sheet with round flags.
+    path: doc/screenshots/bottom_sheet.png
+  - description: Cupertino wheel picker.
+    path: doc/screenshots/cupertino.png
+  - description: Phone number field with CountryCodeSelectorWidget.
+    path: doc/screenshots/phone_field.png
 
 environment:
   sdk: ^3.5.0
@@ -14,12 +29,12 @@ dependencies:
   dlibphonenumber: ^1.1.73
   flutter:
     sdk: flutter
-  flutter_svg: ^2.3.0
+  flutter_svg: ^2.1.0
   flutter_localizations:
     sdk: flutter
 
 dev_dependencies:
-  flutter_lints: ^6.0.0
+  flutter_lints: ">=5.0.0 <7.0.0"
   flutter_test:
     sdk: flutter
 

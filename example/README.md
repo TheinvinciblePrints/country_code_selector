@@ -1,16 +1,13 @@
-# example
+# country_code_selector example
 
-A new Flutter project.
+Demonstrates every picker in
+[country_code_selector](https://pub.dev/packages/country_code_selector): the
+dialog, bottom sheet, Cupertino wheel and dropdown, each with a default and a
+customised layout, plus a phone number field using `CountryCodeSelectorWidget`.
 
-## Getting Started
+```shell
+cd example
+flutter run
+```
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+See [lib/main.dart](lib/main.dart) for the code.

@@ -1,39 +1,233 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# country_code_selector
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+[![pub package](https://img.shields.io/pub/v/country_code_selector.svg)](https://pub.dev/packages/country_code_selector)
+[![CI](https://github.com/TheinvinciblePrints/country_code_selector/actions/workflows/ci.yml/badge.svg)](https://github.com/TheinvinciblePrints/country_code_selector/actions/workflows/ci.yml)
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+A country code picker for Flutter. Pick from a searchable dialog, a bottom
+sheet, an iOS-style wheel, a dropdown, or a compact button for phone number
+fields. Every country comes with its flag, dial code and name in 200+
+languages.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+<p>
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/dialog.png" width="200" alt="Country dialog">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/bottom_sheet.png" width="200" alt="Bottom sheet with round flags">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/cupertino.png" width="200" alt="Cupertino wheel">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/phone_field.png" width="200" alt="Phone number field">
+</p>
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Five pickers: dialog, bottom sheet, Cupertino wheel, dropdown, and a
+  flag + dial code button for phone fields.
+- 250 countries and territories with SVG flags, dial codes and mobile number
+  lengths.
+- Country names in 202 languages from [Unicode CLDR](https://cldr.unicode.org),
+  including regional variants (Traditional Chinese, Latin Serbian, European
+  Portuguese, Latin American Spanish, …).
+- Search by name, ISO code or dial code (`234` or `+234`).
+- Filter, exclude, sort, pin favourites and add your own entries.
+- Square, round or emoji flags, four layouts, right-to-left support.
+- Follows your app's light and dark theme; customise it with a theme
+  extension.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+```shell
+flutter pub add country_code_selector
+```
+
+Add the localization delegate so country names are translated:
+
+```dart
+import 'package:country_code_selector/country_code_selector.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+MaterialApp(
+  localizationsDelegates: const [
+    CountryCodeSelectorLocalizations.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ],
+  supportedLocales: const [Locale('en'), Locale('fr'), Locale('ar')],
+  home: const MyHomePage(),
+);
+```
+
+Without the delegate everything still works, with English country names.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### Phone number field
+
+`CountryCodeSelectorWidget` shows the selected flag and dial code and opens a
+picker when tapped. It starts on the user's country unless you pass
+`initialCountryCode`.
 
 ```dart
-const like = 'sample';
+TextField(
+  keyboardType: TextInputType.phone,
+  decoration: InputDecoration(
+    labelText: 'Phone number',
+    prefixIcon: CountryCodeSelectorWidget(
+      initialCountryCode: 'NG',
+      pickerType: CountryPickerType.bottomSheet, // or dialog, cupertino
+      onChanged: (Country country) => setState(() => _country = country),
+    ),
+  ),
+);
 ```
 
-## Additional information
+### Dialog and bottom sheet
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+final Country? country =
+    await CountryCodeSelector.showCountryCodeSelectorDialog(
+  context: context,
+  favouriteCountries: ['NG', 'GH', 'KE'],
+);
+
+final Country? fromSheet =
+    await CountryCodeSelector.showCountryCodeSelectorBottomSheet(
+  context: context,
+  isScrollControlled: true, // full height
+  useSafeArea: true,
+);
+```
+
+Both return `null` when dismissed.
+
+### Cupertino wheel
+
+```dart
+final Country? country = await CountryCodeSelector
+    .showCountryCodeSelectorCupertinoBottomSheet(
+  context: context,
+  setInitialValue: CountryRepository.byCode('NG'),
+);
+```
+
+Returns the country confirmed with the OK button, or `null` when dismissed.
+
+### Dropdown
+
+```dart
+CountryCodeSelectorDropDown(
+  selectInitialCountry: 'NG',
+  onSelectValue: (Country country) => print(country.dialCode),
+);
+```
+
+Pass `value` instead to control the selection yourself.
+
+### Working with `Country`
+
+```dart
+country.name;              // 'Nigeria' (localized when picked from a selector)
+country.code;              // 'NG'
+country.dialCode;          // '+234'
+country.emoji;             // '🇳🇬'
+country.phoneNumberLength; // [10]: possible mobile number lengths
+```
+
+## Customization
+
+### Which countries, in which order
+
+```dart
+CountryCodeSelector.showCountryCodeSelectorBottomSheet(
+  context: context,
+  countryListConfig: CountryListConfig(
+    countryFilter: ['NG', 'GH', 'KE', 'ZA'], // or excludeCountry: [...]
+    sortingBehavior: SortingBehavior.byDialCode, // default: alphabetical
+    customCountryEntries: [
+      Country(
+        name: 'Customland',
+        code: 'XC',
+        emoji: '🏳️',
+        image: 'assets/flags/customland.png', // an asset of your app
+        dialCodes: ['+999'],
+      ),
+    ],
+  ),
+);
+```
+
+### How each row looks
+
+```dart
+const LayoutConfig(
+  elementsOrder: DisplayOrder.flagCodeAndCountryName,
+  flagMode: FlagMode.round, // square, round or emoji
+  flagWidth: 24,
+  flagHeight: 18,
+  showCountryCode: true,
+  showCountryName: true,
+  enableLocalization: true, // false keeps names in English
+);
+```
+
+`CountryTile` and `CountryFlag` are exported, so you can build your own list
+with the same rows.
+
+### Theme
+
+Add `CountrySelectorThemeData` to your theme to style every picker. Anything
+you leave out comes from your `ThemeData`, so dark mode works by default.
+
+```dart
+ThemeData(
+  extensions: const [
+    CountrySelectorThemeData(
+      backgroundColor: Colors.white,
+      countryNameTextStyle: TextStyle(fontSize: 16),
+      dialCodeTextStyle: TextStyle(color: Colors.grey),
+      borderRadius: 20,
+    ),
+  ],
+);
+```
+
+The search field can also be customised per picker with `SearchStyle`.
+
+### Looking up countries without UI
+
+```dart
+CountryRepository.byCode('ng');           // Country? (bundled, English)
+CountryRepository.search(CountryRepository.all, '+44');
+CountryCodeSelector.getDefaultCountry(context: context); // user's country
+```
+
+## Localization
+
+Country names are bundled for 202 languages. The selector picks the closest
+match for the app's locale (for example `zh_TW` uses Traditional Chinese and
+`es_MX` uses Latin American Spanish) and falls back to English.
+
+The selectors' own text ("Select country", "No country found") is translated
+into 43 languages and falls back to English; the search hint uses Flutter's
+translation. Override any of it with the `header`, `searchStyle.hintText` and
+`emptySearchBuilder` parameters.
+
+Flutter's Material widgets support fewer languages than this package. If your
+app's `supportedLocales` includes a language Flutter doesn't support, add a
+fallback `MaterialLocalizations` delegate for it, as described in
+[Flutter's internationalization guide](https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization#adding-support-for-a-new-language).
+
+## Credits
+
+- Flags from [flag-icons](https://github.com/lipis/flag-icons) (MIT License,
+  see `assets/flags/LICENSE`).
+- Country names from the
+  [Unicode Common Locale Data Repository](https://cldr.unicode.org) (Unicode
+  License v3, see `assets/i18n/LICENSE`). Regenerate them with
+  `dart run tool/generate_translations.dart`.
+- Phone number lengths from
+  [dlibphonenumber](https://pub.dev/packages/dlibphonenumber).
+
+## Contributing
+
+Issues and pull requests are welcome on
+[GitHub](https://github.com/TheinvinciblePrints/country_code_selector/issues).
+Translations of the selector's own text are especially welcome: add an entry
+to `lib/src/data/ui_strings.dart`.
