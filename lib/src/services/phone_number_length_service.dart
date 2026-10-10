@@ -1,8 +1,12 @@
 import 'package:dlibphonenumber/dlibphonenumber.dart';
-import 'package:flutter/foundation.dart';
 
 /// Looks up possible mobile phone number lengths from the libphonenumber
-/// metadata.
+/// metadata at runtime.
+///
+/// The bundled countries don't need it: their lengths are stored in the
+/// package (see `tool/generate_phone_lengths.dart`), so apps that never
+/// validate numbers don't include libphonenumber's metadata. Use this for
+/// regions or dial codes outside the bundled data.
 abstract final class PhoneNumberLengthService {
   static final Map<String, List<int>?> _cache = <String, List<int>?>{};
 
@@ -47,8 +51,8 @@ abstract final class PhoneNumberLengthService {
             .toList()
           ..sort();
         return lengths.isEmpty ? null : List<int>.unmodifiable(lengths);
-      } catch (e) {
-        debugPrint('country_code_selector: no phone metadata for $region: $e');
+      } catch (_) {
+        // Metadata lookups shouldn't fail; treat any failure as unknown.
         return null;
       }
     });

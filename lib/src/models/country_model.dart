@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../services/phone_number_length_service.dart';
+import '../data/phone_lengths.dart';
 import '../services/phone_number_validator.dart';
 import '../utils/country_code_selector_localizations.dart';
 
@@ -77,12 +77,11 @@ class Country {
   /// 10 digits remain. Use this to validate or limit a phone field that shows
   /// [dialCode] as its prefix.
   ///
-  /// Uses the value passed to the constructor if any, otherwise it is looked
-  /// up from libphonenumber's metadata. `null` if no information is available,
-  /// as for Antarctica.
+  /// Uses the value passed to the constructor if any, otherwise the lengths
+  /// stored for [code] (from libphonenumber's metadata). `null` if neither is
+  /// available, as for Antarctica or a custom country created without one.
   List<int>? get phoneNumberLength =>
-      _phoneNumberLength ??
-      PhoneNumberLengthService.lengthsFor(code, dialCode: dialCode);
+      _phoneNumberLength ?? kPhoneNumberLengths[code.toUpperCase()];
 
   /// Whether [number] is a valid phone number of this country.
   ///

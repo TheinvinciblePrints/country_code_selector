@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:country_code_selector/country_code_selector.dart';
+import 'package:country_code_selector/src/data/phone_lengths.dart';
 import 'package:country_code_selector/src/data/translation_locales.dart';
 import 'package:country_code_selector/src/data/ui_strings.dart';
 import 'package:dlibphonenumber/dlibphonenumber.dart'
@@ -112,6 +113,23 @@ void main() {
           expect(l.every((int n) => n > 0), isTrue, reason: '${c.code} $l');
         }
       }
+    });
+
+    test('stored phone lengths match dlibphonenumber', () {
+      // If this fails after upgrading dlibphonenumber or editing the country
+      // data, run: dart run tool/generate_phone_lengths.dart
+      for (final Country c in CountryRepository.all) {
+        expect(
+          kPhoneNumberLengths[c.code],
+          PhoneNumberLengthService.lengthsFor(c.code, dialCode: c.dialCode),
+          reason: c.code,
+        );
+      }
+      expect(
+        kPhoneNumberLengths.keys
+            .where((String code) => CountryRepository.byCode(code) == null),
+        isEmpty,
+      );
     });
 
     test('dialCode is the first dial code', () {

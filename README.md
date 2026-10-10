@@ -241,6 +241,10 @@ ng.toE164('+234 803-123-4567'); // '+2348031234567'
 ng.toE164('0803 123');          // null
 ```
 
+Validation uses libphonenumber's numbering rules, which add about 2 MB to a
+release build. They're only included if your app calls `isValidPhoneNumber`
+or `toE164`; an app that just picks countries doesn't pay for them.
+
 `phoneNumberLength` gives the number of digits typed after `dialCode`, without
 the national trunk prefix: a Nigerian number written locally as
 0803 123 4567 is +234 803 123 4567, so it's `[10]`. Use it for hints or
@@ -338,8 +342,10 @@ fallback `MaterialLocalizations` delegate for it, as described in
   [Unicode Common Locale Data Repository](https://cldr.unicode.org) (Unicode
   License v3, see `assets/i18n/LICENSE`). Regenerate them with
   `dart run tool/generate_translations.dart`.
-- Phone number lengths from
-  [dlibphonenumber](https://pub.dev/packages/dlibphonenumber).
+- Phone number rules and lengths from
+  [dlibphonenumber](https://pub.dev/packages/dlibphonenumber). The lengths are
+  stored in the package; regenerate them with
+  `dart run tool/generate_phone_lengths.dart` after upgrading it.
 
 ## Contributing
 

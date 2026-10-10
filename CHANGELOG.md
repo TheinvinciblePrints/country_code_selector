@@ -18,7 +18,9 @@ First release.
   number ranges, in local, trunk-prefixed, or international form, with an
   optional `mobileOnly` check. `Country.toE164` returns the number in E.164
   form (`+2348031234567`) for storing or sending to a backend.
-  `phoneNumberLength` gives the digits expected after the dial code.
+  `phoneNumberLength` gives the digits expected after the dial code. Apps
+  that don't validate numbers don't include libphonenumber's ~2 MB of
+  metadata.
 * Search by name, ISO code, or dial code, with or without `+`.
 * Filter, exclude, sort, pin favourites, and add custom countries with
   `CountryListConfig`.
