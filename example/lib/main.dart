@@ -695,9 +695,12 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: 'Mobile number',
-        helperText: lengths == null
-            ? null
-            : '${lengths.join(' or ')} digits after ${_country.dialCode}',
+        // Once valid, show the E.164 form an app would send to its backend.
+        helperText: _isValid
+            ? 'Saved as ${_country.toE164(_controller.text)}'
+            : lengths == null
+                ? null
+                : '${lengths.join(' or ')} digits after ${_country.dialCode}',
         prefixIcon: CountryCodeSelectorWidget(
           initialCountryCode: 'NG',
           favouriteCountries: const ['NG', 'GH', 'KE'],

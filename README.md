@@ -194,6 +194,7 @@ country.dialCode;          // '+234'
 country.emoji;             // '🇳🇬'
 country.phoneNumberLength; // [10]: mobile digits after the dial code
 country.isValidPhoneNumber('0803 123 4567'); // true
+country.toE164('0803 123 4567');             // '+2348031234567'
 ```
 
 ### Validating phone numbers
@@ -228,6 +229,16 @@ TextFormField(
           ? null
           : 'Enter a valid ${_country.name} mobile number',
 );
+```
+
+`toE164` accepts the same input and returns the number in E.164 form, the
+international format without spaces that backends, SMS gateways and
+authentication providers expect, or `null` when the number isn't valid:
+
+```dart
+ng.toE164('0803 123 4567');     // '+2348031234567'
+ng.toE164('+234 803-123-4567'); // '+2348031234567'
+ng.toE164('0803 123');          // null
 ```
 
 `phoneNumberLength` gives the number of digits typed after `dialCode`, without

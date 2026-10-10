@@ -102,6 +102,21 @@ class Country {
   bool isValidPhoneNumber(String number, {bool mobileOnly = false}) =>
       PhoneNumberValidator.isValid(this, number, mobileOnly: mobileOnly);
 
+  /// Returns [number] in E.164 format, the international format without
+  /// spaces that backends and SMS providers expect, or `null` if it isn't a
+  /// valid number of this country.
+  ///
+  /// Accepts the same input as [isValidPhoneNumber]:
+  ///
+  /// ```dart
+  /// final Country ng = CountryRepository.byCode('NG')!;
+  /// ng.toE164('0803 123 4567'); // '+2348031234567'
+  /// ng.toE164('803-123-4567'); // '+2348031234567'
+  /// ng.toE164('0803 123'); // null
+  /// ```
+  String? toE164(String number, {bool mobileOnly = false}) =>
+      PhoneNumberValidator.toE164(this, number, mobileOnly: mobileOnly);
+
   /// Equality operator to compare two [Country] objects based on their ISO code.
   ///
   /// Returns `true` if the [code] of both countries is the same, so a country

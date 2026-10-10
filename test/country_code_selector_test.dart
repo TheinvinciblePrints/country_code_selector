@@ -175,6 +175,51 @@ void main() {
           isFalse);
     });
 
+    test('toE164 normalizes every accepted form', () {
+      for (final String input in <String>[
+        '0803 123 4567',
+        '803-123-4567',
+        '(0803) 123 4567',
+        '+234 803 123 4567',
+        '+2348031234567',
+      ]) {
+        expect(ng.toE164(input), '+2348031234567', reason: input);
+      }
+      expect(ng.toE164('0803 123'), isNull);
+      expect(ng.toE164('+44 7400 123456'), isNull);
+      expect(ng.toE164(''), isNull);
+
+      final Country jm = CountryRepository.byCode('JM')!;
+      expect(jm.toE164('210 1234'), '+18762101234');
+      expect(jm.toE164('876 210 1234'), '+18762101234');
+
+      const Country custom = Country(
+          name: 'Customland',
+          code: 'XC',
+          emoji: '',
+          image: '',
+          dialCodes: <String>['+999'],
+          phoneNumberLength: <int>[6]);
+      expect(custom.toE164('123 456'), '+999123456');
+      expect(custom.toE164('12345'), isNull);
+    });
+
+    test('toE164 is consistent with isValidPhoneNumber for every country', () {
+      final PhoneNumberUtil util = PhoneNumberUtil.instance;
+      for (final Country c in CountryRepository.all) {
+        final PhoneMetadata? m = util.getMetadataForRegion(regionCode: c.code);
+        final String example = m?.mobile.exampleNumber ?? '';
+        if (m == null || example.isEmpty) {
+          continue;
+        }
+        final String expected = '+${m.countryCode}$example';
+        final String national =
+            util.format(util.parse(expected, null), PhoneNumberFormat.national);
+        expect(c.toE164(national), expected, reason: '${c.code} $national');
+        expect(c.toE164(expected), expected, reason: c.code);
+      }
+    });
+
     test("accepts every country's example numbers, and only for that country",
         () {
       final PhoneNumberUtil util = PhoneNumberUtil.instance;

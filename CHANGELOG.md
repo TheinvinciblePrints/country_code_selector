@@ -16,8 +16,9 @@ First release.
   from Unicode CLDR 48.2.0.
 * `Country.isValidPhoneNumber` validates numbers against libphonenumber's
   number ranges, in local, trunk-prefixed, or international form, with an
-  optional `mobileOnly` check. `phoneNumberLength` gives the digits expected
-  after the dial code.
+  optional `mobileOnly` check. `Country.toE164` returns the number in E.164
+  form (`+2348031234567`) for storing or sending to a backend.
+  `phoneNumberLength` gives the digits expected after the dial code.
 * Search by name, ISO code, or dial code, with or without `+`.
 * Filter, exclude, sort, pin favourites, and add custom countries with
   `CountryListConfig`.

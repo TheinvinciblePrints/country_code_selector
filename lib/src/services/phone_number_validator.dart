@@ -2,9 +2,9 @@ import 'package:dlibphonenumber/dlibphonenumber.dart';
 
 import '../models/country_model.dart';
 
-/// Validates phone numbers against libphonenumber's metadata.
+/// Validates and normalizes phone numbers against libphonenumber's metadata.
 ///
-/// Usually called through [Country.isValidPhoneNumber].
+/// Usually called through [Country.isValidPhoneNumber] and [Country.toE164].
 abstract final class PhoneNumberValidator {
   static final PhoneNumberUtil _util = PhoneNumberUtil.instance;
 
@@ -27,17 +27,39 @@ abstract final class PhoneNumberValidator {
     Country country,
     String number, {
     bool mobileOnly = false,
+  }) =>
+      toE164(country, number, mobileOnly: mobileOnly) != null;
+
+  /// Returns [number] in E.164 format, e.g. `+2348031234567`, or `null` if it
+  /// isn't a valid number of [country] (see [isValid] for the accepted
+  /// input).
+  ///
+  /// E.164 is the international format without spaces that SMS gateways,
+  /// authentication providers and most backends expect.
+  ///
+  /// For countries without metadata, a number of a valid
+  /// [Country.phoneNumberLength] is returned as the dial code followed by its
+  /// digits.
+  static String? toE164(
+    Country country,
+    String number, {
+    bool mobileOnly = false,
   }) {
     final String region = country.code.toUpperCase();
+    final String digits = number.replaceAll(RegExp(r'\D'), '');
+    if (digits.isEmpty) {
+      return null;
+    }
     final PhoneMetadata? metadata = _util.getMetadataForRegion(
       regionCode: region,
     );
-    final String digits = number.replaceAll(RegExp(r'\D'), '');
-    if (digits.isEmpty) {
-      return false;
-    }
     if (metadata == null) {
-      return country.phoneNumberLength?.contains(digits.length) ?? false;
+      final bool validLength =
+          country.phoneNumberLength?.contains(digits.length) ?? false;
+      final String dialDigits = country.dialCode.replaceAll(RegExp(r'\D'), '');
+      return validLength && dialDigits.isNotEmpty
+          ? '+$dialDigits$digits'
+          : null;
     }
 
     final List<String> candidates = <String>[];
@@ -62,10 +84,10 @@ abstract final class PhoneNumberValidator {
       if (parsed != null &&
           _util.isValidNumberForRegion(parsed, region) &&
           (!mobileOnly || _isMobile(parsed))) {
-        return true;
+        return _util.format(parsed, PhoneNumberFormat.e164);
       }
     }
-    return false;
+    return null;
   }
 
   static PhoneNumber? _parse(String number, String region) {
