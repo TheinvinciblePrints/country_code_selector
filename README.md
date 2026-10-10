@@ -193,32 +193,47 @@ country.code;              // 'NG'
 country.dialCode;          // '+234'
 country.emoji;             // '🇳🇬'
 country.phoneNumberLength; // [10]: mobile digits after the dial code
+country.isValidPhoneNumber('0803 123 4567'); // true
 ```
 
-`phoneNumberLength` counts the digits typed after `dialCode`, without the
-national trunk prefix: a Nigerian number written locally as 0803 123 4567 is
-+234 803 123 4567, so it's `[10]`. Where the dial code includes an area code,
-like `+1876` for Jamaica, those digits aren't counted either (`[7]`). That
-makes it suitable for validating a phone field that shows the dial code as
-its prefix:
+### Validating phone numbers
+
+`isValidPhoneNumber` checks a number against the country's real number ranges
+using libphonenumber, not just its length:
+
+```dart
+final Country ng = CountryRepository.byCode('NG')!;
+ng.isValidPhoneNumber('0803 123 4567');     // true: leading 0 and spaces are fine
+ng.isValidPhoneNumber('803 123 4567');      // true
+ng.isValidPhoneNumber('+234 803 123 4567'); // true
+ng.isValidPhoneNumber('+44 7400 123456');   // false: a UK number
+ng.isValidPhoneNumber('0803 123');          // false
+ng.isValidPhoneNumber(input, mobileOnly: true); // also rejects landlines
+```
+
+Where the dial code includes an area code, like `+1876` for Jamaica, the
+local digits alone are enough (`'210 1234'`). In a form:
 
 ```dart
 TextFormField(
   keyboardType: TextInputType.phone,
-  maxLength: country.phoneNumberLength?.last,
-  validator: (String? value) {
-    final String digits = (value ?? '').replaceAll(RegExp(r'\D'), '');
-    final List<int>? lengths = country.phoneNumberLength;
-    return lengths == null || lengths.contains(digits.length)
-        ? null
-        : 'Enter ${lengths.join(' or ')} digits';
-  },
+  autovalidateMode: AutovalidateMode.onUserInteraction,
+  decoration: InputDecoration(
+    prefixIcon: CountryCodeSelectorWidget(
+      onChanged: (Country c) => setState(() => _country = c),
+    ),
+  ),
+  validator: (String? value) =>
+      _country.isValidPhoneNumber(value ?? '', mobileOnly: true)
+          ? null
+          : 'Enter a valid ${_country.name} mobile number',
 );
 ```
 
-For full validation (number ranges, formatting), use
-[dlibphonenumber](https://pub.dev/packages/dlibphonenumber), which this
-package already depends on.
+`phoneNumberLength` gives the number of digits typed after `dialCode`, without
+the national trunk prefix: a Nigerian number written locally as
+0803 123 4567 is +234 803 123 4567, so it's `[10]`. Use it for hints or
+`maxLength`, e.g. "10 digits after +234".
 
 ## Customization
 

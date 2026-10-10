@@ -14,6 +14,10 @@ First release.
 * Country names in 202 languages, plus regional variants such as Traditional
   Chinese, Latin Serbian, European Portuguese, and Latin American Spanish,
   from Unicode CLDR 48.2.0.
+* `Country.isValidPhoneNumber` validates numbers against libphonenumber's
+  number ranges, in local, trunk-prefixed, or international form, with an
+  optional `mobileOnly` check. `phoneNumberLength` gives the digits expected
+  after the dial code.
 * Search by name, ISO code, or dial code, with or without `+`.
 * Filter, exclude, sort, pin favourites, and add custom countries with
   `CountryListConfig`.

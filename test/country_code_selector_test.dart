@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:country_code_selector/country_code_selector.dart';
 import 'package:country_code_selector/src/data/translation_locales.dart';
 import 'package:country_code_selector/src/data/ui_strings.dart';
+import 'package:dlibphonenumber/dlibphonenumber.dart'
+    show PhoneMetadata, PhoneNumberFormat, PhoneNumberUtil;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -115,6 +117,104 @@ void main() {
     test('dialCode is the first dial code', () {
       expect(germany.dialCode, '+49');
       expect(germany.copyWith(dialCodes: <String>[]).dialCode, '');
+    });
+  });
+
+  group('isValidPhoneNumber', () {
+    final Country ng = CountryRepository.byCode('NG')!;
+
+    test('accepts local, trunk-prefixed and international forms', () {
+      expect(ng.isValidPhoneNumber('803 123 4567'), isTrue);
+      expect(ng.isValidPhoneNumber('0803 123 4567'), isTrue);
+      expect(ng.isValidPhoneNumber('(0803) 123-4567'), isTrue);
+      expect(ng.isValidPhoneNumber('+234 803 123 4567'), isTrue);
+    });
+
+    test('rejects wrong lengths, other countries and empty input', () {
+      expect(ng.isValidPhoneNumber('803 123'), isFalse);
+      expect(ng.isValidPhoneNumber('803 123 4567 89'), isFalse);
+      expect(ng.isValidPhoneNumber('+44 7400 123456'), isFalse);
+      expect(ng.isValidPhoneNumber(''), isFalse);
+      expect(ng.isValidPhoneNumber('abc'), isFalse);
+    });
+
+    test('accepts only the local digits where the dial code has an area code',
+        () {
+      final Country jm = CountryRepository.byCode('JM')!;
+      expect(jm.dialCode, '+1876');
+      expect(jm.isValidPhoneNumber('210 1234'), isTrue);
+      expect(jm.isValidPhoneNumber('876 210 1234'), isTrue);
+      expect(jm.isValidPhoneNumber('+1 876 210 1234'), isTrue);
+      // A US number isn't Jamaican.
+      expect(jm.isValidPhoneNumber('+1 201 555 0123'), isFalse);
+    });
+
+    test('mobileOnly rejects landlines', () {
+      final PhoneMetadata gb =
+          PhoneNumberUtil.instance.getMetadataForRegion(regionCode: 'GB')!;
+      final Country uk = CountryRepository.byCode('GB')!;
+      expect(uk.isValidPhoneNumber(gb.fixedLine.exampleNumber), isTrue);
+      expect(
+          uk.isValidPhoneNumber(gb.fixedLine.exampleNumber, mobileOnly: true),
+          isFalse);
+      expect(uk.isValidPhoneNumber(gb.mobile.exampleNumber, mobileOnly: true),
+          isTrue);
+    });
+
+    test('falls back to phoneNumberLength without metadata', () {
+      const Country custom = Country(
+          name: 'Customland',
+          code: 'XC',
+          emoji: '',
+          image: '',
+          dialCodes: <String>['+999'],
+          phoneNumberLength: <int>[6]);
+      expect(custom.isValidPhoneNumber('123 456'), isTrue);
+      expect(custom.isValidPhoneNumber('12345'), isFalse);
+      expect(CountryRepository.byCode('AQ')!.isValidPhoneNumber('123456'),
+          isFalse);
+    });
+
+    test("accepts every country's example numbers, and only for that country",
+        () {
+      final PhoneNumberUtil util = PhoneNumberUtil.instance;
+      int checked = 0;
+      for (final Country c in CountryRepository.all) {
+        final PhoneMetadata? m = util.getMetadataForRegion(regionCode: c.code);
+        final String example = m?.mobile.exampleNumber ?? '';
+        if (m == null || example.isEmpty) {
+          continue;
+        }
+        checked++;
+        expect(c.isValidPhoneNumber(example, mobileOnly: true), isTrue,
+            reason: '${c.code} $example');
+        expect(c.isValidPhoneNumber('+${m.countryCode}$example'), isTrue,
+            reason: '${c.code} +${m.countryCode}$example');
+        // The way people write it locally, e.g. with Nigeria's leading 0.
+        final String national = util.format(
+            util.parse('+${m.countryCode}$example', null),
+            PhoneNumberFormat.national);
+        expect(c.isValidPhoneNumber(national), isTrue,
+            reason: '${c.code} $national');
+        // Typing only what follows a dial code like +1876 also works.
+        final String dialDigits = c.dialCode.substring(1);
+        final String extra = dialDigits.substring('${m.countryCode}'.length);
+        if (extra.isNotEmpty && example.startsWith(extra)) {
+          expect(c.isValidPhoneNumber(example.substring(extra.length)), isTrue,
+              reason: '${c.code} local');
+        }
+      }
+      expect(checked, greaterThan(230));
+      // Nigeria's example number is invalid for its neighbours.
+      final String ngExample =
+          util.getMetadataForRegion(regionCode: 'NG')!.mobile.exampleNumber;
+      for (final String other in <String>['GH', 'BJ', 'CM', 'GB']) {
+        expect(
+            CountryRepository.byCode(other)!
+                .isValidPhoneNumber('+234$ngExample'),
+            isFalse,
+            reason: other);
+      }
     });
   });
 

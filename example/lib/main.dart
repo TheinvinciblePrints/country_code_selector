@@ -499,23 +499,9 @@ class _HomePageState extends State<HomePage> {
                 child: ExpansionTile(
                   title: Text('Phone number field', style: _defaultTextStyle),
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 5, 16, 15),
-                      child: TextField(
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          labelText: 'Phone number',
-                          prefixIcon: CountryCodeSelectorWidget(
-                            initialCountryCode: 'NG',
-                            favouriteCountries: const ['NG', 'GH', 'KE'],
-                            onChanged: (Country value) {
-                              debugPrint(
-                                  'CountryCodeSelectorWidget ::${value.name}');
-                            },
-                          ),
-                        ),
-                      ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(16, 5, 16, 15),
+                      child: PhoneNumberField(),
                     ),
                   ],
                 ),
@@ -670,6 +656,68 @@ class CustomCountrySheet extends StatelessWidget {
           : null,
       selected: isSelected,
       onTap: () => data.select(country),
+    );
+  }
+}
+
+/// A phone number field with a country button as its prefix, validated with
+/// `Country.isValidPhoneNumber` while the user types.
+class PhoneNumberField extends StatefulWidget {
+  const PhoneNumberField({super.key});
+
+  @override
+  State<PhoneNumberField> createState() => _PhoneNumberFieldState();
+}
+
+class _PhoneNumberFieldState extends State<PhoneNumberField> {
+  final GlobalKey<FormFieldState<String>> _fieldKey =
+      GlobalKey<FormFieldState<String>>();
+  final TextEditingController _controller = TextEditingController();
+  Country _country = CountryRepository.byCode('NG')!;
+
+  bool get _isValid =>
+      _country.isValidPhoneNumber(_controller.text, mobileOnly: true);
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<int>? lengths = _country.phoneNumberLength;
+    return TextFormField(
+      key: _fieldKey,
+      controller: _controller,
+      keyboardType: TextInputType.phone,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: 'Mobile number',
+        helperText: lengths == null
+            ? null
+            : '${lengths.join(' or ')} digits after ${_country.dialCode}',
+        prefixIcon: CountryCodeSelectorWidget(
+          initialCountryCode: 'NG',
+          favouriteCountries: const ['NG', 'GH', 'KE'],
+          onChanged: (Country value) {
+            setState(() => _country = value);
+            // Re-check what was typed against the new country.
+            _fieldKey.currentState?.validate();
+          },
+        ),
+        suffixIcon: _isValid
+            ? const Icon(Icons.check_circle, color: Colors.green)
+            : null,
+      ),
+      onChanged: (_) => setState(() {}),
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          return null;
+        }
+        return _isValid ? null : 'Not a valid ${_country.name} mobile number';
+      },
     );
   }
 }

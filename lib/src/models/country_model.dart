@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../services/phone_number_length_service.dart';
+import '../services/phone_number_validator.dart';
 import '../utils/country_code_selector_localizations.dart';
 
 /// Represents a country with various associated details such as name, code, emoji, flag image, dial codes, and optional phone number length.
@@ -82,6 +83,24 @@ class Country {
   List<int>? get phoneNumberLength =>
       _phoneNumberLength ??
       PhoneNumberLengthService.lengthsFor(code, dialCode: dialCode);
+
+  /// Whether [number] is a valid phone number of this country.
+  ///
+  /// Accepts what the user typed after [dialCode], with or without the
+  /// national trunk prefix, or a full international number starting with `+`
+  /// that belongs to this country. Formatting characters are ignored.
+  /// [mobileOnly] rejects landlines and special numbers.
+  ///
+  /// ```dart
+  /// final Country ng = CountryRepository.byCode('NG')!;
+  /// ng.isValidPhoneNumber('0803 123 4567'); // true
+  /// ng.isValidPhoneNumber('+234 803 123 4567'); // true
+  /// ng.isValidPhoneNumber('803 123'); // false
+  /// ```
+  ///
+  /// See [PhoneNumberValidator.isValid] for details.
+  bool isValidPhoneNumber(String number, {bool mobileOnly = false}) =>
+      PhoneNumberValidator.isValid(this, number, mobileOnly: mobileOnly);
 
   /// Equality operator to compare two [Country] objects based on their ISO code.
   ///
