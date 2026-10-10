@@ -1,0 +1,24 @@
+# When present, pub uses this file INSTEAD of .gitignore, so it repeats those rules.
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+*.iml
+*.ipr
+*.iws
+.idea/
+/pubspec.lock
+**/doc/api/
+.dart_tool/
+build/
+example/build/
+example/.dart_tool/
+example/pubspec.lock
+.github/
+tool/
