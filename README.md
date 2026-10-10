@@ -192,8 +192,33 @@ country.name;              // 'Nigeria' (localized when picked from a selector)
 country.code;              // 'NG'
 country.dialCode;          // '+234'
 country.emoji;             // '🇳🇬'
-country.phoneNumberLength; // [10]: possible mobile number lengths
+country.phoneNumberLength; // [10]: mobile digits after the dial code
 ```
+
+`phoneNumberLength` counts the digits typed after `dialCode`, without the
+national trunk prefix: a Nigerian number written locally as 0803 123 4567 is
++234 803 123 4567, so it's `[10]`. Where the dial code includes an area code,
+like `+1876` for Jamaica, those digits aren't counted either (`[7]`). That
+makes it suitable for validating a phone field that shows the dial code as
+its prefix:
+
+```dart
+TextFormField(
+  keyboardType: TextInputType.phone,
+  maxLength: country.phoneNumberLength?.last,
+  validator: (String? value) {
+    final String digits = (value ?? '').replaceAll(RegExp(r'\D'), '');
+    final List<int>? lengths = country.phoneNumberLength;
+    return lengths == null || lengths.contains(digits.length)
+        ? null
+        : 'Enter ${lengths.join(' or ')} digits';
+  },
+);
+```
+
+For full validation (number ranges, formatting), use
+[dlibphonenumber](https://pub.dev/packages/dlibphonenumber), which this
+package already depends on.
 
 ## Customization
 

@@ -6,19 +6,47 @@ import 'package:flutter/foundation.dart';
 abstract final class PhoneNumberLengthService {
   static final Map<String, List<int>?> _cache = <String, List<int>?>{};
 
-  /// Returns the possible mobile number lengths for [regionCode] (an ISO
-  /// 3166-1 alpha-2 code), or `null` if the region has no metadata.
+  /// Returns how many digits a mobile number of [regionCode] (an ISO 3166-1
+  /// alpha-2 code) has after [dialCode], or `null` if unknown.
   ///
-  /// Results are cached per region.
-  static List<int>? lengthsFor(String regionCode) {
+  /// The count is for the national number without its trunk prefix: Nigeria
+  /// returns `[10]` for 0803 123 4567, because the leading 0 is dropped after
+  /// +234. When [dialCode] includes part of the national number, like the
+  /// area code in +1876 (Jamaica), those digits aren't counted either, so
+  /// Jamaica returns `[7]`.
+  ///
+  /// Uses the mobile lengths, or the region's general lengths when it has no
+  /// separate mobile numbers. Results are cached.
+  static List<int>? lengthsFor(String regionCode, {String? dialCode}) {
     final String region = regionCode.toUpperCase();
-    return _cache.putIfAbsent(region, () {
+    final String dialDigits = (dialCode ?? '').replaceAll(RegExp(r'\D'), '');
+    return _cache.putIfAbsent('$region$dialDigits', () {
       try {
-        final List<int>? lengths = PhoneNumberUtil.instance
-            .getMetadataForRegion(regionCode: region)
-            ?.mobile
-            .possibleLength;
-        return lengths == null ? null : List<int>.unmodifiable(lengths);
+        final PhoneMetadata? metadata =
+            PhoneNumberUtil.instance.getMetadataForRegion(regionCode: region);
+        if (metadata == null) {
+          return null;
+        }
+        // -1 marks a number type the region doesn't have.
+        List<int> valid(List<int> lengths) =>
+            lengths.where((int l) => l > 0).toList();
+        List<int> lengths = valid(metadata.mobile.possibleLength);
+        if (lengths.isEmpty) {
+          lengths = valid(metadata.generalDesc.possibleLength);
+        }
+
+        final String callingCode = metadata.countryCode.toString();
+        final int extra = dialDigits.length > callingCode.length &&
+                dialDigits.startsWith(callingCode)
+            ? dialDigits.length - callingCode.length
+            : 0;
+        lengths = lengths
+            .map((int l) => l - extra)
+            .where((int l) => l > 0)
+            .toSet()
+            .toList()
+          ..sort();
+        return lengths.isEmpty ? null : List<int>.unmodifiable(lengths);
       } catch (e) {
         debugPrint('country_code_selector: no phone metadata for $region: $e');
         return null;

@@ -68,13 +68,20 @@ class Country {
 
   final List<int>? _phoneNumberLength;
 
-  /// The possible lengths of a mobile phone number in the country, without
-  /// the dial code.
+  /// How many digits a mobile number has after [dialCode], e.g. `[10]` for
+  /// Nigeria and `[7]` for Jamaica (+1876).
+  ///
+  /// The national trunk prefix isn't counted: a Nigerian number written
+  /// locally as 0803 123 4567 is +234 803 123 4567, so the 0 is dropped and
+  /// 10 digits remain. Use this to validate or limit a phone field that shows
+  /// [dialCode] as its prefix.
   ///
   /// Uses the value passed to the constructor if any, otherwise it is looked
-  /// up from the phone number metadata. `null` if no information is available.
+  /// up from libphonenumber's metadata. `null` if no information is available,
+  /// as for Antarctica.
   List<int>? get phoneNumberLength =>
-      _phoneNumberLength ?? PhoneNumberLengthService.lengthsFor(code);
+      _phoneNumberLength ??
+      PhoneNumberLengthService.lengthsFor(code, dialCode: dialCode);
 
   /// Equality operator to compare two [Country] objects based on their ISO code.
   ///

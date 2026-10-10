@@ -93,6 +93,25 @@ void main() {
           <int>[1]);
     });
 
+    test('phoneNumberLength counts digits after the dial code', () {
+      List<int>? lengths(String code) =>
+          CountryRepository.byCode(code)!.phoneNumberLength;
+      expect(lengths('NG'), <int>[10]); // trunk 0 not counted
+      expect(lengths('US'), <int>[10]);
+      // The dial code already includes the area code.
+      expect(lengths('JM'), <int>[7]);
+      expect(lengths('AS'), <int>[7]);
+      expect(lengths('AQ'), isNull); // no phone metadata
+      expect(CountryRepository.byCode('VA')!.dialCode, '+39');
+      for (final Country c in CountryRepository.all) {
+        final List<int>? l = c.phoneNumberLength;
+        if (l != null) {
+          expect(l, isNotEmpty, reason: c.code);
+          expect(l.every((int n) => n > 0), isTrue, reason: '${c.code} $l');
+        }
+      }
+    });
+
     test('dialCode is the first dial code', () {
       expect(germany.dialCode, '+49');
       expect(germany.copyWith(dialCodes: <String>[]).dialCode, '');

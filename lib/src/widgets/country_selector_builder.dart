@@ -64,7 +64,8 @@ class CountrySelectorData {
   /// returns null.
   final VoidCallback cancel;
 
-  /// The possible mobile number lengths of [selected], without the dial code,
+  /// How many digits a mobile number of [selected] has after its dial code,
+  /// without the national trunk prefix (see [Country.phoneNumberLength]),
   /// e.g. `[10]` for Nigeria. Null if nothing is selected or the lengths are
   /// unknown.
   List<int>? get selectedPhoneNumberLength => selected?.phoneNumberLength;

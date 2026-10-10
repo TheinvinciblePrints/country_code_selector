@@ -1699,7 +1699,8 @@ const List<Country> kCountries = <Country>[
     code: 'VA',
     emoji: '🇻🇦',
     image: 'assets/flags/va.svg',
-    dialCodes: <String>['+379'],
+    // +379 is reserved for Vatican City but unused; numbers use +39.
+    dialCodes: <String>['+39', '+379'],
   ),
   Country(
     name: 'Venezuela',
