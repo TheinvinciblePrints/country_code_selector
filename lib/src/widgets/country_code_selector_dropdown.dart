@@ -130,7 +130,8 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
   /// The entry in the list for the selected country, so the dropdown can
   /// find it among its items and show it localized.
   Country get _shown => _findCountry(
-      widget.value?.code ?? _selected?.code ?? widget.selectInitialCountry);
+    widget.value?.code ?? _selected?.code ?? widget.selectInitialCountry,
+  );
 
   @override
   void didUpdateWidget(covariant CountryCodeSelectorDropDown oldWidget) {
@@ -156,11 +157,12 @@ class _CountryCodeDropdownState extends State<CountryCodeSelectorDropDown> {
   Widget build(BuildContext context) {
     final CountrySelectorThemeData theme = CountrySelectorThemeData.of(context);
     return DropdownButton<Country>(
-      selectedItemBuilder: (BuildContext context) => <Widget>[
-        for (final Country c in _countries)
-          widget.selectedItemBuilder?.call(c) ??
-              CountryTile(country: c, layoutConfig: _layout),
-      ],
+      selectedItemBuilder:
+          (BuildContext context) => <Widget>[
+            for (final Country c in _countries)
+              widget.selectedItemBuilder?.call(c) ??
+                  CountryTile(country: c, layoutConfig: _layout),
+          ],
       dropdownColor: widget.backgroundColor ?? theme.backgroundColor,
       iconSize: widget.iconSize,
       onTap: widget.onTap,

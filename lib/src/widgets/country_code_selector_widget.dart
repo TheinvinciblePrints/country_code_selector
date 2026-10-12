@@ -107,12 +107,14 @@ class _CountryCodeSelectorWidgetState extends State<CountryCodeSelectorWidget> {
     super.didChangeDependencies();
     // Start from the English entry so a locale change re-translates it; a
     // custom country not in the bundled data is kept as is.
-    final Country? current = _selected == null
-        ? (widget.initialCountryCode == null
-            ? null
-            : CountryRepository.byCode(widget.initialCountryCode!))
-        : CountryRepository.byCode(_selected!.code) ?? _selected;
-    final Country base = current ??
+    final Country? current =
+        _selected == null
+            ? (widget.initialCountryCode == null
+                ? null
+                : CountryRepository.byCode(widget.initialCountryCode!))
+            : CountryRepository.byCode(_selected!.code) ?? _selected;
+    final Country base =
+        current ??
         CountryRepository.byCode(
           CountryCodeSelector.getDefaultCountry(context: context).code,
         )!;
@@ -166,7 +168,8 @@ class _CountryCodeSelectorWidgetState extends State<CountryCodeSelectorWidget> {
       borderRadius: BorderRadius.circular(8),
       child: Padding(
         padding: widget.padding,
-        child: widget.builder?.call(context, country) ??
+        child:
+            widget.builder?.call(context, country) ??
             Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

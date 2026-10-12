@@ -76,8 +76,10 @@ class _CountrySearchListState extends State<CountrySearchList> {
       widget.countryListConfig,
       context: widget.layoutConfig.enableLocalization ? context : null,
     );
-    _favourites =
-        CountryRepository.favourites(_countries, widget.favouriteCountries);
+    _favourites = CountryRepository.favourites(
+      _countries,
+      widget.favouriteCountries,
+    );
     _results = CountryRepository.search(_countries, _query);
   }
 
@@ -89,9 +91,9 @@ class _CountrySearchListState extends State<CountrySearchList> {
   }
 
   String _uiString(String key) => CountryCodeSelectorLocalizations.uiString(
-        Localizations.maybeLocaleOf(context) ?? const Locale('en'),
-        key,
-      );
+    Localizations.maybeLocaleOf(context) ?? const Locale('en'),
+    key,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +113,9 @@ class _CountrySearchListState extends State<CountrySearchList> {
                   padding: const EdgeInsets.only(top: 8),
                   sliver: SliverList.builder(
                     itemCount: _favourites.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        _buildTile(_favourites[index]),
+                    itemBuilder:
+                        (BuildContext context, int index) =>
+                            _buildTile(_favourites[index]),
                   ),
                 ),
                 SliverToBoxAdapter(child: Divider(color: theme.dividerColor)),
@@ -120,7 +123,8 @@ class _CountrySearchListState extends State<CountrySearchList> {
               if (_results.isEmpty)
                 SliverFillRemaining(
                   hasScrollBody: false,
-                  child: widget.emptySearchBuilder?.call(context) ??
+                  child:
+                      widget.emptySearchBuilder?.call(context) ??
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.all(24),
@@ -134,8 +138,9 @@ class _CountrySearchListState extends State<CountrySearchList> {
               else
                 SliverList.builder(
                   itemCount: _results.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      _buildTile(_results[index]),
+                  itemBuilder:
+                      (BuildContext context, int index) =>
+                          _buildTile(_results[index]),
                 ),
             ],
           ),
@@ -150,7 +155,8 @@ class _CountrySearchListState extends State<CountrySearchList> {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: widget.header ??
+            child:
+                widget.header ??
                 Text(
                   _uiString(kSelectCountryKey),
                   style: theme.headerTextStyle,
@@ -175,7 +181,8 @@ class _CountrySearchListState extends State<CountrySearchList> {
       borderSide: BorderSide(color: theme.searchBorderColor!),
     );
     return Container(
-      margin: style?.searchBoxMargin ??
+      margin:
+          style?.searchBoxMargin ??
           const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       height: style?.searchBoxHeight ?? 40,
       child: TextField(
@@ -183,14 +190,16 @@ class _CountrySearchListState extends State<CountrySearchList> {
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.search,
         onChanged: _search,
-        decoration: style?.searchFieldInputDecoration ??
+        decoration:
+            style?.searchFieldInputDecoration ??
             InputDecoration(
               isCollapsed: true,
               border: border,
               enabledBorder: border,
               focusedBorder: border,
               prefixIcon: style?.searchIcon ?? const Icon(Icons.search),
-              hintText: style?.hintText ??
+              hintText:
+                  style?.hintText ??
                   MaterialLocalizations.of(context).searchFieldLabel,
               hintStyle: theme.searchHintTextStyle,
             ),

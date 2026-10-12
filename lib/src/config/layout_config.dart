@@ -27,8 +27,10 @@ class LayoutConfig {
     this.showCountryCode = true,
     this.flagMode = FlagMode.square,
     this.enableLocalization = true,
-  }) : assert(showCountryFlag || showCountryCode || showCountryName,
-            'At least one element must be shown in the country list.');
+  }) : assert(
+         showCountryFlag || showCountryCode || showCountryName,
+         'At least one element must be shown in the country list.',
+       );
 
   /// Overrides the style of the country name and dial code.
   ///

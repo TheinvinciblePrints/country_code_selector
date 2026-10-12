@@ -5,10 +5,8 @@ import '../models/models.dart';
 import '../services/country_repository.dart';
 
 /// Builds a fully custom country picker UI from [CountrySelectorData].
-typedef CountrySelectorWidgetBuilder = Widget Function(
-  BuildContext context,
-  CountrySelectorData data,
-);
+typedef CountrySelectorWidgetBuilder =
+    Widget Function(BuildContext context, CountrySelectorData data);
 
 /// Everything a custom country picker UI needs: the countries to show, the
 /// current selection, and callbacks to search, select, confirm and cancel.
@@ -168,12 +166,13 @@ class _CountrySelectorBuilderState extends State<CountrySelectorBuilder> {
     _results = CountryRepository.search(_all, _query);
     // Keep the selection pointing at the entry in the (re)localized list.
     final Country? current = _selected ?? widget.initialCountry;
-    _selected = current == null
-        ? null
-        : _all.firstWhere(
-            (Country c) => c == current,
-            orElse: () => current,
-          );
+    _selected =
+        current == null
+            ? null
+            : _all.firstWhere(
+              (Country c) => c == current,
+              orElse: () => current,
+            );
   }
 
   void _search(String query) {

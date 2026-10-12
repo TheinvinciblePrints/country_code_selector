@@ -20,10 +20,14 @@ class CountryListConfig {
     this.sortingBehavior = SortingBehavior.alphabetical,
     this.comparator,
     this.customCountryEntries,
-  })  : assert((excludeCountry == null) || (countryFilter == null),
-            'either provide excludeCountry or countryFilter'),
-        assert(sortingBehavior != SortingBehavior.custom || comparator != null,
-            'SortingBehavior.custom requires a comparator');
+  }) : assert(
+         (excludeCountry == null) || (countryFilter == null),
+         'either provide excludeCountry or countryFilter',
+       ),
+       assert(
+         sortingBehavior != SortingBehavior.custom || comparator != null,
+         'SortingBehavior.custom requires a comparator',
+       );
 
   /// A list of ISO country codes to filter the country list.
   ///

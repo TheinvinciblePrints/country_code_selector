@@ -102,9 +102,10 @@ class _CountryCodeSelectorCupertinoBottomSheetState
       widget.countryListConfig,
       context: _layout.enableLocalization ? context : null,
     );
-    final int index = _current == null && widget.setInitialValue == null
-        ? 0
-        : _countries.indexOf((_current ?? widget.setInitialValue)!);
+    final int index =
+        _current == null && widget.setInitialValue == null
+            ? 0
+            : _countries.indexOf((_current ?? widget.setInitialValue)!);
     final int item = index < 0 ? 0 : index;
 
     if (_scrollController == null) {
@@ -168,7 +169,8 @@ class _CountryCodeSelectorCupertinoBottomSheetState
             height: widget.heightOfPicker ?? 250,
             child: CupertinoPicker(
               diameterRatio: widget.diameterRatio ?? 1.07,
-              selectionOverlay: widget.selectionOverlayWidget ??
+              selectionOverlay:
+                  widget.selectionOverlayWidget ??
                   const CupertinoPickerDefaultSelectionOverlay(),
               magnification: widget.magnification,
               useMagnifier: widget.useMagnifier,
@@ -187,7 +189,8 @@ class _CountryCodeSelectorCupertinoBottomSheetState
                     child: CountryTile(
                       country: country,
                       layoutConfig: _layout,
-                      padding: widget.countryTilePadding ??
+                      padding:
+                          widget.countryTilePadding ??
                           const EdgeInsets.symmetric(horizontal: 24),
                     ),
                   ),

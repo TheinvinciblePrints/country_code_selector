@@ -28,8 +28,10 @@ void main() {
   final List<String> unknown = <String>[];
   for (final RegExpMatch m in entries) {
     final String code = m.group(1)!;
-    final List<int>? lengths =
-        PhoneNumberLengthService.lengthsFor(code, dialCode: m.group(2));
+    final List<int>? lengths = PhoneNumberLengthService.lengthsFor(
+      code,
+      dialCode: m.group(2),
+    );
     if (lengths == null) {
       unknown.add(code);
     } else {
@@ -50,8 +52,10 @@ const Map<String, List<int>> kPhoneNumberLengths = <String, List<int>>{
 ${lines.join('\n')}
 };
 ''');
-  stdout.writeln('Wrote ${lines.length} countries to $outputFile '
-      '(no metadata: ${unknown.join(', ')}).');
+  stdout.writeln(
+    'Wrote ${lines.length} countries to $outputFile '
+    '(no metadata: ${unknown.join(', ')}).',
+  );
 }
 
 String _dlibphonenumberVersion() {

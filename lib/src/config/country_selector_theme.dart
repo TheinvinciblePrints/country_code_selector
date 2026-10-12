@@ -76,16 +76,20 @@ class CountrySelectorThemeData
     final CountrySelectorThemeData? custom =
         theme.extension<CountrySelectorThemeData>();
     return CountrySelectorThemeData(
-      backgroundColor: custom?.backgroundColor ??
+      backgroundColor:
+          custom?.backgroundColor ??
           theme.dialogTheme.backgroundColor ??
           colors.surfaceContainerHigh,
-      headerTextStyle: custom?.headerTextStyle ??
+      headerTextStyle:
+          custom?.headerTextStyle ??
           text.titleMedium?.copyWith(fontWeight: FontWeight.w700),
       countryNameTextStyle: custom?.countryNameTextStyle ?? text.bodyLarge,
-      dialCodeTextStyle: custom?.dialCodeTextStyle ??
+      dialCodeTextStyle:
+          custom?.dialCodeTextStyle ??
           text.bodyLarge?.copyWith(color: colors.onSurfaceVariant),
       searchTextStyle: custom?.searchTextStyle ?? text.bodyLarge,
-      searchHintTextStyle: custom?.searchHintTextStyle ??
+      searchHintTextStyle:
+          custom?.searchHintTextStyle ??
           text.bodyLarge?.copyWith(color: colors.onSurfaceVariant),
       searchBorderColor: custom?.searchBorderColor ?? colors.outlineVariant,
       dividerColor: custom?.dividerColor ?? colors.outlineVariant,
@@ -128,18 +132,36 @@ class CountrySelectorThemeData
     }
     return CountrySelectorThemeData(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
-      headerTextStyle:
-          TextStyle.lerp(headerTextStyle, other.headerTextStyle, t),
-      countryNameTextStyle:
-          TextStyle.lerp(countryNameTextStyle, other.countryNameTextStyle, t),
-      dialCodeTextStyle:
-          TextStyle.lerp(dialCodeTextStyle, other.dialCodeTextStyle, t),
-      searchTextStyle:
-          TextStyle.lerp(searchTextStyle, other.searchTextStyle, t),
-      searchHintTextStyle:
-          TextStyle.lerp(searchHintTextStyle, other.searchHintTextStyle, t),
-      searchBorderColor:
-          Color.lerp(searchBorderColor, other.searchBorderColor, t),
+      headerTextStyle: TextStyle.lerp(
+        headerTextStyle,
+        other.headerTextStyle,
+        t,
+      ),
+      countryNameTextStyle: TextStyle.lerp(
+        countryNameTextStyle,
+        other.countryNameTextStyle,
+        t,
+      ),
+      dialCodeTextStyle: TextStyle.lerp(
+        dialCodeTextStyle,
+        other.dialCodeTextStyle,
+        t,
+      ),
+      searchTextStyle: TextStyle.lerp(
+        searchTextStyle,
+        other.searchTextStyle,
+        t,
+      ),
+      searchHintTextStyle: TextStyle.lerp(
+        searchHintTextStyle,
+        other.searchHintTextStyle,
+        t,
+      ),
+      searchBorderColor: Color.lerp(
+        searchBorderColor,
+        other.searchBorderColor,
+        t,
+      ),
       dividerColor: Color.lerp(dividerColor, other.dividerColor, t),
       borderRadius: lerpDouble(borderRadius, other.borderRadius, t),
     );

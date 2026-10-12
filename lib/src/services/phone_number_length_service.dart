@@ -26,8 +26,8 @@ abstract final class PhoneNumberLengthService {
     final String dialDigits = (dialCode ?? '').replaceAll(RegExp(r'\D'), '');
     return _cache.putIfAbsent('$region$dialDigits', () {
       try {
-        final PhoneMetadata? metadata =
-            PhoneNumberUtil.instance.getMetadataForRegion(regionCode: region);
+        final PhoneMetadata? metadata = PhoneNumberUtil.instance
+            .getMetadataForRegion(regionCode: region);
         if (metadata == null) {
           return null;
         }
@@ -40,16 +40,18 @@ abstract final class PhoneNumberLengthService {
         }
 
         final String callingCode = metadata.countryCode.toString();
-        final int extra = dialDigits.length > callingCode.length &&
-                dialDigits.startsWith(callingCode)
-            ? dialDigits.length - callingCode.length
-            : 0;
-        lengths = lengths
-            .map((int l) => l - extra)
-            .where((int l) => l > 0)
-            .toSet()
-            .toList()
-          ..sort();
+        final int extra =
+            dialDigits.length > callingCode.length &&
+                    dialDigits.startsWith(callingCode)
+                ? dialDigits.length - callingCode.length
+                : 0;
+        lengths =
+            lengths
+                .map((int l) => l - extra)
+                .where((int l) => l > 0)
+                .toSet()
+                .toList()
+              ..sort();
         return lengths.isEmpty ? null : List<int>.unmodifiable(lengths);
       } catch (_) {
         // Metadata lookups shouldn't fail; treat any failure as unknown.

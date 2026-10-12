@@ -27,8 +27,7 @@ abstract final class PhoneNumberValidator {
     Country country,
     String number, {
     bool mobileOnly = false,
-  }) =>
-      toE164(country, number, mobileOnly: mobileOnly) != null;
+  }) => toE164(country, number, mobileOnly: mobileOnly) != null;
 
   /// Returns [number] in E.164 format, e.g. `+2348031234567`, or `null` if it
   /// isn't a valid number of [country] (see [isValid] for the accepted
@@ -70,9 +69,10 @@ abstract final class PhoneNumberValidator {
       // +1876, which users don't retype.
       final String callingCode = metadata.countryCode.toString();
       final String dialDigits = country.dialCode.replaceAll(RegExp(r'\D'), '');
-      final String extra = dialDigits.startsWith(callingCode)
-          ? dialDigits.substring(callingCode.length)
-          : '';
+      final String extra =
+          dialDigits.startsWith(callingCode)
+              ? dialDigits.substring(callingCode.length)
+              : '';
       if (extra.isNotEmpty && !digits.startsWith(extra)) {
         candidates.add('$extra$digits');
       }

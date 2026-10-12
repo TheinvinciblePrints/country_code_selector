@@ -29,10 +29,11 @@ class CountryCodeSelector {
   /// print(country.name); // Output: localized country name
   /// ```
   static Country getDefaultCountry({required BuildContext context}) {
-    final Country country = <String?>[
-          Localizations.maybeLocaleOf(context)?.countryCode,
-          WidgetsBinding.instance.platformDispatcher.locale.countryCode,
-        ]
+    final Country country =
+        <String?>[
+              Localizations.maybeLocaleOf(context)?.countryCode,
+              WidgetsBinding.instance.platformDispatcher.locale.countryCode,
+            ]
             .whereType<String>()
             .map(CountryRepository.byCode)
             .whereType<Country>()
@@ -192,36 +193,37 @@ class CountryCodeSelector {
   ///   favouriteCountries: <String>['NG', 'GH'],
   /// );
   /// ```
-  static Future<Country?> showCountryCodeSelectorBottomSheet(
-      {required BuildContext context,
-      Color? backgroundColor,
-      LayoutConfig? layoutConfig,
-      List<String>? favouriteCountries,
-      CountryListConfig? countryListConfig,
-      SearchStyle? searchStyle,
-      Widget? closeIconWidget,
-      ShapeBorder? shape,
-      Color? barrierColor,
-      bool? useSafeArea,
-      bool? isDismissible,
-      Offset? anchorPoint,
-      Clip? clipBehavior,
-      bool? showSearchBar,
-      BoxConstraints? constraints,
-      bool? isScrollControlled,
-      Widget? header,
-      String? barrierLabel,
-      WidgetBuilder? emptySearchBuilder,
-      double? elevation,
-      bool? enableDrag,
-      RouteSettings? routeSettings,
-      EdgeInsetsGeometry? countryTilePadding,
-      double? scrollControlDisabledMaxHeightRatio,
-      bool? showDragHandle,
-      AnimationController? transitionAnimationController,
-      bool? useRootNavigator,
-      Country? initialCountry,
-      CountrySelectorWidgetBuilder? customBuilder}) async {
+  static Future<Country?> showCountryCodeSelectorBottomSheet({
+    required BuildContext context,
+    Color? backgroundColor,
+    LayoutConfig? layoutConfig,
+    List<String>? favouriteCountries,
+    CountryListConfig? countryListConfig,
+    SearchStyle? searchStyle,
+    Widget? closeIconWidget,
+    ShapeBorder? shape,
+    Color? barrierColor,
+    bool? useSafeArea,
+    bool? isDismissible,
+    Offset? anchorPoint,
+    Clip? clipBehavior,
+    bool? showSearchBar,
+    BoxConstraints? constraints,
+    bool? isScrollControlled,
+    Widget? header,
+    String? barrierLabel,
+    WidgetBuilder? emptySearchBuilder,
+    double? elevation,
+    bool? enableDrag,
+    RouteSettings? routeSettings,
+    EdgeInsetsGeometry? countryTilePadding,
+    double? scrollControlDisabledMaxHeightRatio,
+    bool? showDragHandle,
+    AnimationController? transitionAnimationController,
+    bool? useRootNavigator,
+    Country? initialCountry,
+    CountrySelectorWidgetBuilder? customBuilder,
+  }) async {
     return showModalBottomSheet(
       backgroundColor:
           backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor,
@@ -285,33 +287,34 @@ class CountryCodeSelector {
   ///   setInitialValue: CountryRepository.byCode('NG'),
   /// );
   /// ```
-  static Future<Country?> showCountryCodeSelectorCupertinoBottomSheet(
-      {required BuildContext context,
-      Country? setInitialValue,
-      bool? isScrollControlled,
-      BoxConstraints? constraints,
-      ShapeBorder? shape,
-      bool? isDismissible,
-      Color? backgroundColor,
-      Color? barrierColor,
-      double? elevation,
-      AnimationController? transitionAnimationController,
-      Clip? clipBehavior,
-      bool? useRootNavigator,
-      bool? showDragHandle,
-      bool? useSafeArea,
-      double? heightOfPicker,
-      Widget? selectionOverlay,
-      double? magnification,
-      bool? useMagnifier,
-      double? squeeze,
-      double? offAxisFraction,
-      double? itemExtent,
-      LayoutConfig? layoutConfig,
-      CountryListConfig? countryListConfig,
-      double? diameterRatio,
-      EdgeInsets? countryTilePadding,
-      bool showDoneButton = true}) async {
+  static Future<Country?> showCountryCodeSelectorCupertinoBottomSheet({
+    required BuildContext context,
+    Country? setInitialValue,
+    bool? isScrollControlled,
+    BoxConstraints? constraints,
+    ShapeBorder? shape,
+    bool? isDismissible,
+    Color? backgroundColor,
+    Color? barrierColor,
+    double? elevation,
+    AnimationController? transitionAnimationController,
+    Clip? clipBehavior,
+    bool? useRootNavigator,
+    bool? showDragHandle,
+    bool? useSafeArea,
+    double? heightOfPicker,
+    Widget? selectionOverlay,
+    double? magnification,
+    bool? useMagnifier,
+    double? squeeze,
+    double? offAxisFraction,
+    double? itemExtent,
+    LayoutConfig? layoutConfig,
+    CountryListConfig? countryListConfig,
+    double? diameterRatio,
+    EdgeInsets? countryTilePadding,
+    bool showDoneButton = true,
+  }) async {
     Country? countryData;
     final Country? done = await showModalBottomSheet<Country>(
       isScrollControlled: isScrollControlled ?? false,
@@ -319,7 +322,8 @@ class CountryCodeSelector {
       context: context,
       shape: shape,
       isDismissible: isDismissible ?? true,
-      backgroundColor: backgroundColor ??
+      backgroundColor:
+          backgroundColor ??
           Theme.of(context).bottomSheetTheme.modalBackgroundColor,
       barrierColor:
           barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
@@ -344,7 +348,8 @@ class CountryCodeSelector {
           squeeze: squeeze ?? 1.45,
           offAxisFraction: offAxisFraction ?? 0.0,
           itemExtent: itemExtent ?? 32,
-          backgroundColor: backgroundColor ??
+          backgroundColor:
+              backgroundColor ??
               Theme.of(context).bottomSheetTheme.modalBackgroundColor,
           layoutConfig: layoutConfig,
           countryListConfig: countryListConfig,

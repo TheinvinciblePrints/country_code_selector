@@ -24,12 +24,14 @@ class CountryCodeSelectorLocalizations {
   /// This is used to access the localized strings throughout the app.
   static CountryCodeSelectorLocalizations? of(BuildContext context) {
     return Localizations.of<CountryCodeSelectorLocalizations>(
-        context, CountryCodeSelectorLocalizations);
+      context,
+      CountryCodeSelectorLocalizations,
+    );
   }
 
   /// The delegate to add to your app's `localizationsDelegates`.
   static const LocalizationsDelegate<CountryCodeSelectorLocalizations>
-      delegate = CountryCodeSelectorLocalizationsDelegate();
+  delegate = CountryCodeSelectorLocalizationsDelegate();
 
   /// The translation used when no better match is bundled.
   static const String fallbackLanguageCode = 'en';
@@ -42,11 +44,13 @@ class CountryCodeSelectorLocalizations {
   Future<bool> load(Locale locale) async {
     String jsonString;
     try {
-      jsonString =
-          await rootBundle.loadString(_assetPath(translationFileFor(locale)));
+      jsonString = await rootBundle.loadString(
+        _assetPath(translationFileFor(locale)),
+      );
     } catch (_) {
-      jsonString =
-          await rootBundle.loadString(_assetPath(fallbackLanguageCode));
+      jsonString = await rootBundle.loadString(
+        _assetPath(fallbackLanguageCode),
+      );
     }
 
     final Map<String, dynamic> jsonMap =

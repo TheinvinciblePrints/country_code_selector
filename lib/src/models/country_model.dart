@@ -39,13 +39,15 @@ class Country {
       emoji: json['emoji'] as String? ?? '',
       image:
           json['image'] as String? ?? 'assets/flags/${code.toLowerCase()}.svg',
-      dialCodes: (json['dialCodes'] as List<dynamic>?)
+      dialCodes:
+          (json['dialCodes'] as List<dynamic>?)
               ?.map((dynamic item) => item as String)
               .toList() ??
           <String>[],
-      phoneNumberLength: (json['phoneNumberLength'] as List<dynamic>?)
-          ?.map((dynamic item) => item as int)
-          .toList(),
+      phoneNumberLength:
+          (json['phoneNumberLength'] as List<dynamic>?)
+              ?.map((dynamic item) => item as int)
+              .toList(),
     );
   }
 
@@ -152,8 +154,9 @@ class Country {
   /// This method uses [CountryCodeSelectorLocalizations] to translate the country name
   /// if a translation is available. Otherwise, it returns the original name.
   Country localize(BuildContext context) {
-    final String? translated =
-        CountryCodeSelectorLocalizations.of(context)?.lookup(code);
+    final String? translated = CountryCodeSelectorLocalizations.of(
+      context,
+    )?.lookup(code);
     return translated == null ? this : copyWith(name: translated);
   }
 

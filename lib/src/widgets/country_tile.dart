@@ -37,54 +37,60 @@ class CountryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final CountrySelectorThemeData theme = CountrySelectorThemeData.of(context);
     final LayoutConfig config = layoutConfig;
-    final TextStyle nameStyle =
-        (theme.countryNameTextStyle ?? const TextStyle())
-            .merge(config.textStyle);
-    final TextStyle dialStyle =
-        (theme.dialCodeTextStyle ?? const TextStyle()).merge(config.textStyle);
+    final TextStyle nameStyle = (theme.countryNameTextStyle ??
+            const TextStyle())
+        .merge(config.textStyle);
+    final TextStyle dialStyle = (theme.dialCodeTextStyle ?? const TextStyle())
+        .merge(config.textStyle);
 
-    final Widget? flag = config.showCountryFlag
-        ? CountryFlag(
-            country: country,
-            width: config.flagWidth,
-            height: config.flagHeight,
-            mode: config.flagMode,
-            decoration: config.flagDecoration,
-          )
-        : null;
+    final Widget? flag =
+        config.showCountryFlag
+            ? CountryFlag(
+              country: country,
+              width: config.flagWidth,
+              height: config.flagHeight,
+              mode: config.flagMode,
+              decoration: config.flagDecoration,
+            )
+            : null;
 
     // A minimum width keeps names aligned between rows; it scales with the
     // font so long codes like +1264 still fit. Without a name there is
     // nothing to align, so the code takes only the space it needs.
-    final double dialWidth = config.showCountryName
-        ? MediaQuery.textScalerOf(context).scale(dialStyle.fontSize ?? 14) * 3.6
-        : 0;
-    final Widget? dialCode = config.showCountryCode
-        ? ConstrainedBox(
-            constraints: BoxConstraints(minWidth: dialWidth),
-            child: Text(
-              country.dialCode,
-              style: dialStyle,
-              maxLines: 1,
-              // Keeps the + in front in right-to-left languages.
-              textDirection: TextDirection.ltr,
-              textAlign: Directionality.of(context) == TextDirection.rtl
-                  ? TextAlign.right
-                  : TextAlign.left,
-            ),
-          )
-        : null;
+    final double dialWidth =
+        config.showCountryName
+            ? MediaQuery.textScalerOf(context).scale(dialStyle.fontSize ?? 14) *
+                3.6
+            : 0;
+    final Widget? dialCode =
+        config.showCountryCode
+            ? ConstrainedBox(
+              constraints: BoxConstraints(minWidth: dialWidth),
+              child: Text(
+                country.dialCode,
+                style: dialStyle,
+                maxLines: 1,
+                // Keeps the + in front in right-to-left languages.
+                textDirection: TextDirection.ltr,
+                textAlign:
+                    Directionality.of(context) == TextDirection.rtl
+                        ? TextAlign.right
+                        : TextAlign.left,
+              ),
+            )
+            : null;
 
-    final Widget? name = config.showCountryName
-        ? Expanded(
-            child: Text(
-              country.toCountryStringOnly(),
-              style: nameStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          )
-        : null;
+    final Widget? name =
+        config.showCountryName
+            ? Expanded(
+              child: Text(
+                country.toCountryStringOnly(),
+                style: nameStyle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            )
+            : null;
 
     final List<Widget?> ordered = switch (config.elementsOrder) {
       DisplayOrder.flagCodeAndCountryName => <Widget?>[flag, dialCode, name],

@@ -50,9 +50,10 @@ abstract final class CountryRepository {
       );
     }
 
-    final List<Country> result = context == null
-        ? countries.toList()
-        : countries.map((Country c) => c.localize(context)).toList();
+    final List<Country> result =
+        context == null
+            ? countries.toList()
+            : countries.map((Country c) => c.localize(context)).toList();
 
     if (filter != null && result.isEmpty) {
       throw ArgumentError.value(
@@ -67,8 +68,7 @@ abstract final class CountryRepository {
           switch (config?.sortingBehavior ?? SortingBehavior.alphabetical) {
             SortingBehavior.byDialCode => _compareByDialCode,
             SortingBehavior.alphabetical ||
-            SortingBehavior.custom =>
-              _compareByName,
+            SortingBehavior.custom => _compareByName,
           },
     );
     return result;

@@ -45,20 +45,21 @@ class CountryFlag extends StatelessWidget {
       // Images keep their own aspect ratio unless the size is forced; clip
       // so BoxFit.cover crops them to the requested shape.
       FlagMode.round => ClipOval(
-          child: SizedBox(width: w, height: height, child: _image(w)),
-        ),
+        child: SizedBox(width: w, height: height, child: _image(w)),
+      ),
       FlagMode.square => ClipRect(
-          child: SizedBox(width: w, height: height, child: _image(w)),
-        ),
+        child: SizedBox(width: w, height: height, child: _image(w)),
+      ),
     };
     return ExcludeSemantics(
-      child: decoration == null
-          ? flag
-          : Container(
-              decoration: decoration,
-              clipBehavior: Clip.antiAlias,
-              child: flag,
-            ),
+      child:
+          decoration == null
+              ? flag
+              : Container(
+                decoration: decoration,
+                clipBehavior: Clip.antiAlias,
+                child: flag,
+              ),
     );
   }
 
@@ -73,21 +74,21 @@ class CountryFlag extends StatelessWidget {
         _emoji();
     return image.toLowerCase().endsWith('.svg')
         ? SvgPicture.asset(
-            image,
-            package: package,
-            width: w,
-            height: height,
-            fit: BoxFit.cover,
-            errorBuilder: fallback,
-          )
+          image,
+          package: package,
+          width: w,
+          height: height,
+          fit: BoxFit.cover,
+          errorBuilder: fallback,
+        )
         : Image.asset(
-            image,
-            package: package,
-            width: w,
-            height: height,
-            fit: BoxFit.cover,
-            errorBuilder: fallback,
-          );
+          image,
+          package: package,
+          width: w,
+          height: height,
+          fit: BoxFit.cover,
+          errorBuilder: fallback,
+        );
   }
 
   Widget _emoji() {
