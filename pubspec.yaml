@@ -24,8 +24,8 @@ screenshots:
     path: doc/screenshots/custom_builder.png
 
 environment:
-  sdk: ^3.6.0
-  flutter: ">=3.27.0"
+  sdk: ^3.7.0
+  flutter: ">=3.29.0"
 
 dependencies:
   dlibphonenumber: ^1.1.73
