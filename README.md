@@ -12,7 +12,7 @@ languages.
   <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/dialog.png" width="200" alt="Country dialog">
   <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/bottom_sheet.png" width="200" alt="Bottom sheet with round flags">
   <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/cupertino.png" width="200" alt="Cupertino wheel">
-  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/phone_field.png" width="200" alt="Phone number field">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/phone_field.png" width="200" alt="Phone number field with validation">
   <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/custom_builder.png" width="200" alt="Custom bottom sheet built with customBuilder">
 </p>
 

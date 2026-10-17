@@ -18,7 +18,7 @@ screenshots:
     path: doc/screenshots/bottom_sheet.png
   - description: Cupertino wheel picker.
     path: doc/screenshots/cupertino.png
-  - description: Phone number field with CountryCodeSelectorWidget.
+  - description: Phone number field with CountryCodeSelectorWidget and validation.
     path: doc/screenshots/phone_field.png
   - description: Custom bottom sheet built with customBuilder.
     path: doc/screenshots/custom_builder.png
