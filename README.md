@@ -24,9 +24,10 @@ languages.
   selection and phone number lengths, and you build the UI.
 - 250 countries and territories with SVG flags, dial codes and mobile number
   lengths.
-- Country names in 202 languages from [Unicode CLDR](https://cldr.unicode.org),
-  including regional variants (Traditional Chinese, Latin Serbian, European
-  Portuguese, Latin American Spanish, …).
+- Country names in **202 languages, 238 locales** with regional and script
+  variants (Traditional Chinese, Latin Serbian, European Portuguese, Latin
+  American Spanish, …), from [Unicode CLDR](https://cldr.unicode.org).
+  [See the full list](https://github.com/TheinvinciblePrints/country_code_selector/blob/main/doc/supported_languages.md).
 - Search by name, ISO code or dial code (`234` or `+234`).
 - Filter, exclude, sort, pin favourites and add your own entries.
 - Square, round or emoji flags, four layouts, right-to-left support.
@@ -320,13 +321,18 @@ CountryCodeSelector.getDefaultCountry(context: context); // user's country
 
 ## Localization
 
-Country names are bundled for 202 languages. The selector picks the closest
-match for the app's locale (for example `zh_TW` uses Traditional Chinese and
-`es_MX` uses Latin American Spanish) and falls back to English.
+| What | Supported |
+|------|-----------|
+| Country names | **238 locales**: 202 languages plus 36 regional and script variants |
+| Selector text ("Select country", "No country found") | 41 languages, covering 63 locales; others show English |
+| Search hint | Every language Flutter's Material widgets support |
 
-The selectors' own text ("Select country", "No country found") is translated
-into 43 languages and falls back to English; the search hint uses Flutter's
-translation. Override any of it with the `header`, `searchStyle.hintText` and
+**[See every supported language →](https://github.com/TheinvinciblePrints/country_code_selector/blob/main/doc/supported_languages.md)**
+
+The selector picks the closest match for the app's locale and falls back to
+English. For example, `zh_TW` uses Traditional Chinese, `es_MX` Latin American
+Spanish, `pt_AO` European Portuguese and `fr_CA` Canadian French. Override the
+selector's own text with the `header`, `searchStyle.hintText` and
 `emptySearchBuilder` parameters.
 
 Flutter's Material widgets support fewer languages than this package. If your

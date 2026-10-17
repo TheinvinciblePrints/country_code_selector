@@ -1,6 +1,6 @@
 name: country_code_selector
 description: >-
-  Country code picker with searchable dialog, bottom sheet, Cupertino wheel, dropdown and phone field button. Flags, dial codes and country names in 200+ languages.
+  Country code picker with searchable dialog, bottom sheet, Cupertino wheel, dropdown and phone field button. Flags, dial codes and country names in 202 languages.
 version: 0.1.0
 repository: https://github.com/TheinvinciblePrints/country_code_selector
 issue_tracker: https://github.com/TheinvinciblePrints/country_code_selector/issues
