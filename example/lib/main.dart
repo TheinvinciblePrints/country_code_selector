@@ -482,6 +482,8 @@ class _HomePageState extends State<HomePage> {
                             useSafeArea: true,
                             initialCountry: customBuilderValue,
                             favouriteCountries: const ['NG', 'GH', 'KE'],
+                            // Puts the user's own country first.
+                            pinUserCountry: true,
                             customBuilder: (context, data) =>
                                 CustomCountrySheet(data: data),
                           );
@@ -704,6 +706,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
         prefixIcon: CountryCodeSelectorWidget(
           initialCountryCode: 'NG',
           favouriteCountries: const ['NG', 'GH', 'KE'],
+          pinUserCountry: true,
           onChanged: (Country value) {
             setState(() => _country = value);
             // Re-check what was typed against the new country.

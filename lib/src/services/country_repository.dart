@@ -18,6 +18,19 @@ abstract final class CountryRepository {
   /// `null` if there is none.
   static Country? byCode(String code) => _byCode[code.toUpperCase()];
 
+  /// Returns the user's country, with an English name, from the region of
+  /// the app's locale or else of the device locale, or `null` if neither has
+  /// a region in the bundled data.
+  ///
+  /// This reflects the user's language and region setting, not where they
+  /// are. Unlike `CountryCodeSelector.getDefaultCountry`, there is no
+  /// fallback, so nothing is assumed when the region is unknown.
+  static Country? userCountry(BuildContext context) =>
+      <String?>[
+        Localizations.maybeLocaleOf(context)?.countryCode,
+        WidgetsBinding.instance.platformDispatcher.locale.countryCode,
+      ].whereType<String>().map(byCode).whereType<Country>().firstOrNull;
+
   /// Builds the country list described by [config].
   ///
   /// Adds [CountryListConfig.customCountryEntries], applies
@@ -75,19 +88,23 @@ abstract final class CountryRepository {
   }
 
   /// Returns the entries of [countries] whose code is in [favouriteCodes], in
-  /// the order the codes were given.
+  /// the order the codes were given, without duplicates.
+  ///
+  /// [first], when given and present in [countries], is placed before them;
+  /// it is how the selectors pin the user's country.
   static List<Country> favourites(
     List<Country> countries,
-    List<String>? favouriteCodes,
-  ) {
-    if (favouriteCodes == null || favouriteCodes.isEmpty) {
-      return <Country>[];
-    }
+    List<String>? favouriteCodes, {
+    String? first,
+  }) {
     final Map<String, Country> byCode = <String, Country>{
       for (final Country c in countries) c.code.toUpperCase(): c,
     };
-    return favouriteCodes
-        .map((String code) => byCode[code.toUpperCase()])
+    final Set<String> seen = <String>{};
+    return <String>[if (first != null) first, ...?favouriteCodes]
+        .map((String code) => code.toUpperCase())
+        .where(seen.add)
+        .map((String code) => byCode[code])
         .whereType<Country>()
         .toList();
   }

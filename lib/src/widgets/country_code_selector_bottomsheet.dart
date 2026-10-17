@@ -12,6 +12,7 @@ class CountryCodeSelectorBottomSheet extends StatelessWidget {
   const CountryCodeSelectorBottomSheet({
     super.key,
     this.favouriteCountries,
+    this.pinUserCountry = false,
     this.layoutConfig,
     this.countryListConfig,
     this.searchStyle,
@@ -24,6 +25,11 @@ class CountryCodeSelectorBottomSheet extends StatelessWidget {
 
   /// ISO codes of countries pinned above the list while not searching.
   final List<String>? favouriteCountries;
+
+  /// Whether to pin the user's country first among the favourites, detected
+  /// from the region of the app's or device's locale. Nothing is pinned when
+  /// no region is set, or when the country is filtered out. Defaults to false.
+  final bool pinUserCountry;
 
   /// How each country row looks.
   final LayoutConfig? layoutConfig;
@@ -57,6 +63,7 @@ class CountryCodeSelectorBottomSheet extends StatelessWidget {
       layoutConfig: layoutConfig ?? const LayoutConfig(),
       searchStyle: searchStyle,
       favouriteCountries: favouriteCountries,
+      pinUserCountry: pinUserCountry,
       header: header,
       showSearchBar: showSearchBar ?? true,
       countryTilePadding: countryTilePadding,

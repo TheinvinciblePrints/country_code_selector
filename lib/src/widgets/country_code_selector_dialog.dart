@@ -21,6 +21,7 @@ class CountryCodeSelectorDialog extends StatelessWidget {
     this.layoutConfig = const LayoutConfig(),
     this.countryListConfig,
     this.favouriteCountries,
+    this.pinUserCountry = false,
     this.searchStyle,
     this.closeIconWidget,
   });
@@ -36,6 +37,11 @@ class CountryCodeSelectorDialog extends StatelessWidget {
 
   /// ISO codes of countries pinned above the list while not searching.
   final List<String>? favouriteCountries;
+
+  /// Whether to pin the user's country first among the favourites, detected
+  /// from the region of the app's or device's locale. Nothing is pinned when
+  /// no region is set, or when the country is filtered out. Defaults to false.
+  final bool pinUserCountry;
 
   /// Replaces the default close button.
   final Widget? closeIconWidget;
@@ -83,6 +89,7 @@ class CountryCodeSelectorDialog extends StatelessWidget {
           layoutConfig: layoutConfig ?? const LayoutConfig(),
           searchStyle: searchStyle,
           favouriteCountries: favouriteCountries,
+          pinUserCountry: pinUserCountry,
           header: header,
           showSearchBar: showSearchBar ?? true,
           countryTilePadding: countryTilePadding,

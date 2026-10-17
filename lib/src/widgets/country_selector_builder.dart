@@ -27,6 +27,7 @@ class CountrySelectorData {
     required this.select,
     required this.confirm,
     required this.cancel,
+    this.userCountry,
   });
 
   /// The countries matching [query], filtered, sorted and localized as
@@ -61,6 +62,11 @@ class CountrySelectorData {
   /// Finishes without a selection. In a bottom sheet this closes it and
   /// returns null.
   final VoidCallback cancel;
+
+  /// The user's country, detected from the region of the app's or device's
+  /// locale, as it appears in [allCountries]. Null if no region is set or the
+  /// country isn't in the list. Available whether or not it's pinned.
+  final Country? userCountry;
 
   /// How many digits a mobile number of [selected] has after its dial code,
   /// without the national trunk prefix (see [Country.phoneNumberLength]),
@@ -111,6 +117,7 @@ class CountrySelectorBuilder extends StatefulWidget {
     this.favouriteCountries,
     this.initialCountry,
     this.enableLocalization = true,
+    this.pinUserCountry = false,
     this.onSelect,
     this.onConfirm,
     this.onCancel,
@@ -132,6 +139,11 @@ class CountrySelectorBuilder extends StatefulWidget {
   /// English.
   final bool enableLocalization;
 
+  /// Whether to pin the user's country first in [CountrySelectorData.favourites], detected
+  /// from the region of the app's or device's locale. Nothing is pinned when
+  /// no region is set, or when the country is filtered out. Defaults to false.
+  final bool pinUserCountry;
+
   /// Called when [CountrySelectorData.select] changes the selection.
   final ValueChanged<Country>? onSelect;
 
@@ -150,6 +162,7 @@ class CountrySelectorBuilder extends StatefulWidget {
 class _CountrySelectorBuilderState extends State<CountrySelectorBuilder> {
   List<Country> _all = <Country>[];
   List<Country> _favourites = <Country>[];
+  Country? _userCountry;
   List<Country> _results = <Country>[];
   Country? _selected;
   String _query = '';
@@ -162,7 +175,16 @@ class _CountrySelectorBuilderState extends State<CountrySelectorBuilder> {
       widget.countryListConfig,
       context: widget.enableLocalization ? context : null,
     );
-    _favourites = CountryRepository.favourites(_all, widget.favouriteCountries);
+    final String? userCode = CountryRepository.userCountry(context)?.code;
+    _userCountry =
+        userCode == null
+            ? null
+            : _all.where((Country c) => c.code == userCode).firstOrNull;
+    _favourites = CountryRepository.favourites(
+      _all,
+      widget.favouriteCountries,
+      first: widget.pinUserCountry ? userCode : null,
+    );
     _results = CountryRepository.search(_all, _query);
     // Keep the selection pointing at the entry in the (re)localized list.
     final Country? current = _selected ?? widget.initialCountry;
@@ -224,6 +246,7 @@ class _CountrySelectorBuilderState extends State<CountrySelectorBuilder> {
         select: _select,
         confirm: _confirm,
         cancel: _cancel,
+        userCountry: _userCountry,
       ),
     );
   }

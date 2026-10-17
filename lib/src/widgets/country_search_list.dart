@@ -18,6 +18,7 @@ class CountrySearchList extends StatefulWidget {
     this.layoutConfig = const LayoutConfig(),
     this.searchStyle,
     this.favouriteCountries,
+    this.pinUserCountry = false,
     this.header,
     this.showSearchBar = true,
     this.countryTilePadding,
@@ -39,6 +40,11 @@ class CountrySearchList extends StatefulWidget {
 
   /// ISO codes of countries pinned above the list while not searching.
   final List<String>? favouriteCountries;
+
+  /// Whether to pin the user's country first among the favourites, detected
+  /// from the region of the app's or device's locale. Nothing is pinned when
+  /// no region is set, or when the country is filtered out. Defaults to false.
+  final bool pinUserCountry;
 
   /// Replaces the default "Select country" header.
   final Widget? header;
@@ -79,6 +85,10 @@ class _CountrySearchListState extends State<CountrySearchList> {
     _favourites = CountryRepository.favourites(
       _countries,
       widget.favouriteCountries,
+      first:
+          widget.pinUserCountry
+              ? CountryRepository.userCountry(context)?.code
+              : null,
     );
     _results = CountryRepository.search(_countries, _query);
   }

@@ -1207,4 +1207,159 @@ void main() {
       expect(find.text('France'), findsOneWidget); // nothing was popped
     });
   });
+
+  group('pinUserCountry', () {
+    /// The countries in the pinned section, read from the rows above the
+    /// divider.
+    List<String> pinnedCodes(WidgetTester tester) {
+      final double dividerY = tester.getTopLeft(find.byType(Divider)).dy;
+      return tester
+          .widgetList<CountryTile>(find.byType(CountryTile))
+          .where(
+            (CountryTile t) =>
+                tester.getTopLeft(find.byWidget(t)).dy < dividerY,
+          )
+          .map((CountryTile t) => t.country.code)
+          .toList();
+    }
+
+    void deviceLocale(WidgetTester tester, Locale locale) {
+      tester.platformDispatcher.localeTestValue = locale;
+      addTearDown(tester.platformDispatcher.clearLocaleTestValue);
+    }
+
+    testWidgets('is off by default', (WidgetTester tester) async {
+      deviceLocale(tester, const Locale('fr', 'FR'));
+      await _pumpApp(tester, _app(const CountryCodeSelectorDialog()));
+      expect(find.byType(Divider), findsNothing);
+    });
+
+    testWidgets('pins the device country first, before favourites, once', (
+      WidgetTester tester,
+    ) async {
+      deviceLocale(tester, const Locale('fr', 'FR'));
+      await _pumpApp(
+        tester,
+        _app(
+          const CountryCodeSelectorDialog(
+            pinUserCountry: true,
+            favouriteCountries: <String>['GB', 'FR', 'NG'],
+          ),
+        ),
+      );
+      expect(pinnedCodes(tester), <String>['FR', 'GB', 'NG']);
+    });
+
+    testWidgets("prefers the app locale's region", (WidgetTester tester) async {
+      deviceLocale(tester, const Locale('fr', 'FR'));
+      await _pumpApp(
+        tester,
+        MaterialApp(
+          locale: const Locale('en', 'NG'),
+          supportedLocales: const <Locale>[Locale('en', 'NG')],
+          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+            CountryCodeSelectorLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          home: const Scaffold(
+            body: CountryCodeSelectorDialog(pinUserCountry: true),
+          ),
+        ),
+      );
+      expect(pinnedCodes(tester), <String>['NG']);
+    });
+
+    testWidgets('pins nothing without a region or when excluded', (
+      WidgetTester tester,
+    ) async {
+      deviceLocale(tester, const Locale('en'));
+      await _pumpApp(
+        tester,
+        _app(const CountryCodeSelectorDialog(pinUserCountry: true)),
+      );
+      expect(find.byType(Divider), findsNothing);
+
+      deviceLocale(tester, const Locale('fr', 'FR'));
+      await _pumpApp(
+        tester,
+        _app(
+          const CountryCodeSelectorDialog(
+            pinUserCountry: true,
+            countryListConfig: CountryListConfig(
+              excludeCountry: <String>['FR'],
+            ),
+          ),
+        ),
+      );
+      expect(find.byType(Divider), findsNothing);
+    });
+
+    testWidgets('getDefaultCountry still falls back to the US', (
+      WidgetTester tester,
+    ) async {
+      deviceLocale(tester, const Locale('en'));
+      late BuildContext context;
+      await _pumpApp(
+        tester,
+        _app(
+          Builder(
+            builder: (BuildContext c) {
+              context = c;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      expect(CountryRepository.userCountry(context), isNull);
+      expect(
+        CountryCodeSelector.getDefaultCountry(context: context).code,
+        'US',
+      );
+    });
+
+    testWidgets('custom builder gets userCountry, localized, and pins it', (
+      WidgetTester tester,
+    ) async {
+      deviceLocale(tester, const Locale('de', 'DE'));
+      CountrySelectorData? data;
+      await _pumpApp(
+        tester,
+        _app(
+          CountrySelectorBuilder(
+            pinUserCountry: true,
+            favouriteCountries: const <String>['GB'],
+            builder: (BuildContext context, CountrySelectorData d) {
+              data = d;
+              return const SizedBox();
+            },
+          ),
+          locale: const Locale('fr'),
+        ),
+      );
+      expect(data!.userCountry?.code, 'DE');
+      expect(data!.userCountry?.name, 'Allemagne');
+      expect(data!.favourites.map((Country c) => c.code), <String>['DE', 'GB']);
+    });
+
+    testWidgets('custom builder exposes userCountry even when not pinned', (
+      WidgetTester tester,
+    ) async {
+      deviceLocale(tester, const Locale('de', 'DE'));
+      CountrySelectorData? data;
+      await _pumpApp(
+        tester,
+        _app(
+          CountrySelectorBuilder(
+            builder: (BuildContext context, CountrySelectorData d) {
+              data = d;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      expect(data!.userCountry?.code, 'DE');
+      expect(data!.favourites, isEmpty);
+    });
+  });
 }

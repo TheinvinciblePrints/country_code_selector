@@ -48,6 +48,7 @@ class CountryCodeSelectorWidget extends StatefulWidget {
     this.countryListConfig,
     this.searchStyle,
     this.favouriteCountries,
+    this.pinUserCountry = false,
     this.builder,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     this.enabled = true,
@@ -82,6 +83,12 @@ class CountryCodeSelectorWidget extends StatefulWidget {
 
   /// ISO codes of countries pinned at the top of the picker.
   final List<String>? favouriteCountries;
+
+  /// Whether to pin the user's country first among the favourites, detected
+  /// from the region of the app's or device's locale. Nothing is pinned when
+  /// no region is set, or when the country is filtered out. Applies to the dialog and bottom
+  /// sheet pickers. Defaults to false.
+  final bool pinUserCountry;
 
   /// Replaces the button's content.
   final Widget Function(BuildContext context, Country country)? builder;
@@ -133,6 +140,7 @@ class _CountryCodeSelectorWidgetState extends State<CountryCodeSelectorWidget> {
           countryListConfig: widget.countryListConfig,
           searchStyle: widget.searchStyle,
           favouriteCountries: widget.favouriteCountries,
+          pinUserCountry: widget.pinUserCountry,
         ),
       CountryPickerType.bottomSheet =>
         CountryCodeSelector.showCountryCodeSelectorBottomSheet(
@@ -141,6 +149,7 @@ class _CountryCodeSelectorWidgetState extends State<CountryCodeSelectorWidget> {
           countryListConfig: widget.countryListConfig,
           searchStyle: widget.searchStyle,
           favouriteCountries: widget.favouriteCountries,
+          pinUserCountry: widget.pinUserCountry,
           isScrollControlled: true,
           useSafeArea: true,
         ),

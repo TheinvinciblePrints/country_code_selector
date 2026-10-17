@@ -101,6 +101,26 @@ final Country? fromSheet =
 
 Both return `null` when dismissed.
 
+#### Put the user's country first
+
+Pass `pinUserCountry: true` to pin the user's country above your favourites.
+It's detected from the region of the app's locale, or else the device's (for
+example `fr_FR` pins France), and isn't duplicated if it's also a favourite:
+
+```dart
+CountryCodeSelector.showCountryCodeSelectorBottomSheet(
+  context: context,
+  pinUserCountry: true,
+  favouriteCountries: ['GB', 'US'],
+);
+```
+
+It's off by default. Nothing is pinned when the phone has no region set, or
+when the country is filtered out. The detection reflects the user's language
+and region setting, not their location. `CountryCodeSelectorWidget` and
+`CountrySelectorBuilder` accept it too, and a custom builder can read the
+detected country from `data.userCountry` even when it isn't pinned.
+
 ### Cupertino wheel
 
 ```dart
@@ -122,6 +142,7 @@ Pass `customBuilder` to build the sheet's UI yourself. It receives a
 |---|---|
 | `countries` | The list to show: filtered, sorted, localized and matching the search |
 | `allCountries`, `favourites` | Every country, and the favourites in the order given |
+| `userCountry` | The user's country from their locale region, or `null` |
 | `selected`, `selectedPhoneNumberLength` | The current selection and its mobile number lengths, e.g. `[10]` |
 | `query`, `search(text)` | The search text, and a function to update it |
 | `select(country)` | Select without closing, e.g. to highlight before confirming |

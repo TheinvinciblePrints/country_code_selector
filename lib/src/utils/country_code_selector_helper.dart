@@ -30,14 +30,7 @@ class CountryCodeSelector {
   /// ```
   static Country getDefaultCountry({required BuildContext context}) {
     final Country country =
-        <String?>[
-              Localizations.maybeLocaleOf(context)?.countryCode,
-              WidgetsBinding.instance.platformDispatcher.locale.countryCode,
-            ]
-            .whereType<String>()
-            .map(CountryRepository.byCode)
-            .whereType<Country>()
-            .firstOrNull ??
+        CountryRepository.userCountry(context) ??
         CountryRepository.byCode('US')!;
     return country.localize(context);
   }
@@ -66,6 +59,7 @@ class CountryCodeSelector {
   /// - [countryListConfig]: Configuration for the country list, such as sorting or filtering.
   /// - [searchStyle]: Style customization for the search bar, including text styling.
   /// - [favouriteCountries]: A list of country codes to display at the top as favorites.
+  /// - [pinUserCountry]: Pins the user's country, detected from the app's or device's locale region, before the favourites. Defaults to `false`.
   /// - [isDismissible]: Determines whether the dialog can be dismissed by tapping outside. Defaults to `true`.
   /// - [backgroundColor]: The background color of the dialog.
   /// - [borderRadius]: The border radius for the dialog corners.
@@ -103,6 +97,7 @@ class CountryCodeSelector {
 
     /// favourite countries will be placed on the top of list.
     List<String>? favouriteCountries,
+    bool pinUserCountry = false,
     bool? isDismissible,
     Color? backgroundColor,
     BorderRadiusGeometry? borderRadius,
@@ -134,6 +129,7 @@ class CountryCodeSelector {
             child: CountryCodeSelectorDialog(
               searchStyle: searchStyle,
               favouriteCountries: favouriteCountries,
+              pinUserCountry: pinUserCountry,
               countryListConfig: countryListConfig,
               closeIconWidget: closeIconWidget,
               layoutConfig: layoutConfig,
@@ -198,6 +194,7 @@ class CountryCodeSelector {
     Color? backgroundColor,
     LayoutConfig? layoutConfig,
     List<String>? favouriteCountries,
+    bool pinUserCountry = false,
     CountryListConfig? countryListConfig,
     SearchStyle? searchStyle,
     Widget? closeIconWidget,
@@ -253,12 +250,14 @@ class CountryCodeSelector {
             builder: customBuilder,
             countryListConfig: countryListConfig,
             favouriteCountries: favouriteCountries,
+            pinUserCountry: pinUserCountry,
             initialCountry: initialCountry,
             enableLocalization: layoutConfig?.enableLocalization ?? true,
           );
         }
         return CountryCodeSelectorBottomSheet(
           favouriteCountries: favouriteCountries,
+          pinUserCountry: pinUserCountry,
           searchStyle: searchStyle,
           countryListConfig: countryListConfig,
           layoutConfig: layoutConfig,

@@ -21,6 +21,9 @@ First release.
   `phoneNumberLength` gives the digits expected after the dial code. Apps
   that don't validate numbers don't include libphonenumber's ~2 MB of
   metadata.
+* `pinUserCountry` puts the user's country, detected from their locale
+  region, first in the dialog, bottom sheet, `CountryCodeSelectorWidget`, and
+  custom builder (`data.userCountry`). Off by default.
 * Search by name, ISO code, or dial code, with or without `+`.
 * Filter, exclude, sort, pin favourites, and add custom countries with
   `CountryListConfig`.
