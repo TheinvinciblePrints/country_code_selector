@@ -28,7 +28,8 @@ languages.
   variants (Traditional Chinese, Latin Serbian, European Portuguese, Latin
   American Spanish, …), from [Unicode CLDR](https://cldr.unicode.org).
   [See the full list](https://github.com/TheinvinciblePrints/country_code_selector/blob/main/doc/supported_languages.md).
-- Search by name, ISO code or dial code (`234` or `+234`).
+- Search by name, ISO code or dial code (`234` or `+234`), ignoring accents
+  and Arabic spelling variants ("etats" finds "États-Unis").
 - Filter, exclude, sort, pin favourites and add your own entries.
 - Square, round or emoji flags, four layouts, right-to-left support.
 - Follows your app's light and dark theme; customise it with a theme
