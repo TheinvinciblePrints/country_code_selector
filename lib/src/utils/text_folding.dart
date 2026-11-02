@@ -26,9 +26,11 @@ String foldForSearch(String text) {
 /// lists usually do, so "البرازيل" sorts under ب. Search uses
 /// [foldForSearch] instead, which keeps the article.
 String sortKey(String name, String? languageCode) {
-  final String folded = foldForSearch(name);
-  if (languageCode == 'ar' && folded.length > 2 && folded.startsWith('ال')) {
-    return folded.substring(2);
+  // Check for the article before folding: folding turns the hamza in names
+  // like "ألبانيا" (Albania) into a plain alif, which would then look like
+  // the article and be stripped. Thanks to @Aomine3500 for spotting this.
+  if (languageCode == 'ar' && name.length > 2 && name.startsWith('ال')) {
+    return foldForSearch(name.substring(2));
   }
-  return folded;
+  return foldForSearch(name);
 }

@@ -1403,6 +1403,9 @@ void main() {
     test('sortKey ignores a leading ال only in Arabic', () {
       expect(sortKey('البرازيل', 'ar'), 'برازيل');
       expect(sortKey('البرازيل', 'fa'), 'البرازيل');
+      // أل with a hamza isn't the article: Albania and Germany stay under ا.
+      expect(sortKey('ألبانيا', 'ar'), 'البانيا');
+      expect(sortKey('ألمانيا', 'ar'), 'المانيا');
       expect(sortKey('Égypte', 'fr'), 'egypte');
     });
 
@@ -1460,6 +1463,10 @@ void main() {
       expect(order.indexOf('BR'), lessThan(order.indexOf('PA')));
       // الجزائر sorts under ج, after بنما.
       expect(order.indexOf('PA'), lessThan(order.indexOf('DZ')));
+      // ألبانيا and ألمانيا start with a hamza, not the article, so they
+      // stay with the ا names instead of moving to ب and م.
+      expect(order.indexOf('AL'), lessThan(order.indexOf('PK')));
+      expect(order.indexOf('DE'), lessThan(order.indexOf('PK')));
     });
 
     test('Arabic header says country or region', () {
