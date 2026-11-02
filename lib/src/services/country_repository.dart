@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../config/country_list_config.dart';
 import '../data/countries.dart';
 import '../models/models.dart';
+import '../utils/text_folding.dart';
 
 /// Access to the bundled country data, plus the filtering, sorting and search
 /// used by the selector widgets.
@@ -76,14 +77,30 @@ abstract final class CountryRepository {
       );
     }
 
-    result.sort(
-      config?.comparator ??
-          switch (config?.sortingBehavior ?? SortingBehavior.alphabetical) {
-            SortingBehavior.byDialCode => _compareByDialCode,
-            SortingBehavior.alphabetical ||
-            SortingBehavior.custom => _compareByName,
-          },
-    );
+    if (config?.comparator != null) {
+      result.sort(config!.comparator);
+      return result;
+    }
+    final String? language =
+        context == null
+            ? null
+            : Localizations.maybeLocaleOf(context)?.languageCode;
+    final Map<Country, String> keys = <Country, String>{
+      for (final Country c in result) c: sortKey(c.name, language),
+    };
+    int byName(Country a, Country b) {
+      final int byKey = keys[a]!.compareTo(keys[b]!);
+      return byKey != 0 ? byKey : a.name.compareTo(b.name);
+    }
+
+    result.sort(switch (config?.sortingBehavior ??
+        SortingBehavior.alphabetical) {
+      SortingBehavior.byDialCode => (Country a, Country b) {
+        final int byDial = _dialNumber(a).compareTo(_dialNumber(b));
+        return byDial != 0 ? byDial : byName(a, b);
+      },
+      SortingBehavior.alphabetical || SortingBehavior.custom => byName,
+    });
     return result;
   }
 
@@ -111,10 +128,12 @@ abstract final class CountryRepository {
 
   /// Filters [countries] by name, ISO code or dial code.
   ///
+  /// Names match ignoring case, accents and Arabic hamza or vowel marks, so
+  /// "etats" finds "États-Unis" and "امارات" or "الامارات" find "الإمارات".
   /// Dial codes match with or without the leading `+`, so `234` and `+234`
   /// both find Nigeria.
   static List<Country> search(List<Country> countries, String query) {
-    final String q = query.trim().toUpperCase();
+    final String q = foldForSearch(query.trim());
     if (q.isEmpty) {
       return countries;
     }
@@ -122,8 +141,8 @@ abstract final class CountryRepository {
     final bool isDialQuery = RegExp(r'^\+?[0-9 ]+$').hasMatch(q);
 
     return countries.where((Country c) {
-      if (c.code.toUpperCase().contains(q) ||
-          c.name.toUpperCase().contains(q)) {
+      if (c.code.toLowerCase().contains(q) ||
+          foldForSearch(c.name).contains(q)) {
         return true;
       }
       return isDialQuery &&
@@ -131,14 +150,6 @@ abstract final class CountryRepository {
             (String d) => d.replaceAll('+', '').startsWith(digits),
           );
     }).toList();
-  }
-
-  static int _compareByName(Country a, Country b) =>
-      a.name.toLowerCase().compareTo(b.name.toLowerCase());
-
-  static int _compareByDialCode(Country a, Country b) {
-    final int byDial = _dialNumber(a).compareTo(_dialNumber(b));
-    return byDial != 0 ? byDial : _compareByName(a, b);
   }
 
   /// The dial code as a number for sorting; countries without one sort last.
