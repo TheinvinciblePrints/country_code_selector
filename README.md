@@ -9,11 +9,11 @@ fields. Every country comes with its flag, dial code and name in 200+
 languages.
 
 <p>
-  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/dialog.png" width="200" alt="Country dialog">
-  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/bottom_sheet.png" width="200" alt="Bottom sheet with round flags">
-  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/cupertino.png" width="200" alt="Cupertino wheel">
-  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/phone_field.png" width="200" alt="Phone number field with validation">
-  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/main/doc/screenshots/custom_builder.png" width="200" alt="Custom bottom sheet built with customBuilder">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/master/doc/screenshots/dialog.png" width="200" alt="Country dialog">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/master/doc/screenshots/bottom_sheet.png" width="200" alt="Bottom sheet with round flags">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/master/doc/screenshots/cupertino.png" width="200" alt="Cupertino wheel">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/master/doc/screenshots/phone_field.png" width="200" alt="Phone number field with validation">
+  <img src="https://raw.githubusercontent.com/TheinvinciblePrints/country_code_selector/master/doc/screenshots/custom_builder.png" width="200" alt="Custom bottom sheet built with customBuilder">
 </p>
 
 ## Features
@@ -27,8 +27,9 @@ languages.
 - Country names in **202 languages, 238 locales** with regional and script
   variants (Traditional Chinese, Latin Serbian, European Portuguese, Latin
   American Spanish, …), from [Unicode CLDR](https://cldr.unicode.org).
-  [See the full list](https://github.com/TheinvinciblePrints/country_code_selector/blob/main/doc/supported_languages.md).
-- Search by name, ISO code or dial code (`234` or `+234`).
+  [See the full list](https://github.com/TheinvinciblePrints/country_code_selector/blob/master/doc/supported_languages.md).
+- Search by name, ISO code or dial code (`234` or `+234`), ignoring accents
+  and Arabic spelling variants ("etats" finds "États-Unis").
 - Filter, exclude, sort, pin favourites and add your own entries.
 - Square, round or emoji flags, four layouts, right-to-left support.
 - Follows your app's light and dark theme; customise it with a theme
@@ -229,13 +230,16 @@ final Country ng = CountryRepository.byCode('NG')!;
 ng.isValidPhoneNumber('0803 123 4567');     // true: leading 0 and spaces are fine
 ng.isValidPhoneNumber('803 123 4567');      // true
 ng.isValidPhoneNumber('+234 803 123 4567'); // true
+ng.isValidPhoneNumber('00234 803 123 4567'); // true
+ng.isValidPhoneNumber('٠٨٠٣ ١٢٣ ٤٥٦٧');     // true: Arabic digits
 ng.isValidPhoneNumber('+44 7400 123456');   // false: a UK number
 ng.isValidPhoneNumber('0803 123');          // false
 ng.isValidPhoneNumber(input, mobileOnly: true); // also rejects landlines
 ```
 
 Where the dial code includes an area code, like `+1876` for Jamaica, the
-local digits alone are enough (`'210 1234'`). In a form:
+local digits alone are enough (`'210 1234'`). Pasted numbers can keep their
+formatting: spaces, dashes, dots, brackets and `tel:` are ignored. In a form:
 
 ```dart
 TextFormField(
@@ -348,7 +352,7 @@ CountryCodeSelector.getDefaultCountry(context: context); // user's country
 | Selector text ("Select country", "No country found") | 41 languages, covering 63 locales; others show English |
 | Search hint | Every language Flutter's Material widgets support |
 
-**[See every supported language →](https://github.com/TheinvinciblePrints/country_code_selector/blob/main/doc/supported_languages.md)**
+**[See every supported language →](https://github.com/TheinvinciblePrints/country_code_selector/blob/master/doc/supported_languages.md)**
 
 The selector picks the closest match for the app's locale and falls back to
 English. For example, `zh_TW` uses Traditional Chinese, `es_MX` Latin American

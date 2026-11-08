@@ -5,6 +5,7 @@ import 'package:country_code_selector/country_code_selector.dart';
 import 'package:country_code_selector/src/data/phone_lengths.dart';
 import 'package:country_code_selector/src/data/translation_locales.dart';
 import 'package:country_code_selector/src/data/ui_strings.dart';
+import 'package:country_code_selector/src/utils/text_folding.dart';
 import 'package:dlibphonenumber/dlibphonenumber.dart'
     show PhoneMetadata, PhoneNumberFormat, PhoneNumberUtil;
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import 'package:flutter_test/flutter_test.dart';
 Widget _app(Widget child, {Locale locale = const Locale('en')}) {
   return MaterialApp(
     locale: locale,
-    supportedLocales: const <Locale>[Locale('en'), Locale('fr')],
+    supportedLocales: const <Locale>[Locale('en'), Locale('fr'), Locale('ar')],
     localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
       CountryCodeSelectorLocalizations.delegate,
       GlobalMaterialLocalizations.delegate,
@@ -239,6 +240,55 @@ void main() {
       expect(custom.toE164('12345'), isNull);
     });
 
+    test('toE164 accepts numbers however they are pasted or typed', () {
+      const Map<String, String> inputs = <String, String>{
+        'spaces': '0803 123 4567',
+        'dashes': '0803-123-4567',
+        'dots and brackets': '(0803) 123.4567',
+        'international with spaces': '+234 803 123 4567',
+        'surrounding spaces': '  +234 803 123 4567  ',
+        'non-breaking spaces': '0803 123 4567',
+        'en dashes': '0803–123–4567',
+        'tel: link': 'tel:+2348031234567',
+        'Arabic-Indic digits': '٠٨٠٣ ١٢٣ ٤٥٦٧',
+        'Persian digits': '۰۸۰۳ ۱۲۳ ۴۵۶۷',
+        'full-width digits and plus': '＋２３４ ８０３ １２３ ４５６７',
+        '00 international prefix': '00234 803 123 4567',
+        '00 with dashes': '00-234-803-123-4567',
+      };
+      inputs.forEach((String label, String input) {
+        expect(ng.toE164(input), '+2348031234567', reason: label);
+      });
+      // A valid number of another country is still rejected, with + or 00.
+      expect(ng.toE164('+44 7400 123456'), isNull);
+      expect(ng.toE164('0044 7400 123456'), isNull);
+    });
+
+    test('normalizeDigits converts digits from other scripts', () {
+      expect(normalizeDigits('٠١٢٣٤٥٦٧٨٩'), '0123456789');
+      expect(normalizeDigits('۰۱۲۳۴۵۶۷۸۹'), '0123456789');
+      expect(normalizeDigits('०१२३'), '0123'); // Devanagari
+      expect(normalizeDigits('０１２＋'), '012+');
+      expect(normalizeDigits('Nigeria 234'), 'Nigeria 234');
+    });
+
+    test('search finds dial codes typed in other digits', () {
+      expect(
+        CountryRepository.search(
+          CountryRepository.all,
+          '٢٣٤',
+        ).map((Country c) => c.code),
+        contains('NG'),
+      );
+      expect(
+        CountryRepository.search(
+          CountryRepository.all,
+          '＋４４',
+        ).map((Country c) => c.code),
+        contains('GB'),
+      );
+    });
+
     test('toE164 is consistent with isValidPhoneNumber for every country', () {
       final PhoneNumberUtil util = PhoneNumberUtil.instance;
       for (final Country c in CountryRepository.all) {
@@ -374,12 +424,20 @@ void main() {
       expect(list.where((Country c) => c.code == 'NG').single.name, 'Naija');
     });
 
-    test('sorts alphabetically by default', () {
-      final List<String> names =
+    test('sorts alphabetically by default, ignoring accents', () {
+      final List<String> keys =
           CountryRepository.resolve(
             null,
-          ).map((Country c) => c.name.toLowerCase()).toList();
-      expect(names, List<String>.of(names)..sort());
+          ).map((Country c) => sortKey(c.name, 'en')).toList();
+      expect(keys, List<String>.of(keys)..sort());
+      // Accented names sort with their base letter, not after Z.
+      final List<String> names =
+          CountryRepository.resolve(null).map((Country c) => c.name).toList();
+      expect(
+        names.indexOf('Åland Islands'),
+        lessThan(names.indexOf('Albania')),
+      );
+      expect(names.last, isNot('Åland Islands'));
     });
 
     test('sorts by dial code', () {
@@ -1360,6 +1418,114 @@ void main() {
       );
       expect(data!.userCountry?.code, 'DE');
       expect(data!.favourites, isEmpty);
+    });
+  });
+
+  group('accent and Arabic folding', () {
+    test('foldForSearch removes accents and marks', () {
+      expect(foldForSearch('États-Unis'), 'etats-unis');
+      expect(foldForSearch('Sénégal'), 'senegal');
+      expect(foldForSearch('Việt Nam'), 'viet nam');
+      expect(foldForSearch('Curaçao'), 'curacao');
+      expect(foldForSearch('Ελλάδα'), 'ελλαδα');
+      expect(foldForSearch('Ёлка'), 'елка');
+      expect(foldForSearch('İzmir'), 'izmir');
+      expect(foldForSearch('Straße Øst Łódź'), 'strasse ost lodz');
+    });
+
+    test(
+      'foldForSearch normalizes Arabic hamza, taa marbuta, yaa and tashkeel',
+      () {
+        expect(foldForSearch('الإمارات'), 'الامارات');
+        expect(foldForSearch('أ آ إ'), 'ا ا ا');
+        expect(foldForSearch('جمهورية'), 'جمهوريه');
+        expect(foldForSearch('مصرى'), 'مصري');
+        expect(foldForSearch('مَرْحَبًا'), 'مرحبا');
+      },
+    );
+
+    test('foldForSearch leaves other scripts intact', () {
+      expect(foldForSearch('日本'), '日本');
+      expect(foldForSearch('भारत'), 'भारत');
+    });
+
+    test('sortKey ignores a leading ال only in Arabic', () {
+      expect(sortKey('البرازيل', 'ar'), 'برازيل');
+      expect(sortKey('البرازيل', 'fa'), 'البرازيل');
+      // أل with a hamza isn't the article: Albania and Germany stay under ا.
+      expect(sortKey('ألبانيا', 'ar'), 'البانيا');
+      expect(sortKey('ألمانيا', 'ar'), 'المانيا');
+      expect(sortKey('Égypte', 'fr'), 'egypte');
+    });
+
+    Future<List<Country>> resolvedIn(WidgetTester tester, Locale locale) async {
+      late List<Country> list;
+      await _pumpApp(
+        tester,
+        _app(
+          Builder(
+            builder: (BuildContext context) {
+              list = CountryRepository.resolve(null, context: context);
+              return const SizedBox();
+            },
+          ),
+          locale: locale,
+        ),
+      );
+      return list;
+    }
+
+    List<String> codes(List<Country> list) =>
+        list.map((Country c) => c.code).toList();
+
+    testWidgets('French: search ignores accents, É sorts with the E names', (
+      WidgetTester tester,
+    ) async {
+      final List<Country> fr = await resolvedIn(tester, const Locale('fr'));
+      expect(codes(CountryRepository.search(fr, 'etats')), contains('US'));
+      expect(codes(CountryRepository.search(fr, 'senegal')), <String>['SN']);
+      expect(codes(CountryRepository.search(fr, 'ÉTATS')), contains('US'));
+
+      final List<String> order = codes(fr);
+      // Dominique < Égypte < Équateur < France, and Égypte isn't after Zimbabwe.
+      expect(order.indexOf('DM'), lessThan(order.indexOf('EG')));
+      expect(order.indexOf('EG'), lessThan(order.indexOf('EC')));
+      expect(order.indexOf('EC'), lessThan(order.indexOf('FR')));
+      expect(order.indexOf('EG'), lessThan(order.indexOf('ZW')));
+    });
+
+    testWidgets('Arabic: search ignores hamza and the article, sorting '
+        'ignores the leading ال', (WidgetTester tester) async {
+      final List<Country> ar = await resolvedIn(tester, const Locale('ar'));
+      // With and without the article, with and without hamza.
+      for (final String query in <String>['امارات', 'الامارات', 'الإمارات']) {
+        expect(
+          codes(CountryRepository.search(ar, query)),
+          contains('AE'),
+          reason: query,
+        );
+      }
+
+      final List<String> order = codes(ar);
+      // البرازيل sorts under ب: باكستان < البرازيل < بنما.
+      expect(order.indexOf('PK'), lessThan(order.indexOf('BR')));
+      expect(order.indexOf('BR'), lessThan(order.indexOf('PA')));
+      // الجزائر sorts under ج, after بنما.
+      expect(order.indexOf('PA'), lessThan(order.indexOf('DZ')));
+      // ألبانيا and ألمانيا start with a hamza, not the article, so they
+      // stay with the ا names instead of moving to ب and م.
+      expect(order.indexOf('AL'), lessThan(order.indexOf('PK')));
+      expect(order.indexOf('DE'), lessThan(order.indexOf('PK')));
+    });
+
+    test('Arabic header says country or region', () {
+      expect(
+        CountryCodeSelectorLocalizations.uiString(
+          const Locale('ar'),
+          kSelectCountryKey,
+        ),
+        'اختر البلد أو المنطقة',
+      );
     });
   });
 }
