@@ -240,6 +240,55 @@ void main() {
       expect(custom.toE164('12345'), isNull);
     });
 
+    test('toE164 accepts numbers however they are pasted or typed', () {
+      const Map<String, String> inputs = <String, String>{
+        'spaces': '0803 123 4567',
+        'dashes': '0803-123-4567',
+        'dots and brackets': '(0803) 123.4567',
+        'international with spaces': '+234 803 123 4567',
+        'surrounding spaces': '  +234 803 123 4567  ',
+        'non-breaking spaces': '0803 123 4567',
+        'en dashes': '0803–123–4567',
+        'tel: link': 'tel:+2348031234567',
+        'Arabic-Indic digits': '٠٨٠٣ ١٢٣ ٤٥٦٧',
+        'Persian digits': '۰۸۰۳ ۱۲۳ ۴۵۶۷',
+        'full-width digits and plus': '＋２３４ ８０３ １２３ ４５６７',
+        '00 international prefix': '00234 803 123 4567',
+        '00 with dashes': '00-234-803-123-4567',
+      };
+      inputs.forEach((String label, String input) {
+        expect(ng.toE164(input), '+2348031234567', reason: label);
+      });
+      // A valid number of another country is still rejected, with + or 00.
+      expect(ng.toE164('+44 7400 123456'), isNull);
+      expect(ng.toE164('0044 7400 123456'), isNull);
+    });
+
+    test('normalizeDigits converts digits from other scripts', () {
+      expect(normalizeDigits('٠١٢٣٤٥٦٧٨٩'), '0123456789');
+      expect(normalizeDigits('۰۱۲۳۴۵۶۷۸۹'), '0123456789');
+      expect(normalizeDigits('०१२३'), '0123'); // Devanagari
+      expect(normalizeDigits('０１２＋'), '012+');
+      expect(normalizeDigits('Nigeria 234'), 'Nigeria 234');
+    });
+
+    test('search finds dial codes typed in other digits', () {
+      expect(
+        CountryRepository.search(
+          CountryRepository.all,
+          '٢٣٤',
+        ).map((Country c) => c.code),
+        contains('NG'),
+      );
+      expect(
+        CountryRepository.search(
+          CountryRepository.all,
+          '＋４４',
+        ).map((Country c) => c.code),
+        contains('GB'),
+      );
+    });
+
     test('toE164 is consistent with isValidPhoneNumber for every country', () {
       final PhoneNumberUtil util = PhoneNumberUtil.instance;
       for (final Country c in CountryRepository.all) {

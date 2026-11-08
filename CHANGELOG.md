@@ -7,6 +7,10 @@
 * Alphabetical sorting ignores accents, so "Égypte" sorts with the E's rather
   than after "Zimbabwe", and in Arabic ignores the leading "ال", so "البرازيل"
   sorts under ب.
+* `isValidPhoneNumber` and `toE164` accept digits typed on Arabic, Persian,
+  full-width and other keyboards ("٠٨٠٣ ١٢٣ ٤٥٦٧"), and the `00`
+  international prefix ("00234 803 123 4567"). Search finds dial codes typed
+  the same way.
 * The Arabic header now reads "اختر البلد أو المنطقة", since the list includes
   territories as well as countries.
 

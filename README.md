@@ -230,13 +230,16 @@ final Country ng = CountryRepository.byCode('NG')!;
 ng.isValidPhoneNumber('0803 123 4567');     // true: leading 0 and spaces are fine
 ng.isValidPhoneNumber('803 123 4567');      // true
 ng.isValidPhoneNumber('+234 803 123 4567'); // true
+ng.isValidPhoneNumber('00234 803 123 4567'); // true
+ng.isValidPhoneNumber('٠٨٠٣ ١٢٣ ٤٥٦٧');     // true: Arabic digits
 ng.isValidPhoneNumber('+44 7400 123456');   // false: a UK number
 ng.isValidPhoneNumber('0803 123');          // false
 ng.isValidPhoneNumber(input, mobileOnly: true); // also rejects landlines
 ```
 
 Where the dial code includes an area code, like `+1876` for Jamaica, the
-local digits alone are enough (`'210 1234'`). In a form:
+local digits alone are enough (`'210 1234'`). Pasted numbers can keep their
+formatting: spaces, dashes, dots, brackets and `tel:` are ignored. In a form:
 
 ```dart
 TextFormField(
