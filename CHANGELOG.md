@@ -11,6 +11,9 @@
   full-width and other keyboards ("٠٨٠٣ ١٢٣ ٤٥٦٧"), and the `00`
   international prefix ("00234 803 123 4567"). Search finds dial codes typed
   the same way.
+* No analyzer warnings on Flutter 3.47+, where `package:flutter/material.dart`
+  and `package:flutter/cupertino.dart` are deprecated. The package still
+  supports Flutter 3.29 and later.
 * The Arabic header now reads "اختر البلد أو المنطقة", since the list includes
   territories as well as countries.
 

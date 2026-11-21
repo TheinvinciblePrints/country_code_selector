@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+// Moves to material_ui / cupertino_ui in Flutter 3.47+; kept for 3.29 support.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
