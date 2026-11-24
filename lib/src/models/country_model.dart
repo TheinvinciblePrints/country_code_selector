@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+// Moves to material_ui / cupertino_ui in Flutter 3.47+; kept for 3.29 support.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 
 import '../data/phone_lengths.dart';
@@ -89,7 +91,8 @@ class Country {
   ///
   /// Accepts what the user typed after [dialCode], with or without the
   /// national trunk prefix, or a full international number starting with `+`
-  /// that belongs to this country. Formatting characters are ignored.
+  /// or `00` that belongs to this country. Formatting characters are ignored,
+  /// and digits from Arabic, Persian, full-width and other keyboards count.
   /// [mobileOnly] rejects landlines and special numbers.
   ///
   /// ```dart

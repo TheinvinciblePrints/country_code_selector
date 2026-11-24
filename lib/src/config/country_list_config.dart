@@ -61,7 +61,8 @@ class CountryListConfig {
 
 /// The order of the country list.
 enum SortingBehavior {
-  /// By localized country name.
+  /// By localized country name, ignoring accents (so "Égypte" sorts with the
+  /// E's) and, in Arabic, a leading "ال".
   alphabetical,
 
   /// By numeric dial code, e.g. +1, +7, +20, +27, ..., then by name.

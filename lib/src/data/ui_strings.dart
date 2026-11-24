@@ -16,7 +16,7 @@ const String kNoCountryFoundKey = 'no_country_found';
 const Map<String, Map<String, String>> kUiStrings =
     <String, Map<String, String>>{
       'ar': <String, String>{
-        kSelectCountryKey: 'اختر الدولة',
+        kSelectCountryKey: 'اختر البلد أو المنطقة',
         kNoCountryFoundKey: 'لم يتم العثور على أي دولة',
       },
       'bg': <String, String>{

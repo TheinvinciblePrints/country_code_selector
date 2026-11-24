@@ -1,6 +1,7 @@
 import 'package:dlibphonenumber/dlibphonenumber.dart';
 
 import '../models/country_model.dart';
+import '../utils/text_folding.dart';
 
 /// Validates and normalizes phone numbers against libphonenumber's metadata.
 ///
@@ -13,9 +14,11 @@ abstract final class PhoneNumberValidator {
   /// [number] may be what the user typed after the country's dial code, with
   /// or without the national trunk prefix (`0803 123 4567` or
   /// `803 123 4567` for Nigeria), or a full international number starting
-  /// with `+`, which must then belong to [country]. Spaces, dashes, dots and
-  /// brackets are ignored. Where the dial code includes an area code, like
-  /// +1876 for Jamaica, the local digits alone are enough.
+  /// with `+` or `00`, which must then belong to [country]. Spaces, dashes,
+  /// dots, brackets and other formatting are ignored, and digits typed on
+  /// Arabic, Persian, full-width or other keyboards are accepted. Where the
+  /// dial code includes an area code, like +1876 for Jamaica, the local
+  /// digits alone are enough.
   ///
   /// With [mobileOnly], landlines and special numbers (toll-free, premium
   /// rate, …) are rejected; numbers that may be either, as in the US, pass.
@@ -45,7 +48,9 @@ abstract final class PhoneNumberValidator {
     bool mobileOnly = false,
   }) {
     final String region = country.code.toUpperCase();
-    final String digits = number.replaceAll(RegExp(r'\D'), '');
+    // Digits typed on Arabic, Persian, full-width and other keyboards count.
+    final String normalized = normalizeDigits(number).trimLeft();
+    final String digits = normalized.replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) {
       return null;
     }
@@ -62,9 +67,14 @@ abstract final class PhoneNumberValidator {
     }
 
     final List<String> candidates = <String>[];
-    if (number.trimLeft().startsWith('+')) {
+    if (normalized.startsWith('+')) {
       candidates.add('+$digits');
     } else {
+      // "00" is the international prefix in most countries: "00234 803 …"
+      // means "+234 803 …". National readings are still tried after it.
+      if (digits.startsWith('00')) {
+        candidates.add('+${digits.substring(2)}');
+      }
       // Digits of the dial code beyond the calling code, e.g. "876" in
       // +1876, which users don't retype.
       final String callingCode = metadata.countryCode.toString();

@@ -1,3 +1,7 @@
+// Material and Cupertino move to material_ui / cupertino_ui in Flutter 3.47+;
+// the old imports are kept so the package still supports Flutter 3.29.
+// ignore_for_file: deprecated_member_use
+
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
